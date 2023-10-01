@@ -17,8 +17,8 @@ class LibroSearch extends Libro
     public function rules()
     {
         return [
-            [['codigo_barra', 'lib_asignatura', 'lib_isbn', 'lib_nombre', 'lib_categoria', 'lib_autor', 'lib_editorial', 'lib_pais', 'lib_anio', 'lib_duplicado', 'lib_estado'], 'safe'],
-            [['n_ejemplares_libro', 'num'], 'integer'],
+            [['codigo_barra', 'lib_cute', 'lib_isbn', 'lib_titulo', 'lib_autor', 'lib_editorial', 'lib_aniopulic'], 'safe'],
+            [['n_ejemplares_libro', 'lib_num', 'lib_estado', 'paises_id_pais', 'asignatura_id_asignat', 'biblioteca_id_campus', 'categoria_id_categ'], 'integer'],
         ];
     }
 
@@ -59,20 +59,21 @@ class LibroSearch extends Libro
         // grid filtering conditions
         $query->andFilterWhere([
             'n_ejemplares_libro' => $this->n_ejemplares_libro,
-            'num' => $this->num,
-            'lib_anio' => $this->lib_anio,
+            'lib_num' => $this->lib_num,
+            'lib_aniopulic' => $this->lib_aniopulic,
+            'lib_estado' => $this->lib_estado,
+            'paises_id_pais' => $this->paises_id_pais,
+            'asignatura_id_asignat' => $this->asignatura_id_asignat,
+            'biblioteca_id_campus' => $this->biblioteca_id_campus,
+            'categoria_id_categ' => $this->categoria_id_categ,
         ]);
 
         $query->andFilterWhere(['like', 'codigo_barra', $this->codigo_barra])
-            ->andFilterWhere(['like', 'lib_asignatura', $this->lib_asignatura])
+            ->andFilterWhere(['like', 'lib_cute', $this->lib_cute])
             ->andFilterWhere(['like', 'lib_isbn', $this->lib_isbn])
-            ->andFilterWhere(['like', 'lib_nombre', $this->lib_nombre])
-            ->andFilterWhere(['like', 'lib_categoria', $this->lib_categoria])
+            ->andFilterWhere(['like', 'lib_titulo', $this->lib_titulo])
             ->andFilterWhere(['like', 'lib_autor', $this->lib_autor])
-            ->andFilterWhere(['like', 'lib_editorial', $this->lib_editorial])
-            ->andFilterWhere(['like', 'lib_pais', $this->lib_pais])
-            ->andFilterWhere(['like', 'lib_duplicado', $this->lib_duplicado])
-            ->andFilterWhere(['like', 'lib_estado', $this->lib_estado]);
+            ->andFilterWhere(['like', 'lib_editorial', $this->lib_editorial]);
 
         return $dataProvider;
     }
