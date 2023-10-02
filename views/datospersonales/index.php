@@ -1,24 +1,24 @@
 <?php
 
-use app\models\Computador;
+use app\models\Datospersonales;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /** @var yii\web\View $this */
-/** @var app\models\ComputadorSearch $searchModel */
+/** @var app\models\DatospersonalesSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Computadors';
+$this->title = 'Datospersonales';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="computador-index">
+<div class="datospersonales-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Computador', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Datospersonales', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -30,13 +30,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id_pc',
-            'pc_nombre',
-            'pc_estado',
+            'id',
+            'Ci',
+            'Apellidos',
+            'Nombres',
+            'FechaNacimiento',
+            //'Email:email',
+            //'Genero',
+            //'Institucion',
+            //'Nivel',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Computador $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id_pc' => $model->id_pc]);
+                'urlCreator' => function ($action, Datospersonales $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],
         ],

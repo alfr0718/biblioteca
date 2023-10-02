@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\ComputadorSearch $model */
+/** @var app\models\PcSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="computador-search">
+<div class="pc-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -18,11 +18,11 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id_pc') ?>
+    <?= $form->field($model, 'idpc') ?>
 
-    <?= $form->field($model, 'pc_nombre') ?>
+    <?= $form->field($model, 'estado') ?>
 
-    <?= $form->field($model, 'pc_estado') ?>
+    <?= $form->field($model, 'biblioteca_idbiblioteca') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

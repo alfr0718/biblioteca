@@ -17,8 +17,8 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['username', 'password', 'tipo_usuario', 'authkey', 'personaldata_correo'], 'safe'],
+            [['id', 'Status'], 'integer'],
+            [['Username', 'Password', 'Auth_key', 'Created_at', 'Updated_at', 'Temporalpassword', 'Tempralpasswordtime'], 'safe'],
         ];
     }
 
@@ -59,13 +59,16 @@ class UserSearch extends User
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'Status' => $this->Status,
+            'Created_at' => $this->Created_at,
+            'Updated_at' => $this->Updated_at,
+            'Tempralpasswordtime' => $this->Tempralpasswordtime,
         ]);
 
-        $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'password', $this->password])
-            ->andFilterWhere(['like', 'tipo_usuario', $this->tipo_usuario])
-            ->andFilterWhere(['like', 'authkey', $this->authkey])
-            ->andFilterWhere(['like', 'personaldata_correo', $this->personaldata_correo]);
+        $query->andFilterWhere(['like', 'Username', $this->Username])
+            ->andFilterWhere(['like', 'Password', $this->Password])
+            ->andFilterWhere(['like', 'Auth_key', $this->Auth_key])
+            ->andFilterWhere(['like', 'Temporalpassword', $this->Temporalpassword]);
 
         return $dataProvider;
     }

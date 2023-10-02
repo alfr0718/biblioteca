@@ -30,24 +30,23 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'codigo_barra',
-            'n_ejemplares_libro',
-            'lib_cute',
-            'lib_num',
-            'lib_isbn',
-            //'lib_titulo',
-            //'lib_autor',
-            //'lib_editorial',
-            //'lib_aniopulic',
-            //'lib_estado',
-            //'paises_id_pais',
-            //'asignatura_id_asignat',
-            //'biblioteca_id_campus',
-            //'categoria_id_categ',
+            'codigo_barras',
+            'n_ejemplares',
+            'titulo',
+            'autor',
+            'isbn',
+            //'cute',
+            //'editorial',
+            //'anio_publicacion',
+            //'estado',
+            //'categoria_id',
+            //'asignatura_id',
+            //'pais_codigopais',
+            //'biblioteca_idbiblioteca',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Libro $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'codigo_barra' => $model->codigo_barra]);
+                    return Url::toRoute([$action, 'codigo_barras' => $model->codigo_barras, 'biblioteca_idbiblioteca' => $model->biblioteca_idbiblioteca]);
                  }
             ],
         ],

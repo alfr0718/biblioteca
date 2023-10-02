@@ -18,33 +18,31 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'codigo_barra') ?>
+    <?= $form->field($model, 'codigo_barras') ?>
 
-    <?= $form->field($model, 'n_ejemplares_libro') ?>
+    <?= $form->field($model, 'n_ejemplares') ?>
 
-    <?= $form->field($model, 'lib_cute') ?>
+    <?= $form->field($model, 'titulo') ?>
 
-    <?= $form->field($model, 'lib_num') ?>
+    <?= $form->field($model, 'autor') ?>
 
-    <?= $form->field($model, 'lib_isbn') ?>
+    <?= $form->field($model, 'isbn') ?>
 
-    <?php // echo $form->field($model, 'lib_titulo') ?>
+    <?php // echo $form->field($model, 'cute') ?>
 
-    <?php // echo $form->field($model, 'lib_autor') ?>
+    <?php // echo $form->field($model, 'editorial') ?>
 
-    <?php // echo $form->field($model, 'lib_editorial') ?>
+    <?php // echo $form->field($model, 'anio_publicacion') ?>
 
-    <?php // echo $form->field($model, 'lib_aniopulic') ?>
+    <?php // echo $form->field($model, 'estado') ?>
 
-    <?php // echo $form->field($model, 'lib_estado') ?>
+    <?php // echo $form->field($model, 'categoria_id') ?>
 
-    <?php // echo $form->field($model, 'paises_id_pais') ?>
+    <?php // echo $form->field($model, 'asignatura_id') ?>
 
-    <?php // echo $form->field($model, 'asignatura_id_asignat') ?>
+    <?php // echo $form->field($model, 'pais_codigopais') ?>
 
-    <?php // echo $form->field($model, 'biblioteca_id_campus') ?>
-
-    <?php // echo $form->field($model, 'categoria_id_categ') ?>
+    <?php // echo $form->field($model, 'biblioteca_idbiblioteca') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

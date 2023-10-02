@@ -5,22 +5,38 @@ namespace app\models;
 use Yii;
 use yii\web\IdentityInterface;
 use yii\db\ActiveRecord;
+use yii\base\Model;
+use yii\base\Security;
+
 
 /**
  * This is the model class for table "user".
  *
  * @property int $id
- * @property string $username
- * @property string $password
- * @property string $tipo_usuario
- * @property string $authkey
- * @property string $personaldata_correo
+ * @property string $Username
+ * @property string $Password
+ * @property string $Auth_key
+ * @property int $Status
+ * @property string $Created_at
+ * @property string $Updated_at
+ * @property string|null $Temporalpassword
+ * @property string|null $Tempralpasswordtime
  *
- * @property Personaldata $personaldataCorreo
- * @property Prestamo[] $prestamos
+ * @property Authassignmentrole[] $authassignmentroles
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
+    private $_user = false;
+    public $currentPassword;
+    public $newPassword;
+    public $confirmPassword;
+    public $temporalpassword;
+    public $tempralpasswordtime;
+    public $_roleNames = [];
+
+
     /**
      * {@inheritdoc}
      */
@@ -32,21 +48,16 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    const TIPO_PERSONA_EXTERNA = 'EXTERNO';
-    const TIPO_ESTUDIANTE = 'ESTUDIANTE';
-    const TIPO_DOCENTE = 'DOCENTE';
-
     public function rules()
     {
         return [
-            [['username', 'password', 'tipo_usuario', 'authkey', 'personaldata_correo'], 'required'],
-            [['username'], 'string', 'max' => 12],
-            [['password'], 'string', 'max' => 255],
-            [['tipo_usuario'], 'string', 'max' => 45],
-            [['tipo_usuario'], 'in', 'range' => [self::TIPO_PERSONA_EXTERNA, self::TIPO_ESTUDIANTE, self::TIPO_DOCENTE]],
-            [['authkey'], 'string', 'max' => 32],
-            [['personaldata_correo'], 'string', 'max' => 300],
-            [['personaldata_correo'], 'exist', 'skipOnError' => true, 'targetClass' => Personaldata::class, 'targetAttribute' => ['personaldata_correo' => 'correo']],
+            [['Username', 'Password', 'Auth_key', 'Created_at'], 'required'],
+            [['Status'], 'integer'],
+            [['Created_at', 'Updated_at', 'Tempralpasswordtime'], 'safe'],
+            [['Username'], 'string', 'max' => 15],
+            [['Password', 'Temporalpassword'], 'string', 'max' => 255],
+            [['Auth_key'], 'string', 'max' => 32],
+            [['Username', 'Auth_key'], 'unique'],
         ];
     }
 
@@ -57,24 +68,72 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'username' => 'Username',
-            'password' => 'Password',
-            'tipo_usuario' => 'Tipo Usuario',
-            'authkey' => 'Authkey',
-            'personaldata_correo' => 'Personaldata Correo',
+            'Username' => 'Usuario',
+            'Password' => 'Contraseña',
+            'Auth_key' => 'Clave de Autentificación',
+            'Status' => 'Estado',
+            'Created_at' => 'Creado',
+            'Updated_at' => 'Actualizado',
+            'Temporalpassword' => 'Temporalpassword',
+            'Tempralpasswordtime' => 'Tempralpasswordtime',
         ];
     }
+    
 
-    // Implementación de funciones de Identity
+    /**
+     * Gets query for [[Authassignmentroles]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuthassignmentroles()
+    {
+        return $this->hasMany(Authassignmentrole::class, ['idusername' => 'id']);
+    }
+
+    public function getDatospersonalesed(){
+        return $this->hasOne(Datospersonalesed::class, ['Ci' => 'Username']);
+    }
+
+    /**
+     * Valida la contraseña actual.
+     */
+    public function validateCurrentPassword($attribute, $params)
+    {
+        $user = self::findByUsername($this->Username);
+        if (!$this->hasErrors()) {
+            $user = self::findIdentity($this->id);
+            if (!$user || !$user->validatePassword($this->currentPassword, $user->Password)) {
+                $this->addError($attribute, 'Contraseña actual incorrecta, comuníquese con el administrador.');
+            }
+        }
+    }
+
+    /**
+     * Cambia la contraseña del usuario.
+     */
+    public function changePassword()
+    {
+        if ($this->validate()) {
+            $user = self::findIdentity($this->id);
+            $user->setPassword($this->newPassword);
+            return $user->save(false);
+        }
+        return false;
+    }
 
     public static function findIdentity($id)
     {
-        return static::findOne($id);
+        return static::findOne(['id' => $id, 'Status' => 1]);
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return null; // No se usa en este ejemplo
+        return static::findOne(['Auth_key' => $token, 'Status' => 1]);
+    }
+
+    public static function findByUsername($username)
+    {
+        return static::findOne(['Username' => $username, 'Status' => 1]);
     }
 
     public function getId()
@@ -84,43 +143,65 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function getAuthKey()
     {
-        return $this->authkey;
+        return $this->Auth_key;
     }
 
-    public function validateAuthKey($authKey)
-    {
-        return $this->authkey === $authKey;
-    }
 
-    public static function findByUsername($username)
+ 
+
+    public function validateAuthKey($authkey)
     {
-        return static::findOne(['username' => $username]);
+        return $this->Auth_key === $authkey;
     }
 
     public function validatePassword($password)
     {
-        // Implementa la lógica para validar la contraseña aquí
-        // Puedes usar Yii::$app->security->validatePassword
-        return Yii::$app->security->validatePassword($password, $this->password);
+        return Yii::$app->security->validatePassword($password, $this->Password);
     }
 
-    /**
-     * Gets query for [[PersonaldataCorreo]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPersonaldataCorreo()
+    public function getUser()
     {
-        return $this->hasOne(Personaldata::class, ['correo' => 'personaldata_correo']);
+        if ($this->_user === false) {
+            $this->_user = User::findByUsername($this->Username);
+        }
+
+        return $this->_user;
     }
 
-    /**
-     * Gets query for [[Prestamos]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPrestamos()
+
+    public function login()
     {
-        return $this->hasMany(Prestamo::class, ['user_id' => 'id']);
+        if ($this->validate()) {
+            $this->getRoleNames();
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+        }
+        return false;
     }
+
+    /** 
+     * Gets query for [[Authassignmentroles]].
+     * return String[]
+     */
+    public function getRoleNames()
+    {
+
+        return Yii::$app->cache->getOrSet('userRoleNames_' . $this->id, function () {
+            $roleNames = [];
+    
+            $authAssignmentRoles = $this->getAuthAssignmentRoles()
+                ->orderBy(['role_id' => SORT_DESC])
+                ->all();
+    
+            foreach ($authAssignmentRoles as $rolesrelacion) {
+                $role = $rolesrelacion->getRole()->one();
+                $roleNames[] = $role->Name_role;
+            }
+            
+
+            return $roleNames;
+        });
+    }
+
+
+
 }

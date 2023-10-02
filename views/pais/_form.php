@@ -4,17 +4,16 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\Computador $model */
+/** @var app\models\Pais $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="computador-form">
+<div class="pais-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'pc_nombre')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'pc_estado')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name_pais')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

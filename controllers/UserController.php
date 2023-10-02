@@ -7,6 +7,8 @@ use app\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\i18n\Formatter;
+
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -68,6 +70,10 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User();
+        $model->Auth_key = \Yii::$app->security->generateRandomString(); //GENERACION DE AUTOKEY. MICAEL
+        $formatter = \Yii::$app->formatter;
+        $model->Created_at = $formatter->asDatetime(new \DateTime(), 'php:Y-m-d H:i:s');
+        // Formato MySQL. GENERACION FECHA DE CREACION MICAEL
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {

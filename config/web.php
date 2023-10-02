@@ -26,6 +26,13 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'dateFormat' => 'php:d/m/Y', // Formato de fecha (día/mes/año)
+            'timeFormat' => 'php:H:i:s', // Formato de hora (hora:minuto:segundo)
+            'datetimeFormat' => 'php:d/m/Y H:i:s', // Formato de fecha y hora
+            'timeZone' => 'America/Guayaquil', // Zona horaria de Ecuador
+        ],
         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,
             'viewPath' => '@app/mail',
