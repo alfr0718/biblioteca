@@ -4,6 +4,7 @@
 /** @var string $content */
 
 use app\assets\AppAsset;
+use app\models\Transaccion;
 use app\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
@@ -22,29 +23,38 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="h-100">
+
 <head>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="d-flex flex-column h-100">
-<?php $this->beginBody() ?>
 
-<header id="header">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest
-                ? ['label' => 'Login', 'url' => ['/site/login']]
-                : '<li class="nav-item">'
+<body class="d-flex flex-column h-100">
+    <?php $this->beginBody() ?>
+
+    <header id="header">
+        <?php
+        NavBar::begin([
+            'brandLabel' => Yii::$app->name,
+            'brandUrl' => Yii::$app->homeUrl,
+            'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
+        ]);
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav'],
+            'items' => [
+                ['label' => 'Home', 'url' => ['/site/index']],
+                ['label' => 'About', 'url' => ['/site/about']],
+                ['label' => 'CARRERA', 'url' => ['/carrera/index']],
+                ['label' => 'Asignatura', 'url' => ['/asignatura/index']],
+                ['label' => 'LIBRO', 'url' => ['/libro/index']],
+                ['label' => 'PAIS', 'url' => ['/pais/index']],
+                ['label' => 'TRANSACCION', 'url' => ['/transaccion/index']],
+                ['label' => 'DATOSPERSONALES', 'url' => ['/datospersonales/index']],
+                ['label' => 'USER', 'url' => ['/user/index']],
+                ['label' => 'Contact', 'url' => ['/site/contact']],
+                Yii::$app->user->isGuest
+                    ? ['label' => 'Login', 'url' => ['/site/login']]
+                    : '<li class="nav-item">'
                     . Html::beginForm(['/site/logout'])
                     . Html::submitButton(
                         'Logout (' . Yii::$app->user->identity->username . ')',
@@ -52,32 +62,41 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     )
                     . Html::endForm()
                     . '</li>'
-        ]
-    ]);
-    NavBar::end();
-    ?>
-</header>
+            ]
+        ]);
+        NavBar::end();
+        ?>
+    </header>
 
-<main id="main" class="flex-shrink-0" role="main">
-    <div class="container">
-        <?php if (!empty($this->params['breadcrumbs'])): ?>
-            <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
-        <?php endif ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
-    </div>
-</main>
-
-<footer id="footer" class="mt-auto py-3 bg-light">
-    <div class="container">
-        <div class="row text-muted">
-            <div class="col-md-6 text-center text-md-start">&copy; My Company <?= date('Y') ?></div>
-            <div class="col-md-6 text-center text-md-end"><?= Yii::powered() ?></div>
+    <main id="main" class="flex-shrink-0" role="main">
+        <div class="container">
+            <?php if (!empty($this->params['breadcrumbs'])) : ?>
+                <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
+            <?php endif ?>
+            <?= Alert::widget() ?>
+            <?= $content ?>
         </div>
-    </div>
-</footer>
+    </main>
 
-<?php $this->endBody() ?>
+    <footer id="footer" class="mt-auto py-3 bg-light">
+        <div class="container">
+            <div class="row text-muted">
+                <div class="col-md-6 text-center text-md-start">
+                    <?= date('H:i M d, Y ') ?> 
+                    | Visitas Hoy: 
+                    <?php $contador=Transaccion::find()
+                    ->where(['action' => 'login', 'nombre_tabla' => 'user'])
+                    ->andWhere(['between', 'time', date('Y-m-d 00:00:00'), date('Y-m-d 23:59:59')])
+                    ->count();
+                     echo $contador; ?>
+                </div>
+                <div class="col-md-6 text-center text-md-end"><?= Yii::powered() ?></div>
+            </div>
+        </div>
+    </footer>
+
+    <?php $this->endBody() ?>
 </body>
+
 </html>
 <?php $this->endPage() ?>

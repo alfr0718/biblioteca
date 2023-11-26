@@ -17,8 +17,8 @@ class PaisSearch extends Pais
     public function rules()
     {
         return [
-            [['id_pais'], 'integer'],
-            [['name_pais'], 'safe'],
+            [['id'], 'integer'],
+            [['Codigo_pais', 'Nombre'], 'safe'],
         ];
     }
 
@@ -58,10 +58,11 @@ class PaisSearch extends Pais
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_pais' => $this->id_pais,
+            'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'name_pais', $this->name_pais]);
+        $query->andFilterWhere(['like', 'Codigo_pais', $this->Codigo_pais])
+            ->andFilterWhere(['like', 'Nombre', $this->Nombre]);
 
         return $dataProvider;
     }

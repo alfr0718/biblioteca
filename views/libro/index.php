@@ -26,27 +26,29 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'codigo_barras',
-            'n_ejemplares',
-            'titulo',
-            'autor',
-            'isbn',
-            //'cute',
-            //'editorial',
-            //'anio_publicacion',
-            //'estado',
-            //'categoria_id',
-            //'asignatura_id',
-            //'pais_codigopais',
-            //'biblioteca_idbiblioteca',
+            //'id',
+            'portada',
+            'Titulo',
+            'Autor',
+            'Editorial',
+            'Anio',
+            'Isbn',
+            //'N_clasificacion',
+            //'Descripcion',
+            //'Status',
+            'idasignatura',
+            'idcategoria',
+            'idpais',
+            
+            //'doc',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Libro $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'codigo_barras' => $model->codigo_barras, 'biblioteca_idbiblioteca' => $model->biblioteca_idbiblioteca]);
+                    return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],
         ],

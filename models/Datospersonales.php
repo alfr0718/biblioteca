@@ -9,13 +9,14 @@ use Yii;
  *
  * @property int $id
  * @property string $Ci
- * @property string $Apellidos
+ * @property string $ApellidoMaterno
+ * @property string|null $ApellidoPaterno
  * @property string $Nombres
- * @property string|null $FechaNacimiento
  * @property string $Email
- * @property string $Genero
- * @property string|null $Institucion
- * @property string|null $Nivel
+ * @property int $Status
+ *
+ * @property Carrera[] $carreraIdfacs
+ * @property Personacarrera[] $personacarreras
  */
 class Datospersonales extends \yii\db\ActiveRecord
 {
@@ -33,12 +34,11 @@ class Datospersonales extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Ci', 'Apellidos', 'Nombres', 'Email', 'Genero'], 'required'],
-            [['FechaNacimiento'], 'safe'],
-            [['Genero'], 'string'],
+            [['Ci', 'ApellidoMaterno', 'Nombres', 'Email'], 'required'],
+            [['Status'], 'integer'],
             [['Ci'], 'string', 'max' => 15],
-            [['Apellidos'], 'string', 'max' => 40],
-            [['Nombres', 'Email', 'Institucion', 'Nivel'], 'string', 'max' => 45],
+            [['ApellidoMaterno'], 'string', 'max' => 40],
+            [['ApellidoPaterno', 'Nombres', 'Email'], 'string', 'max' => 45],
         ];
     }
 
@@ -50,13 +50,55 @@ class Datospersonales extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'Ci' => 'Ci',
-            'Apellidos' => 'Apellidos',
+            'ApellidoPaterno' => 'Apellido Paterno',
+            'ApellidoMaterno' => 'Apellido Materno',
             'Nombres' => 'Nombres',
-            'FechaNacimiento' => 'Fecha Nacimiento',
             'Email' => 'Email',
-            'Genero' => 'Genero',
-            'Institucion' => 'Institucion',
-            'Nivel' => 'Nivel',
+            'Status' => 'Status',
         ];
+    }
+
+    /**
+     * Gets query for [[CarreraIdfacs]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCarreraIdfacs()
+    {
+        return $this->hasMany(Carrera::class, ['idcar' => 'carrera_idfac'])->viaTable('personacarrera', ['datospersonales_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Personacarreras]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPersonacarreras()
+    {
+        return $this->hasMany(Personacarrera::class, ['datospersonales_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['username' => 'Ci']);
+    }
+
+    /**
+     * Encuentra un modelo basado en el número de cédula.
+     * @param string $cedula El número de cédula para buscar.
+     * @return static|null El modelo encontrado o null si no se encuentra.
+     */
+    public static function findByCedula($cedula)
+    {
+        return static::findOne(['Ci' => $cedula]);
+    }
+    public function getNombreCompleto()
+    {
+        return $this->Nombres . ' ' . $this->ApellidoPaterno . ' ' . $this->ApellidoMaterno;
     }
 }

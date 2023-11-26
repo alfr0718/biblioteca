@@ -49,14 +49,14 @@ class PaisController extends Controller
 
     /**
      * Displays a single Pais model.
-     * @param int $id_pais Id Pais
+     * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id_pais)
+    public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id_pais),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -71,7 +71,7 @@ class PaisController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id_pais' => $model->id_pais]);
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -85,16 +85,16 @@ class PaisController extends Controller
     /**
      * Updates an existing Pais model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id_pais Id Pais
+     * @param int $id ID
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id_pais)
+    public function actionUpdate($id)
     {
-        $model = $this->findModel($id_pais);
+        $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_pais' => $model->id_pais]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -105,13 +105,13 @@ class PaisController extends Controller
     /**
      * Deletes an existing Pais model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id_pais Id Pais
+     * @param int $id ID
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id_pais)
+    public function actionDelete($id)
     {
-        $this->findModel($id_pais)->delete();
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -119,13 +119,13 @@ class PaisController extends Controller
     /**
      * Finds the Pais model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id_pais Id Pais
+     * @param int $id ID
      * @return Pais the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id_pais)
+    protected function findModel($id)
     {
-        if (($model = Pais::findOne(['id_pais' => $id_pais])) !== null) {
+        if (($model = Pais::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

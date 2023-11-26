@@ -17,8 +17,8 @@ class LibroSearch extends Libro
     public function rules()
     {
         return [
-            [['codigo_barras', 'titulo', 'autor', 'isbn', 'cute', 'editorial', 'anio_publicacion', 'estado', 'categoria_id', 'asignatura_id', 'pais_codigopais'], 'safe'],
-            [['n_ejemplares', 'biblioteca_idbiblioteca'], 'integer'],
+            [['id', 'Status', 'idcategoria', 'idpais', 'idasignatura'], 'integer'],
+            [['Titulo', 'Autor', 'Editorial', 'Anio', 'Isbn', 'N_clasificacion', 'Descripcion', 'portada', 'doc'], 'safe'],
         ];
     }
 
@@ -58,21 +58,22 @@ class LibroSearch extends Libro
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'n_ejemplares' => $this->n_ejemplares,
-            'anio_publicacion' => $this->anio_publicacion,
-            'biblioteca_idbiblioteca' => $this->biblioteca_idbiblioteca,
+            'id' => $this->id,
+            'Anio' => $this->Anio,
+            'Status' => $this->Status,
+            'idcategoria' => $this->idcategoria,
+            'idpais' => $this->idpais,
+            'idasignatura' => $this->idasignatura,
         ]);
 
-        $query->andFilterWhere(['like', 'codigo_barras', $this->codigo_barras])
-            ->andFilterWhere(['like', 'titulo', $this->titulo])
-            ->andFilterWhere(['like', 'autor', $this->autor])
-            ->andFilterWhere(['like', 'isbn', $this->isbn])
-            ->andFilterWhere(['like', 'cute', $this->cute])
-            ->andFilterWhere(['like', 'editorial', $this->editorial])
-            ->andFilterWhere(['like', 'estado', $this->estado])
-            ->andFilterWhere(['like', 'categoria_id', $this->categoria_id])
-            ->andFilterWhere(['like', 'asignatura_id', $this->asignatura_id])
-            ->andFilterWhere(['like', 'pais_codigopais', $this->pais_codigopais]);
+        $query->andFilterWhere(['like', 'Titulo', $this->Titulo])
+            ->andFilterWhere(['like', 'Autor', $this->Autor])
+            ->andFilterWhere(['like', 'Editorial', $this->Editorial])
+            ->andFilterWhere(['like', 'Isbn', $this->Isbn])
+            ->andFilterWhere(['like', 'N_clasificacion', $this->N_clasificacion])
+            ->andFilterWhere(['like', 'Descripcion', $this->Descripcion])
+            ->andFilterWhere(['like', 'portada', $this->portada])
+            ->andFilterWhere(['like', 'doc', $this->doc]);
 
         return $dataProvider;
     }

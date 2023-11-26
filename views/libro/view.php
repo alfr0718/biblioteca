@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Libro $model */
 
-$this->title = $model->codigo_barras;
+$this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Libros', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'codigo_barras' => $model->codigo_barras, 'biblioteca_idbiblioteca' => $model->biblioteca_idbiblioteca], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'codigo_barras' => $model->codigo_barras, 'biblioteca_idbiblioteca' => $model->biblioteca_idbiblioteca], [
+        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -29,19 +29,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'codigo_barras',
-            'n_ejemplares',
-            'titulo',
-            'autor',
-            'isbn',
-            'cute',
-            'editorial',
-            'anio_publicacion',
-            'estado',
-            'categoria_id',
-            'asignatura_id',
-            'pais_codigopais',
-            'biblioteca_idbiblioteca',
+            //'id',
+            'Titulo',
+            'Autor',
+            'Editorial',
+            'Anio',
+            'Isbn',
+            'N_clasificacion',
+            'Descripcion',
+            'Status',
+            'idcategoria',
+            'idpais',
+            'idasignatura',
+            'portada',
+            'doc',
         ],
     ]) ?>
 

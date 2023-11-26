@@ -12,31 +12,35 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'codigo_barras')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'Titulo')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'n_ejemplares')->textInput() ?>
+    <?= $form->field($model, 'Autor')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'Editorial')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'autor')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'Anio')->textInput() ?>
 
-    <?= $form->field($model, 'isbn')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'Isbn')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cute')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'N_clasificacion')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'editorial')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'Descripcion')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'anio_publicacion')->textInput() ?>
+    <?= $form->field($model, 'Status')->textInput() ?>
 
-    <?= $form->field($model, 'estado')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'idcategoria')->textInput() ?>
 
-    <?= $form->field($model, 'categoria_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'idpais')->textInput() ?>
 
-    <?= $form->field($model, 'asignatura_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'idasignatura')->textInput() ?>
+    
+    <?= $form->field($model, 'portadaFile')->fileInput() ?>
+    
+    <?= $form->field($model, 'docFile')->fileInput() ?>
 
-    <?= $form->field($model, 'pais_codigopais')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'portada')->textInput() ?>
 
-    <?= $form->field($model, 'biblioteca_idbiblioteca')->textInput() ?>
+    <?= $form->field($model, 'doc')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

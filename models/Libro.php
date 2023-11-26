@@ -3,32 +3,36 @@
 namespace app\models;
 
 use Yii;
+use yii\web\UploadedFile;
+
 
 /**
  * This is the model class for table "libro".
  *
- * @property string $codigo_barras
- * @property int|null $n_ejemplares
- * @property string $titulo
- * @property string $autor
- * @property string $isbn
- * @property string|null $cute
- * @property string $editorial
- * @property string $anio_publicacion
- * @property string|null $estado
- * @property string $categoria_id
- * @property string $asignatura_id
- * @property string $pais_codigopais
- * @property int $biblioteca_idbiblioteca
+ * @property int $id
+ * @property string $Titulo
+ * @property string $Autor
+ * @property string|null $Editorial
+ * @property string|null $Anio
+ * @property string|null $Isbn
+ * @property string|null $N_clasificacion
+ * @property string|null $Descripcion
+ * @property int $Status
+ * @property int $idcategoria
+ * @property int $idpais
+ * @property int $idasignatura
+ * @property resource|null $portada
+ * @property resource|null $doc
  *
- * @property Asignatura $asignatura
- * @property Biblioteca $bibliotecaIdbiblioteca
- * @property Categoria $categoria
- * @property Pais $paisCodigopais
- * @property Prestamo[] $prestamos
+ * @property Asignatura $idasignatura0
+ * @property Categoria $idcategoria0
+ * @property Pais $idpais0
  */
 class Libro extends \yii\db\ActiveRecord
 {
+    public $portadaFile; // Atributo para la imagen
+    public $docFile; // Atributo para el documento
+
     /**
      * {@inheritdoc}
      */
@@ -43,18 +47,17 @@ class Libro extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigo_barras', 'titulo', 'autor', 'isbn', 'editorial', 'anio_publicacion', 'categoria_id', 'asignatura_id', 'pais_codigopais', 'biblioteca_idbiblioteca'], 'required'],
-            [['n_ejemplares', 'biblioteca_idbiblioteca'], 'integer'],
-            [['anio_publicacion'], 'safe'],
-            [['codigo_barras', 'isbn', 'cute'], 'string', 'max' => 100],
-            [['titulo', 'autor', 'editorial'], 'string', 'max' => 45],
-            [['estado'], 'string', 'max' => 10],
-            [['categoria_id', 'asignatura_id', 'pais_codigopais'], 'string', 'max' => 4],
-            [['codigo_barras', 'biblioteca_idbiblioteca'], 'unique', 'targetAttribute' => ['codigo_barras', 'biblioteca_idbiblioteca']],
-            [['asignatura_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asignatura::class, 'targetAttribute' => ['asignatura_id' => 'id']],
-            [['biblioteca_idbiblioteca'], 'exist', 'skipOnError' => true, 'targetClass' => Biblioteca::class, 'targetAttribute' => ['biblioteca_idbiblioteca' => 'idbiblioteca']],
-            [['categoria_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categoria::class, 'targetAttribute' => ['categoria_id' => 'id']],
-            [['pais_codigopais'], 'exist', 'skipOnError' => true, 'targetClass' => Pais::class, 'targetAttribute' => ['pais_codigopais' => 'codigopais']],
+            [['portadaFile', 'docFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, pdf'],
+            [['Titulo', 'Autor', 'idcategoria', 'idpais', 'idasignatura'], 'required'],
+            [['Anio'], 'safe'],
+            [['Status', 'idcategoria', 'idpais', 'idasignatura'], 'integer'],
+            [['portada', 'doc'], 'string'],
+            [['Titulo', 'Autor', 'Editorial'], 'string', 'max' => 255],
+            [['Isbn', 'N_clasificacion'], 'string', 'max' => 100],
+            [['Descripcion'], 'string', 'max' => 1000],
+            [['idasignatura'], 'exist', 'skipOnError' => true, 'targetClass' => Asignatura::class, 'targetAttribute' => ['idasignatura' => 'id']],
+            [['idcategoria'], 'exist', 'skipOnError' => true, 'targetClass' => Categoria::class, 'targetAttribute' => ['idcategoria' => 'id']],
+            [['idpais'], 'exist', 'skipOnError' => true, 'targetClass' => Pais::class, 'targetAttribute' => ['idpais' => 'id']],
         ];
     }
 
@@ -64,69 +67,50 @@ class Libro extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'codigo_barras' => 'Codigo de Barras',
-            'n_ejemplares' => 'N° Ejemplares',
-            'titulo' => 'Título',
-            'autor' => 'Autor',
-            'isbn' => 'ISBN',
-            'cute' => 'CUTE',
-            'editorial' => 'Editorial',
-            'anio_publicacion' => 'Año Publicacion',
-            'estado' => 'Estado',
-            'categoria_id' => 'Categoria',
-            'asignatura_id' => 'Asignatura',
-            'pais_codigopais' => 'Pais',
-            'biblioteca_idbiblioteca' => 'Biblioteca',
+            'id' => 'ID',
+            'Titulo' => 'Título',
+            'Autor' => 'Autor',
+            'Editorial' => 'Editorial',
+            'Anio' => 'Año',
+            'Isbn' => 'ISBN',
+            'N_clasificacion' => 'N° Clasificacion',
+            'Descripcion' => 'Descripción',
+            'Status' => 'Status',
+            'idcategoria' => 'Categoría',
+            'idpais' => 'País',
+            'idasignatura' => 'Asignatura',
+            'portada' => 'Portada',
+            'doc' => 'Documento',
         ];
     }
 
     /**
-     * Gets query for [[Asignatura]].
+     * Gets query for [[Idasignatura0]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getAsignatura()
+    public function getIdasignatura0()
     {
-        return $this->hasOne(Asignatura::class, ['id' => 'asignatura_id']);
+        return $this->hasOne(Asignatura::class, ['id' => 'idasignatura']);
     }
 
     /**
-     * Gets query for [[BibliotecaIdbiblioteca]].
+     * Gets query for [[Idcategoria0]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getBibliotecaIdbiblioteca()
+    public function getIdcategoria0()
     {
-        return $this->hasOne(Biblioteca::class, ['idbiblioteca' => 'biblioteca_idbiblioteca']);
+        return $this->hasOne(Categoria::class, ['id' => 'idcategoria']);
     }
 
     /**
-     * Gets query for [[Categoria]].
+     * Gets query for [[Idpais0]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCategoria()
+    public function getIdpais0()
     {
-        return $this->hasOne(Categoria::class, ['id' => 'categoria_id']);
-    }
-
-    /**
-     * Gets query for [[PaisCodigopais]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPaisCodigopais()
-    {
-        return $this->hasOne(Pais::class, ['codigopais' => 'pais_codigopais']);
-    }
-
-    /**
-     * Gets query for [[Prestamos]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPrestamos()
-    {
-        return $this->hasMany(Prestamo::class, ['libro_codigo_barras' => 'codigo_barras', 'libro_biblioteca_idbiblioteca' => 'biblioteca_idbiblioteca']);
+        return $this->hasOne(Pais::class, ['id' => 'idpais']);
     }
 }

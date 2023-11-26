@@ -1,12 +1,20 @@
 <?php
 
+use app\models\Datospersonales;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var app\models\Datospersonales $model */
 
-$this->title = $model->id;
+    $datospersonales = Datospersonales::findByCedula(Yii::$app->user->identity->username);
+    if ($datospersonales !== null) {
+        $nombreCompleto = $datospersonales->getNombreCompleto();
+        $this->title = $nombreCompleto;
+    } else {
+        $this->title= "No se encontró ninguna persona con la cédula proporcionada.";
+    }
+
 $this->params['breadcrumbs'][] = ['label' => 'Datospersonales', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -29,16 +37,21 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            //'id',
             'Ci',
-            'Apellidos',
+            'ApellidoMaterno',
+            'ApellidoPaterno',
             'Nombres',
-            'FechaNacimiento',
             'Email:email',
-            'Genero',
-            'Institucion',
-            'Nivel',
+            // 'Status',
         ],
     ]) ?>
+
+    <?php
+    $user = Yii::$app->user->identity;
+    if ($user->username === $model->Ci) {
+        echo Html::a('Cambiar Contraseña', ['user/change-password'], ['class' => 'btn btn-warning'], ['confirm' => '¿Estas seguro de cambiar tu contraseña?',]);
+    }
+    ?>
 
 </div>

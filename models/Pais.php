@@ -7,8 +7,9 @@ use Yii;
 /**
  * This is the model class for table "pais".
  *
- * @property string $codigopais
- * @property string $Nombrepais
+ * @property int $id
+ * @property string $Codigo_pais
+ * @property string $Nombre
  *
  * @property Libro[] $libros
  */
@@ -28,10 +29,9 @@ class Pais extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigopais', 'Nombrepais'], 'required'],
-            [['codigopais'], 'string', 'max' => 4],
-            [['Nombrepais'], 'string', 'max' => 45],
-            [['codigopais'], 'unique'],
+            [['Codigo_pais', 'Nombre'], 'required'],
+            [['Codigo_pais'], 'string', 'max' => 4],
+            [['Nombre'], 'string', 'max' => 50],
         ];
     }
 
@@ -41,8 +41,9 @@ class Pais extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'codigopais' => 'Codigopais',
-            'Nombrepais' => 'Nombrepais',
+            'id' => 'ID',
+            'Codigo_pais' => 'Codigo Pais',
+            'Nombre' => 'Nombre',
         ];
     }
 
@@ -53,6 +54,6 @@ class Pais extends \yii\db\ActiveRecord
      */
     public function getLibros()
     {
-        return $this->hasMany(Libro::class, ['pais_codigopais' => 'codigopais']);
+        return $this->hasMany(Libro::class, ['idpais' => 'id']);
     }
 }

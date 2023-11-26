@@ -1,11 +1,11 @@
 <?php
 
-//conexion a base de datos. Micael
+//conexion a base de datos.
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=gestionbiblioteca',
-    'username' => 'donvilla3',
-    'password' => '12345',
+    'dsn' => 'mysql:host=localhost;dbname=biblioteca',
+    'username' => 'luistelloAdmin',
+    'password' => '@dmin2023',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)

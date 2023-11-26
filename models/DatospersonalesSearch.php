@@ -17,8 +17,8 @@ class DatospersonalesSearch extends Datospersonales
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['Ci', 'Apellidos', 'Nombres', 'FechaNacimiento', 'Email', 'Genero', 'Institucion', 'Nivel'], 'safe'],
+            [['id', 'Status'], 'integer'],
+            [['Ci', 'ApellidoMaterno', 'ApellidoPaterno', 'Nombres', 'Email'], 'safe'],
         ];
     }
 
@@ -59,16 +59,14 @@ class DatospersonalesSearch extends Datospersonales
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'FechaNacimiento' => $this->FechaNacimiento,
+            'Status' => $this->Status,
         ]);
 
         $query->andFilterWhere(['like', 'Ci', $this->Ci])
-            ->andFilterWhere(['like', 'Apellidos', $this->Apellidos])
+            ->andFilterWhere(['like', 'ApellidoMaterno', $this->ApellidoMaterno])
+            ->andFilterWhere(['like', 'ApellidoPaterno', $this->ApellidoPaterno])
             ->andFilterWhere(['like', 'Nombres', $this->Nombres])
-            ->andFilterWhere(['like', 'Email', $this->Email])
-            ->andFilterWhere(['like', 'Genero', $this->Genero])
-            ->andFilterWhere(['like', 'Institucion', $this->Institucion])
-            ->andFilterWhere(['like', 'Nivel', $this->Nivel]);
+            ->andFilterWhere(['like', 'Email', $this->Email]);
 
         return $dataProvider;
     }

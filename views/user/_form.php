@@ -11,31 +11,23 @@ use yii\widgets\ActiveForm;
 <div class="user-form">
 
     <?php $form = ActiveForm::begin(); ?>
-    
-    <?= $form->field($model, 'Username')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Password')->passwordInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Status')->dropDownList([
-            0 => 'Inactive',
-            1 => 'Active',
-        ]) ?>
-        
+    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 
-    <?php // $form->field($model, 'Auth_key')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'Auth_key')->textInput(['maxlength' => true]) ?>
 
-    <?php // $form->field($model, 'Status')->textInput() ?>
+    <?= $form->field($model, 'Status')->textInput() ?>
 
-    <?php // $form->field($model, 'Created_at')->textInput() ?>
+    <?= $form->field($model, 'Tipo')->textInput() ?>
 
-    <?php // $form->field($model, 'Updated_at')->textInput() ?>
+    <?= $form->field($model, 'Created_at')->textInput() ?>
 
-    <?php // $form->field($model, 'Temporalpassword')->textInput(['maxlength' => true]) ?>
-
-    <?php // $form->field($model, 'Tempralpasswordtime')->textInput() ?>
+    <?= $form->field($model, 'Updated_at')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success bg-primary']) ?>
+        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

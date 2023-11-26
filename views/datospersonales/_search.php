@@ -22,19 +22,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Ci') ?>
 
-    <?= $form->field($model, 'Apellidos') ?>
+    <?= $form->field($model, 'ApellidoMaterno') ?>
+
+    <?= $form->field($model, 'ApellidoPaterno') ?>
 
     <?= $form->field($model, 'Nombres') ?>
 
-    <?= $form->field($model, 'FechaNacimiento') ?>
-
     <?php // echo $form->field($model, 'Email') ?>
 
-    <?php // echo $form->field($model, 'Genero') ?>
-
-    <?php // echo $form->field($model, 'Institucion') ?>
-
-    <?php // echo $form->field($model, 'Nivel') ?>
+    <?php // echo $form->field($model, 'Status') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

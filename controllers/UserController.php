@@ -2,13 +2,13 @@
 
 namespace app\controllers;
 
+use app\models\ChangePasswordForm;
 use app\models\User;
 use app\models\UserSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\i18n\Formatter;
-
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -70,10 +70,6 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User();
-        $model->Auth_key = \Yii::$app->security->generateRandomString(); //GENERACION DE AUTOKEY. MICAEL
-        $formatter = \Yii::$app->formatter;
-        $model->Created_at = $formatter->asDatetime(new \DateTime(), 'php:Y-m-d H:i:s');
-        // Formato MySQL. GENERACION FECHA DE CREACION MICAEL
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -137,4 +133,38 @@ class UserController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionChangePassword()
+    {
+        $model = new ChangePasswordForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            // Validar la contraseña actual
+            if (Yii::$app->user->identity->validatePassword($model->currentPassword)) {
+                // Cambiar la contraseña del usuario
+                $user = Yii::$app->user->identity;
+                $user->setPassword($model->newPassword);
+                $user->save();
+
+                // Pasar un valor a la vista sin mensaje flash
+                $mensaje = 'Contraseña cambiada con éxito.';
+                return $this->render('change-password', [
+                    'model' => $model,
+                    'mensaje' => $mensaje, // Pasar el valor a la vista
+                ]);
+            } else {
+                $error = 'La contraseña actual es incorrecta.';
+                return $this->render('change-password', [
+                    'model' => $model,
+                    'error' => $error, // Pasar el valor a la vista
+                ]);
+            }
+        }
+
+        return $this->render('change-password', [
+            'model' => $model,
+        ]);
+    }
+
+
 }

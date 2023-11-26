@@ -30,12 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id_pais',
-            'name_pais',
+            //'id',
+            'Codigo_pais',
+            'Nombre',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Pais $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id_pais' => $model->id_pais]);
+                    return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],
         ],

@@ -7,8 +7,9 @@ use Yii;
 /**
  * This is the model class for table "categoria".
  *
- * @property string $id
- * @property string $Categoría
+ * @property int $id
+ * @property string $code
+ * @property string $Nombre
  *
  * @property Libro[] $libros
  */
@@ -28,10 +29,9 @@ class Categoria extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'Categoría'], 'required'],
-            [['id'], 'string', 'max' => 4],
-            [['Categoría'], 'string', 'max' => 45],
-            [['id'], 'unique'],
+            [['code', 'Nombre'], 'required'],
+            [['code'], 'string', 'max' => 4],
+            [['Nombre'], 'string', 'max' => 45],
         ];
     }
 
@@ -42,7 +42,8 @@ class Categoria extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'Categoría' => 'Categoría',
+            'code' => 'Code',
+            'Nombre' => 'Nombre',
         ];
     }
 
@@ -53,6 +54,6 @@ class Categoria extends \yii\db\ActiveRecord
      */
     public function getLibros()
     {
-        return $this->hasMany(Libro::class, ['categoria_id' => 'id']);
+        return $this->hasMany(Libro::class, ['idcategoria' => 'id']);
     }
 }

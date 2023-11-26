@@ -14,19 +14,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Ci')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Apellidos')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'ApellidoPaterno')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'ApellidoMaterno')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'Nombres')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'FechaNacimiento')->textInput() ?>
-
     <?= $form->field($model, 'Email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Genero')->dropDownList([ 'M' => 'M', 'F' => 'F', ], ['prompt' => '']) ?>
-
-    <?= $form->field($model, 'Institucion')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Nivel')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'Status')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

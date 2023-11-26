@@ -7,9 +7,11 @@ use Yii;
 /**
  * This is the model class for table "asignatura".
  *
- * @property string $id
+ * @property int $id
  * @property string $Nombre
+ * @property int $idcar
  *
+ * @property Carrera $idcar0
  * @property Libro[] $libros
  */
 class Asignatura extends \yii\db\ActiveRecord
@@ -28,10 +30,10 @@ class Asignatura extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'Nombre'], 'required'],
-            [['id'], 'string', 'max' => 4],
-            [['Nombre'], 'string', 'max' => 60],
-            [['id'], 'unique'],
+            [['Nombre', 'idcar'], 'required'],
+            [['idcar'], 'integer'],
+            [['Nombre'], 'string', 'max' => 100],
+            [['idcar'], 'exist', 'skipOnError' => true, 'targetClass' => Carrera::class, 'targetAttribute' => ['idcar' => 'idcar']],
         ];
     }
 
@@ -42,8 +44,19 @@ class Asignatura extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'Nombre' => 'Nombre de Asignatura',
+            'Nombre' => 'Nombre',
+            'idcar' => 'Carrera',
         ];
+    }
+
+    /**
+     * Gets query for [[Idcar0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdcar0()
+    {
+        return $this->hasOne(Carrera::class, ['idcar' => 'idcar']);
     }
 
     /**
@@ -53,6 +66,6 @@ class Asignatura extends \yii\db\ActiveRecord
      */
     public function getLibros()
     {
-        return $this->hasMany(Libro::class, ['asignatura_id' => 'id']);
+        return $this->hasMany(Libro::class, ['idasignatura' => 'id']);
     }
 }
