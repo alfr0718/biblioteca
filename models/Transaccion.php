@@ -48,7 +48,7 @@ class Transaccion extends \yii\db\ActiveRecord
             'action' => 'Acción',
             'nombre_tabla' => 'Nombre de Tabla',
             'time' => 'Tiempo de Acción',
-            'item_id' => 'Elemento Afectadp',
+            'item_id' => 'Elemento Afectado',
 
         ];
     }

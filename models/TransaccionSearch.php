@@ -17,7 +17,7 @@ class TransaccionSearch extends Transaccion
     public function rules()
     {
         return [
-            [['id', 'user_id'], 'integer'],
+            [['id', 'user_id', 'item_id'], 'integer'],
             [['action', 'nombre_tabla', 'time'], 'safe'],
         ];
     }
@@ -60,6 +60,7 @@ class TransaccionSearch extends Transaccion
         $query->andFilterWhere([
             'id' => $this->id,
             'user_id' => $this->user_id,
+            'item_id' => $this->user_id,
             'time' => $this->time,
         ]);
 

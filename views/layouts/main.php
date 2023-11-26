@@ -50,10 +50,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             'items' => [
                 ['label' => 'Home', 'url' => ['/site/index']],
                 ['label' => 'Libro', 'url' => ['/libro/index']],
-                ['label' => 'Carrera', 'url' => ['/carrera/index']],
-                ['label' => 'Asignatura', 'url' => ['/asignatura/index']],
                 ['label' => 'Pais', 'url' => ['/pais/index']],
                 ['label' => 'Transaccion', 'url' => ['/transaccion/index']],
+                ['label' => 'Asignatura', 'url' => ['/asignatura/index']],
+                ['label' => 'Carrera', 'url' => ['/carrera/index']],
                 ['label' => 'Datos Personales', 'url' => ['/datospersonales/index']],
                 ['label' => 'User', 'url' => ['/user/index']],
                 //['label' => 'Contact', 'url' => ['/site/contact']],

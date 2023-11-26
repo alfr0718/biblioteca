@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Transaccion', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Agregar Transacción', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'user_id',
             'action',
             'nombre_tabla',
+            'item_id',
             'time',
             [
                 'class' => ActionColumn::className(),
