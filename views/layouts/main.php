@@ -10,6 +10,10 @@ use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
+use yii\bootstrap5\BootstrapAsset;
+
+
+BootstrapAsset::register($this);
 
 AppAsset::register($this);
 
@@ -22,6 +26,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
+<link rel="stylesheet" href="ruta/a/fontawesome/css/all.min.css">
+
 <html lang="<?= Yii::$app->language ?>" class="h-100">
 
 <head>
@@ -35,7 +41,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <header id="header">
         <?php
         NavBar::begin([
-            'brandLabel' => Yii::$app->name,
+            'brandLabel' => Yii::$app->name, // Asegúrate de que esto esté configurado correctamente
             'brandUrl' => Yii::$app->homeUrl,
             'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
         ]);
@@ -43,15 +49,16 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             'options' => ['class' => 'navbar-nav'],
             'items' => [
                 ['label' => 'Home', 'url' => ['/site/index']],
-                ['label' => 'About', 'url' => ['/site/about']],
-                ['label' => 'CARRERA', 'url' => ['/carrera/index']],
+                ['label' => 'Libro', 'url' => ['/libro/index']],
+                ['label' => 'Carrera', 'url' => ['/carrera/index']],
                 ['label' => 'Asignatura', 'url' => ['/asignatura/index']],
-                ['label' => 'LIBRO', 'url' => ['/libro/index']],
-                ['label' => 'PAIS', 'url' => ['/pais/index']],
-                ['label' => 'TRANSACCION', 'url' => ['/transaccion/index']],
-                ['label' => 'DATOSPERSONALES', 'url' => ['/datospersonales/index']],
-                ['label' => 'USER', 'url' => ['/user/index']],
-                ['label' => 'Contact', 'url' => ['/site/contact']],
+                ['label' => 'Pais', 'url' => ['/pais/index']],
+                ['label' => 'Transaccion', 'url' => ['/transaccion/index']],
+                ['label' => 'Datos Personales', 'url' => ['/datospersonales/index']],
+                ['label' => 'User', 'url' => ['/user/index']],
+                //['label' => 'Contact', 'url' => ['/site/contact']],
+                //['label' => 'About', 'url' => ['/site/about']],
+
                 Yii::$app->user->isGuest
                     ? ['label' => 'Login', 'url' => ['/site/login']]
                     : '<li class="nav-item">'
@@ -82,13 +89,13 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         <div class="container">
             <div class="row text-muted">
                 <div class="col-md-6 text-center text-md-start">
-                    <?= date('H:i M d, Y ') ?> 
-                    | Visitas Hoy: 
-                    <?php $contador=Transaccion::find()
-                    ->where(['action' => 'login', 'nombre_tabla' => 'user'])
-                    ->andWhere(['between', 'time', date('Y-m-d 00:00:00'), date('Y-m-d 23:59:59')])
-                    ->count();
-                     echo $contador; ?>
+                    <?= date('H:i M d, Y ') ?>
+                    | Visitas Hoy:
+                    <?php $contador = Transaccion::find()
+                        ->where(['action' => 'login', 'nombre_tabla' => 'user'])
+                        ->andWhere(['between', 'time', date('Y-m-d 00:00:00'), date('Y-m-d 23:59:59')])
+                        ->count();
+                    echo $contador; ?>
                 </div>
                 <div class="col-md-6 text-center text-md-end"><?= Yii::powered() ?></div>
             </div>

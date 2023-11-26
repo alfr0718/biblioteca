@@ -75,6 +75,19 @@ class LibroSearch extends Libro
             ->andFilterWhere(['like', 'portada', $this->portada])
             ->andFilterWhere(['like', 'doc', $this->doc]);
 
+        if (!empty(array_filter($this->attributes))) {
+            // Crea una instancia de Transaccion aquí
+            $transaccion = new Transaccion();
+
+            // Configura los atributos de la transacción según tus necesidades
+            $transaccion->user_id = \Yii::$app->user->isGuest ? 0 : \Yii::$app->user->id;
+            $transaccion->action = 'search';
+            $transaccion->nombre_tabla = 'libro';
+
+            // Guarda la transacción
+            $transaccion->save();
+        }
+
         return $dataProvider;
     }
 }

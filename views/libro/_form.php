@@ -24,23 +24,34 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'N_clasificacion')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Descripcion')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'Descripcion')->textarea(['rows' => 3]) ?>
 
     <?= $form->field($model, 'Status')->textInput() ?>
 
-    <?= $form->field($model, 'idcategoria')->textInput() ?>
+    <?= $form->field($model, 'idcategoria')->dropDownList(
+        yii\helpers\ArrayHelper::map(\app\models\Categoria::find()->all(), 'id', 'Nombre'),
+        ['prompt' => 'Selecciona categoria']
+    ) ?>
 
-    <?= $form->field($model, 'idpais')->textInput() ?>
+    <?= $form->field($model, 'idpais')->dropDownList(
+        yii\helpers\ArrayHelper::map(\app\models\Pais::find()->all(), 'id', 'Nombre'),
+        ['prompt' => 'Selecciona un país']
+    ) ?>
 
-    <?= $form->field($model, 'idasignatura')->textInput() ?>
-    
+    <?= $form->field($model, 'idasignatura')->dropDownList(
+        yii\helpers\ArrayHelper::map(\app\models\Asignatura::find()->all(), 'id', 'Nombre'),
+        ['prompt' => 'Selecciona asignatura']
+    ) ?>
+
     <?= $form->field($model, 'portadaFile')->fileInput() ?>
-    
+
     <?= $form->field($model, 'docFile')->fileInput() ?>
 
-    <?= $form->field($model, 'portada')->textInput() ?>
+    <?php // $form->field($model, 'portada')->textInput() 
+    ?>
 
-    <?= $form->field($model, 'doc')->textInput() ?>
+    <?php // $form->field($model, 'doc')->textInput() 
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Pais $model */
 
-$this->title = 'Create Pais';
+$this->title = 'Agregar País';
 $this->params['breadcrumbs'][] = ['label' => 'Pais', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

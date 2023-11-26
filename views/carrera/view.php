@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Carrera $model */
 
-$this->title = $model->idcar;
+$this->title = $model->Nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Carreras', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -16,11 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'idcar' => $model->idcar], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'idcar' => $model->idcar], [
+        <?= Html::a('Actualizar', ['update', 'idcar' => $model->idcar], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Eliminar', ['delete', 'idcar' => $model->idcar], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '¿Estas seguro de Eliminar este elemento?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -31,7 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'idcar',
             'Nombre',
-            'Status',
+            [
+                'attribute' => 'Status',
+                'value' => function ($model) {
+                    return $model->Status == 1 ? 'Activo' : 'Inactivo';
+                },
+            ],
         ],
     ]) ?>
 

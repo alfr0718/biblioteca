@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Carrera', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Agregar Carrera', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -32,8 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
             //'idcar',
             'Nombre',
-            'Status',
             [
+                'attribute' => 'Status',
+                'value' => function ($model) {
+                    return $model->Status == 1 ? 'Activo' : 'Inactivo';
+                },
+            ],            [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Carrera $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'idcar' => $model->idcar]);

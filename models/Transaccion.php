@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int $user_id
+ *  * @property int $item_id
  * @property string $action
  * @property string $nombre_tabla
  * @property string $time
@@ -30,7 +31,7 @@ class Transaccion extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'action', 'nombre_tabla'], 'required'],
-            [['user_id'], 'integer'],
+            [['user_id', 'item_id'], 'integer'],
             [['time'], 'safe'],
             [['action', 'nombre_tabla'], 'string', 'max' => 45],
         ];
@@ -43,10 +44,12 @@ class Transaccion extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
-            'action' => 'Action',
-            'nombre_tabla' => 'Nombre Tabla',
-            'time' => 'Time',
+            'user_id' => 'UserID',
+            'action' => 'Acción',
+            'nombre_tabla' => 'Nombre de Tabla',
+            'time' => 'Tiempo de Acción',
+            'item_id' => 'Elemento Afectadp',
+
         ];
     }
 }

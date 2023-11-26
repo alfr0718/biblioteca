@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Asignatura', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Agregar Asignatura', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -32,7 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
            // 'id',
             'Nombre',
-            'idcar',
+            [
+                'attribute' => 'idcar',
+                'value' => function ($model) {
+                    return $model->idcar0 ? Html::encode($model->idcar0->Nombre) : 'N/A';
+                },
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Asignatura $model, $key, $index, $column) {

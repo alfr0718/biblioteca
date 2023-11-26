@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /** @var app\models\DatospersonalesSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Datospersonales';
+$this->title = 'Personas Registradas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="datospersonales-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Datospersonales', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Agregar Persona', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -30,12 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+           // 'id',
             'Ci',
-            'ApellidoMaterno',
             'ApellidoPaterno',
+            'ApellidoMaterno',
             'Nombres',
-            //'Email:email',
+            'Email:email',
             //'Status',
             [
                 'class' => ActionColumn::className(),

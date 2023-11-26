@@ -4,11 +4,14 @@ namespace app\controllers;
 
 use app\models\Libro;
 use app\models\LibroSearch;
-use GuzzleHttp\Psr7\UploadedFile;
+use app\models\Transaccion;
+use yii\web\UploadedFile;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
+
 
 /**
  * LibroController implements the CRUD actions for Libro model.
@@ -57,6 +60,20 @@ class LibroController extends Controller
      */
     public function actionView($id)
     {
+        $model = Libro::findOne($id);
+
+        if (!$model) {
+            throw new NotFoundHttpException('El libro no se encontró.');
+        }
+
+        // Crea la instancia de Transaccion y configura los atributos
+        $view = new Transaccion();
+        $view->user_id = Yii::$app->user->isGuest ? 0 : Yii::$app->user->id;
+        $view->action = 'view';
+        $view->nombre_tabla = 'libro';
+        $view->item_id = $id;
+        $view->save();
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -75,33 +92,39 @@ class LibroController extends Controller
             $model->portadaFile = UploadedFile::getInstance($model, 'portadaFile');
             $model->docFile = UploadedFile::getInstance($model, 'docFile');
 
+            // Validar los archivos antes de intentar guardarlos
             if ($model->validate()) {
-                // Guarda la imagen y el documento en el servidor
+                
+                // Guardar la imagen
                 if ($model->portadaFile) {
-                    $nombreImg = 'portada_' . $model->id . '.' . $model->portada->extension;
+                    $nombreImg = $model->portadaFile->baseName . '.' . $model->portadaFile->extension;
+                    $model->portada = $nombreImg;
+                    $model->portadaFile->saveAs(Yii::getAlias('@webroot/uploads/portada/') . $nombreImg);
 
-                    $model->portadaFile->saveAs('web/uploads/portada/' . $nombreImg);
                 }
 
+                // Guardar el documento
                 if ($model->docFile) {
-                    $nombreDoc = 'doc_' . $model->id . '.' . $model->doc->extension;
-                    $model->docFile->saveAs('web/uploads/doc/' . $nombreDoc);
+                    $nombreDoc = $model->docFile->baseName . '.' . $model->docFile->extension;
+                    $model->doc = $nombreDoc;
+                    $model->docFile->saveAs(Yii::getAlias('@webroot/uploads/doc/') . $nombreDoc);
                 }
 
-                // Guarda el resto de los atributos en la base de datos
-                if ($model->save()) {
-                    // Redirige a la página de detalles o a donde desees
+                // Guardar el resto de los atributos en la base de datos
+                if ($model->save(false)) {
+                    // Redirigir a la página de detalles o a donde desees
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
             'model' => $model,
         ]);
     }
+
+
+
 
     /**
      * Updates an existing Libro model.
@@ -114,8 +137,33 @@ class LibroController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->portadaFile = UploadedFile::getInstance($model, 'portadaFile');
+            $model->docFile = UploadedFile::getInstance($model, 'docFile');
+
+            // Validar los archivos antes de intentar guardarlos
+            if ($model->validate()) {
+
+                // Guardar la imagen
+                if ($model->portadaFile) {
+                    $nombreImg = $model->portadaFile->baseName . '.' . $model->portadaFile->extension;
+                    $model->portada = $nombreImg;
+                    $model->portadaFile->saveAs(Yii::getAlias('@webroot/uploads/portada/') . $nombreImg);
+                }
+
+                // Guardar el documento
+                if ($model->docFile) {
+                    $nombreDoc = $model->docFile->baseName . '.' . $model->docFile->extension;
+                    $model->doc = $nombreDoc;
+                    $model->docFile->saveAs(Yii::getAlias('@webroot/uploads/doc/') . $nombreDoc);
+                }
+
+                // Guardar el resto de los atributos en la base de datos
+                if ($model->save(false)) {
+                    // Redirigir a la página de detalles o a donde desees
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
         }
 
         return $this->render('update', [
@@ -152,4 +200,26 @@ class LibroController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionRequest($id)
+    {
+        // Obtén el modelo de libro según el $id (ajusta esto según tu lógica)
+        $model = Libro::findOne($id);
+
+        if (!$model) {
+            throw new NotFoundHttpException('El libro no se encontró.');
+        }
+
+        // Crea la instancia de Transaccion y configura los atributos
+        $view = new Transaccion();
+        $view->user_id = Yii::$app->user->isGuest ? 0 : Yii::$app->user->id;
+        $view->action = 'request';
+        $view->nombre_tabla = 'libro';
+        $view->item_id = $id;
+        $view->save();
+
+        // Envía el documento al navegador
+        return $this->asJson(['url' => Yii::getAlias('@web/uploads/doc/') . $model->doc]);
+    }
 }
+

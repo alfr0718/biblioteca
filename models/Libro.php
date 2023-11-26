@@ -21,8 +21,8 @@ use yii\web\UploadedFile;
  * @property int $idcategoria
  * @property int $idpais
  * @property int $idasignatura
- * @property resource|null $portada
- * @property resource|null $doc
+ * @property string|null $portada
+ * @property string|null $doc
  *
  * @property Asignatura $idasignatura0
  * @property Categoria $idcategoria0
@@ -47,11 +47,12 @@ class Libro extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['portadaFile', 'docFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, pdf'],
+            [['portadaFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            [['docFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf'],
             [['Titulo', 'Autor', 'idcategoria', 'idpais', 'idasignatura'], 'required'],
             [['Anio'], 'safe'],
             [['Status', 'idcategoria', 'idpais', 'idasignatura'], 'integer'],
-            [['portada', 'doc'], 'string'],
+            [['portada', 'doc'], 'string', 'max' => 255],
             [['Titulo', 'Autor', 'Editorial'], 'string', 'max' => 255],
             [['Isbn', 'N_clasificacion'], 'string', 'max' => 100],
             [['Descripcion'], 'string', 'max' => 1000],
@@ -81,6 +82,9 @@ class Libro extends \yii\db\ActiveRecord
             'idasignatura' => 'Asignatura',
             'portada' => 'Portada',
             'doc' => 'Documento',
+            'portadaFile' => 'Portada',
+            'docFile' => 'Archivo',
+
         ];
     }
 

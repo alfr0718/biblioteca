@@ -89,11 +89,14 @@ $config = [
             'defaultTimeZone' => 'America/Guayaquil',
         ],
         'db' => $db,
+        'name' => 'Biblioteca Digital', // Esto es lo que se usa para Yii::$app->name
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [             
                 'user/change-password' => 'user/change-password',
+                'uploads/<action:[\w\-]+>/<file:[\w\.-]+>' => 'site/uploads',
+
             ],
         ],
         'i18n' => [

@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /** @var app\models\TransaccionSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Transaccions';
+$this->title = 'Transacciones';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transaccion-index">

@@ -7,13 +7,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Datospersonales $model */
 
-    $datospersonales = Datospersonales::findByCedula(Yii::$app->user->identity->username);
-    if ($datospersonales !== null) {
-        $nombreCompleto = $datospersonales->getNombreCompleto();
-        $this->title = $nombreCompleto;
-    } else {
-        $this->title= "No se encontró ninguna persona con la cédula proporcionada.";
-    }
+$this->title =  $model->ApellidoPaterno . '' . $model->ApellidoMaterno . ' ' . $model->Nombres;
 
 $this->params['breadcrumbs'][] = ['label' => 'Datospersonales', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -24,14 +18,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?php
+        $user = Yii::$app->user->isGuest ? null : Yii::$app->user->identity;
+        if ($user !== null && $user->Tipo === 88) {
+            echo Html::a('Eliminar', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => '¿Estas seguro de Eliminar este elemento?',
+                    'method' => 'post',
+                ],
+            ]);
+        }
+        ?>
     </p>
 
     <?= DetailView::widget([
@@ -48,9 +47,11 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <?php
-    $user = Yii::$app->user->identity;
-    if ($user->username === $model->Ci) {
-        echo Html::a('Cambiar Contraseña', ['user/change-password'], ['class' => 'btn btn-warning'], ['confirm' => '¿Estas seguro de cambiar tu contraseña?',]);
+    $user = Yii::$app->user->isGuest ? null : Yii::$app->user->identity;
+
+    // Verificar si el usuario está autenticado y si el nombre de usuario coincide
+    if ($user !== null && $user->username === $model->Ci) {
+        echo Html::a('Cambiar Contraseña', ['user/change-password'], ['class' => 'btn btn-warning', 'confirm' => '¿Estás seguro de cambiar tu contraseña?']);
     }
     ?>
 
