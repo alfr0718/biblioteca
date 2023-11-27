@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Transaccion;
+use yii\db\Expression;
 
 class SiteController extends Controller
 {
@@ -126,5 +127,67 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
-    
+
+
+
+    public function actionStadistics($month = null, $year = null)
+    {
+        $this->view->title = 'Estadísticas';
+
+        if ($month === null) {
+            $month = date('m');
+        }
+
+        if ($year === null) {
+            $year = date('Y');
+        }
+        // Recupera los datos para la gráfica
+        $login = Yii::$app->db->createCommand('
+        SELECT DAY(time) AS dia, COUNT(*) AS total_logins
+        FROM transaccion
+        WHERE nombre_tabla = "user" AND action = "login"
+          AND MONTH(time) = :month
+          AND YEAR(time) = :year
+        GROUP BY DAY(time)
+    ')->bindValues([':month' => $month, ':year' => $year])->queryAll();
+
+        $search = Yii::$app->db->createCommand('
+        SELECT DAY(time) AS dia, COUNT(*) AS total_search
+        FROM transaccion
+        WHERE nombre_tabla = "libro" AND action = "search"
+          AND MONTH(time) = :month
+          AND YEAR(time) = :year
+        GROUP BY DAY(time)
+    ')->bindValues([':month' => $month, ':year' => $year])->queryAll();
+
+        $request = Yii::$app->db->createCommand('
+        SELECT DAY(time) AS dia, COUNT(*) AS total_request
+        FROM transaccion
+        WHERE nombre_tabla = "libro" AND action = "request"
+          AND MONTH(time) = :month
+          AND YEAR(time) = :year
+        GROUP BY DAY(time)
+    ')->bindValues([':month' => $month, ':year' => $year])->queryAll();
+
+
+        $view = Yii::$app->db->createCommand('
+        SELECT DAY(time) AS dia, COUNT(*) AS total_view
+        FROM transaccion
+        WHERE nombre_tabla = "libro" AND action = "view"
+          AND MONTH(time) = :month
+          AND YEAR(time) = :year
+        GROUP BY DAY(time)
+    ')->bindValues([':month' => $month, ':year' => $year])->queryAll();
+
+
+
+        return $this->render('stadistics', [
+            'login' => $login,
+            'search' => $search,
+            'request' => $request,
+            'view' => $view,
+            'selectedMonth' => $month,
+            'selectedYear' => $year,
+        ]);
+    }
 }

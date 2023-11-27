@@ -48,14 +48,16 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav'],
             'items' => [
-                ['label' => 'Home', 'url' => ['/site/index']],
+                ['label' => 'Inicio', 'url' => ['/site/index']],
+                ['label' => 'Estadísticas', 'url' => ['/site/stadistics']],
+
                 ['label' => 'Libro', 'url' => ['/libro/index']],
                 ['label' => 'Pais', 'url' => ['/pais/index']],
-                ['label' => 'Transaccion', 'url' => ['/transaccion/index']],
+                ['label' => 'Transacción', 'url' => ['/transaccion/index']],
                 ['label' => 'Asignatura', 'url' => ['/asignatura/index']],
                 ['label' => 'Carrera', 'url' => ['/carrera/index']],
                 ['label' => 'Datos Personales', 'url' => ['/datospersonales/index']],
-                ['label' => 'User', 'url' => ['/user/index']],
+                ['label' => 'Usuarios', 'url' => ['/user/index']],
                 //['label' => 'Contact', 'url' => ['/site/contact']],
                 //['label' => 'About', 'url' => ['/site/about']],
 

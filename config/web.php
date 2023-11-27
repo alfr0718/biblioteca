@@ -5,6 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
+    'name' => 'Biblioteca Digital', // Esto es lo que se usa para Yii::$app->name
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'language' => 'es',
@@ -89,7 +90,6 @@ $config = [
             'defaultTimeZone' => 'America/Guayaquil',
         ],
         'db' => $db,
-        'name' => 'Biblioteca Digital', // Esto es lo que se usa para Yii::$app->name
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
