@@ -107,21 +107,27 @@ $config = [
                 ],
             ],
         ],
-        /*'view' => [
+        'view' => [
             'theme' => [
                 'pathMap' => [
-                    '@app/views' => '@app/themes/adminlte/views'
-                ],
-            ],
-        ],*/
-        'assetManager' => [
-            'bundles' => [
-                'yii\bootstrap4\BootstrapAsset' => [
-                    'sourcePath' => null,
-                    'css' => [],
+                    '@app/views' => '@app/themes/sbadmin/views'
                 ],
             ],
         ],
+        /*'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'js' => [],
+                ],
+                'yii\bootstrap5\BootstrapAsset' => [
+                    'js' => [],
+                ],
+
+                'yii\bootstrap5\BootstrapAsset' => [
+                    'css' => [],
+                ],
+            ],
+        ],*/
 
     ],
 

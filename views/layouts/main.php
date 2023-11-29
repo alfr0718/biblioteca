@@ -26,7 +26,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<link rel="stylesheet" href="ruta/a/fontawesome/css/all.min.css">
 
 <html lang="<?= Yii::$app->language ?>" class="h-100">
 

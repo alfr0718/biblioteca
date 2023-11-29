@@ -79,7 +79,11 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            if (Yii::$app->user->identity->Tipo = 88) {
+                return $this->redirect(['site/stadistics']);
+            } else {
+                return $this->goBack();
+            }
         }
 
         $model->password = '';

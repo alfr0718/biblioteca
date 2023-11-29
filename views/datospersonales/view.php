@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Datospersonales $model */
 
-$this->title =  $model->ApellidoPaterno . '' . $model->ApellidoMaterno . ' ' . $model->Nombres;
+$this->title =  $model->ApellidoPaterno . ' ' . $model->ApellidoMaterno . ' ' . $model->Nombres;
 
 $this->params['breadcrumbs'][] = ['label' => 'Datospersonales', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
