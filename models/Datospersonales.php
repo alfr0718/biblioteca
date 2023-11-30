@@ -20,6 +20,9 @@ use Yii;
  */
 class Datospersonales extends \yii\db\ActiveRecord
 {
+    
+    public $photofile;
+
     /**
      * {@inheritdoc}
      */
@@ -34,6 +37,8 @@ class Datospersonales extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['photofile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            [['Foto'], 'string', 'max' => 200],
             [['Ci', 'ApellidoMaterno', 'Nombres', 'Email'], 'required'],
             [['Status'], 'integer'],
             [['Ci'], 'string', 'max' => 15],

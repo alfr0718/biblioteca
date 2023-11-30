@@ -20,6 +20,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Nombres')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'photofile')->fileInput() ?>
+
     <?= $form->field($model, 'Email')->textInput(['maxlength' => true]) ?>
 
     <?php $form->field($model, 'Status')->textInput() ?>

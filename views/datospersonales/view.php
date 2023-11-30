@@ -32,7 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
         }
         ?>
     </p>
-
+    <div>
+                <?= Html::img(Yii::getAlias('@web') . '/uploads/img/' . $model->Foto, ['alt' => 'Foto de perfil', 'class' => 'img-thumbnail', 'width' => '200', 'height' => '150']); ?>
+            </div>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [

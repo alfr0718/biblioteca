@@ -7,6 +7,8 @@ use app\models\DatospersonalesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+use Yii;
 
 /**
  * DatospersonalesController implements the CRUD actions for Datospersonales model.
@@ -69,18 +71,32 @@ class DatospersonalesController extends Controller
     {
         $model = new Datospersonales();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->photofile = UploadedFile::getInstance($model, 'photofile');
+
+            // Validar los archivos antes de intentar guardarlos
+            if ($model->validate()) {
+                
+                // Guardar la imagen
+                if ($model->photofile) {
+                    $nombreImg = $model->photofile->baseName . '.' . $model->photofile->extension;
+                    $model->Foto = $nombreImg;
+                    $model->photofile->saveAs(Yii::getAlias('@webroot/uploads/img/') . $nombreImg);
+
+                }
+                // Guardar el resto de los atributos en la base de datos
+                if ($model->save(false)) {
+                    // Redirigir a la página de detalles o a donde desees
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
             'model' => $model,
         ]);
     }
+
 
     /**
      * Updates an existing Datospersonales model.
@@ -93,14 +109,31 @@ class DatospersonalesController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->photofile = UploadedFile::getInstance($model, 'photofile');
+
+            // Validar los archivos antes de intentar guardarlos
+            if ($model->validate()) {
+
+                // Guardar la imagen
+                if ($model->photofile) {
+                    $nombreImg = $model->photofile->baseName . '.' . $model->photofile->extension;
+                    $model->Foto = $nombreImg;
+                    $model->photofile->saveAs(Yii::getAlias('@webroot/uploads/img/') . $nombreImg);
+                }
+                // Guardar el resto de los atributos en la base de datos
+                if ($model->save(false)) {
+                    // Redirigir a la página de detalles o a donde desees
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
         ]);
     }
+
 
     /**
      * Deletes an existing Datospersonales model.

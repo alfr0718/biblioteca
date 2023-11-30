@@ -32,6 +32,7 @@ class Libro extends \yii\db\ActiveRecord
 {
     public $portadaFile; // Atributo para la imagen
     public $docFile; // Atributo para el documento
+    
 
     /**
      * {@inheritdoc}

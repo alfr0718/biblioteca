@@ -23,7 +23,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php Pjax::begin(); ?>
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+<!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Libros disponibles</h6>
+                        </div>
+                        <div class="card-body">
 
+                        
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'showHeader' => false,  // Desactiva el encabezado de la tabla
@@ -41,6 +48,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::img(Yii::getAlias('@web') . '/uploads/portada/' . $model->portada, ['alt' => 'Portada', 'class' => 'img-thumbnail', 'width' => '150', 'height' => '100']);
                 },
             ],
+
+
             /*'Titulo',
             'Autor',
             'Editorial',
@@ -105,5 +114,5 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
 
     <?php Pjax::end(); ?>
-
+    </div></div>
 </div>
