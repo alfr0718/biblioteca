@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88){
-        echo    Html::a('<i class="fas fa-plus-circle"></i>', ['create'], ['class' => 'btn btn-success btn-circle']);
+        echo    Html::a('<span class="icon text-white-100"><i class="fas fa-plus-circle"></i></span><span class="text">Agregar libro</span>', ['create'], ['class' => 'btn btn-success btn-icon-split']);
         } ?>
     </p>
 

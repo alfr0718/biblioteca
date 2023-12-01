@@ -28,8 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::img(Yii::getAlias('@web') . '/uploads/portada/' . $model->portada, ['alt' => 'Portada', 'class' => 'img-thumbnail mx-auto d-block', 'width' => '200', 'height' => '150']); ?>
 
                 <div class="mt-2">
-                    <?= Html::a('<i class="fas fa-book-reader"></i> Ver Recurso', 'javascript:void(0);', [
-                        'class' => 'btn btn-info w-50',
+                    <?= Html::a('<span class="icon text-white-100"><i class="fas fa-book-reader"></i></span><span class="text">Ver Recurso</span>', 'javascript:void(0);', [
+                        'class' => 'btn btn-info btn-icon-split',
                         'id' => 'verDocumentoLink',
                         'data' => [
                             'url' => Url::to(['libro/request', 'id' => $model->id]),
@@ -38,8 +38,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 </div>
                 <div class="mt-2">
-                    <?= Html::a('<i class="fas fa-exclamation-circle"></i> Reportar', ['reporte/caido', 'id' => $model->id], [
-                        'class' => 'btn btn-warning w-50',
+                    <?= Html::a('<span class="icon text-white-100"><i class="fas fa-exclamation-circle"></i></span><span class="text">Reportar</span>', ['reporte/caido', 'id' => $model->id], [
+                        'class' => 'btn btn-warning btn-icon-split w-30',
                     ]) ?>
                 </div>
 

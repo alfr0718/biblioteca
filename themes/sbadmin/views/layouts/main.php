@@ -50,6 +50,27 @@ $this->registerJsFile('@web/sbadminassets/js/sb-admin-2.min.js');
     <?php $this->head() ?>
 
 
+<!--     <style>
+        /* Estilos para la barra lateral fija */
+        #accordionSidebar {
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;  /* Permite el desplazamiento vertical si el contenido es demasiado largo */
+            top: 0;
+            left: 0;
+            z-index: 1;
+            background-color: #343a40;  /* Puedes ajustar el color de fondo según tu diseño */
+            padding-top: 20px;  /* Ajusta el espacio superior según tu diseño */
+        }
+
+        /* Estilos para el contenido principal para evitar que se solape con la barra lateral */
+        #content {
+            margin-left: 250px;  /* Ancho de la barra lateral */
+            transition: margin-left 0.3s;  /* Efecto de transición para suavizar el cambio */
+        }
+
+    </style>
+ -->
 </head>
 
 <body id="page-top">

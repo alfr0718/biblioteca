@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $form->field($model, 'confirmPassword')->passwordInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Cambiar Contraseña', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('<span class="icon text-white-50"><i class="fas fa-lock"></i></span><span class="text">Cambiar Contraseña</span>', ['class' => 'btn btn-success btn-icon-split']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

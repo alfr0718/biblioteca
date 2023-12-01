@@ -15,26 +15,25 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="datospersonales-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+              <div class="card shadow mb-4">
+            <!-- Card Header - Accordion -->
+            <div class="card-header py-3 text-center">
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="mr-3" style="overflow: hidden; width: 150px; height: 150px; position: relative; border: 5px solid #fff; border-radius: 10px;">
+            <?= Html::img(Yii::getAlias('@web') . '/uploads/img/' . $model->Foto, ['alt' => 'Foto de perfil', 'class' => 'img-thumbnail', 'style' => 'object-fit: cover; width: 100%; height: 100%; border-radius: 5px;']); ?>
+        </div>
+        <div>
+            <h3 class="m-0 font-weight-bold text-primary" style="font-size: 28px;">
+                <?= Html::encode($this->title) ?>
+            </h3>
+        </div>
+    </div>
+</div>
 
-    <p>
-        <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?php
-        $user = Yii::$app->user->isGuest ? null : Yii::$app->user->identity;
-        if ($user !== null && $user->Tipo === 88) {
-            echo Html::a('Eliminar', ['delete', 'id' => $model->id], [
-                'class' => 'btn btn-danger',
-                'data' => [
-                    'confirm' => '¿Estas seguro de Eliminar este elemento?',
-                    'method' => 'post',
-                ],
-            ]);
-        }
-        ?>
-    </p>
-    <div>
-                <?= Html::img(Yii::getAlias('@web') . '/uploads/img/' . $model->Foto, ['alt' => 'Foto de perfil', 'class' => 'img-thumbnail', 'width' => '200', 'height' => '150']); ?>
-            </div>
+
+
+            <!-- Card Content - Collapse -->
+            <div class="card-body">
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -47,14 +46,32 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'Status',
         ],
     ]) ?>
-
-    <?php
+    <div class="mt-2">
+        <?php
+                    if (!Yii::$app->user->isGuest && Yii::$app->user->identity->username === $model->Ci) {
+                        echo Html::a('<span class="icon text-white-100"><i class="fas fa-user-edit"></i></span><span class="text">Actualizar Datos</span>', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-icon-split']);
+                    } ?>
+                    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo === 88) {
+                        echo Html::a('<span class="icon text-white-100"><i class="fas fa-trash"></i></span><span class="text">Eliminar</span>', ['delete', 'id' => $model->id], [
+                            'class' => 'btn btn-danger btn-icon-split',
+                            'data' => [
+                                'confirm' => '¿Estas seguro de Eliminar este elemento?',
+                                'method' => 'post',
+                            ],
+                        ]);
+                    }
+                    ?>
+        <?php
     $user = Yii::$app->user->isGuest ? null : Yii::$app->user->identity;
 
     // Verificar si el usuario está autenticado y si el nombre de usuario coincide
     if ($user !== null && $user->username === $model->Ci) {
-        echo Html::a('Cambiar Contraseña', ['user/change-password'], ['class' => 'btn btn-warning', 'confirm' => '¿Estás seguro de cambiar tu contraseña?']);
+        echo Html::a('<span class="icon text-white-100"><i class="fas fa-lock"></i></span><span class="text">Cambiar Contraseña</span>', ['user/change-password'], ['class' => 'btn btn-warning btn-icon-split', 'confirm' => '¿Estás seguro de cambiar tu contraseña?']);
     }
     ?>
+                </div>
+      </div>
+</div>
+   
 
 </div>

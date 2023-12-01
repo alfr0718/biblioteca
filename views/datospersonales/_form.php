@@ -28,7 +28,7 @@ use yii\widgets\ActiveForm;
     <?php $form->field($model, 'Status')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('<i class="fas fa-check"></i>', ['class' => 'btn btn-success btn-circle']) ?>
+        <?= Html::submitButton('<span class="icon text-white-100"><i class="fas fa-check"></i></span><span class="text">Guardar</span>', ['class' => 'btn btn-success btn-icon-split']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

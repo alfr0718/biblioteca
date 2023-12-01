@@ -19,7 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Agregar Usuario', ['create'], ['class' => 'btn btn-success']) ?>
+    <?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88){
+    echo    Html::a('<span class="icon text-white-100"><i class="fas fa-plus-circle"></i></span><span class="text">Agregar Usuario</span>', ['create'], ['class' => 'btn btn-success btn-icon-split']);} ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -64,10 +65,42 @@ $this->params['breadcrumbs'][] = $this->title;
             'Updated_at',
             [
                 'class' => ActionColumn::className(),
+                'header' => 'Acciones',
+                'headerOptions' => ['style' => 'color: #0d75fd; width: 200px;'],
+                'template' => '{view} {update} {delete}',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                        return Html::a('<i class="fa fa-eye"></i>', $url, [
+                            'title' => Yii::t('app', 'Ver'),
+                            'class' => 'btn btn-primary btn-circle',
+                        ]);
+                    },
+                    'update' => function ($url, $model) {
+                        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) {
+                        return Html::a('<i class="fa fa-edit"></i>', $url, [
+                            'title' => Yii::t('app', 'Actualizar'),
+                            'class' => 'btn btn-info btn-circle',
+                        ]);
+                        }
+                    },
+                    'delete' => function ($url, $model) {
+
+                        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) {
+                            return Html::a('<i class="fa fa-trash"></i>', $url, [
+                                'title' => Yii::t('app', 'Eliminar'),
+                                'class' => 'btn btn-danger btn-circle',
+                                'data-confirm' => Yii::t('app', '¿Estás seguro de que deseas eliminar este elemento?'),
+                                'data-method' => 'post',
+                            ]);
+                        }
+                    },
+                ],
                 'urlCreator' => function ($action, User $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                }
+                },
+                'contentOptions' => ['style' => 'vertical-align: middle; text-align: center;'],
             ],
+
         ],
     ]); ?>
 
