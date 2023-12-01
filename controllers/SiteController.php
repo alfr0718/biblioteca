@@ -79,7 +79,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            if (Yii::$app->user->identity->Tipo = 88) {
+            if (Yii::$app->user->identity->Tipo === 88) {
                 return $this->redirect(['site/stadistics']);
             } else {
                 return $this->goBack();
@@ -184,6 +184,10 @@ class SiteController extends Controller
     ')->bindValues([':month' => $month, ':year' => $year])->queryAll();
 
 
+        $Years = Yii::$app->db->createCommand('
+        SELECT DISTINCT YEAR(time) AS year
+        FROM transaccion
+    ')->queryColumn();
 
         return $this->render('stadistics', [
             'login' => $login,
@@ -192,6 +196,9 @@ class SiteController extends Controller
             'view' => $view,
             'selectedMonth' => $month,
             'selectedYear' => $year,
+            'Years' => $Years,
+            'selectMonth' => $month,
+            'selectYear' => $year,
         ]);
     }
 }

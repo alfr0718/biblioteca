@@ -12,6 +12,8 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <?= $form->field($model, 'photofile')->fileInput(['class' => 'form-control-file'])->label('Foto de Perfil') ?>
+
     <?= $form->field($model, 'Ci')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'ApellidoPaterno')->textInput(['maxlength' => true]) ?>
@@ -20,14 +22,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Nombres')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'photofile')->fileInput() ?>
 
     <?= $form->field($model, 'Email')->textInput(['maxlength' => true]) ?>
 
     <?php $form->field($model, 'Status')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('<i class="fas fa-check"></i>', ['class' => 'btn btn-success btn-circle']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

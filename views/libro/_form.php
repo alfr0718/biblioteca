@@ -54,7 +54,7 @@ use yii\widgets\ActiveForm;
     ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('<i class="fas fa-check"></i>', ['class' => 'btn btn-success btn-circle']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

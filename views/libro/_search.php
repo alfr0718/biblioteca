@@ -54,9 +54,9 @@ use yii\widgets\ActiveForm;
     ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('<i class="fas fa-search"></i>', ['class' => 'btn btn-primary btn-circle']) ?>
         <?= Html::a(
-            'Reset',
+            'Restablecer',
             ['libro/index'], // Reemplaza 'libro/index' con la URL de destino correcta
             ['class' => 'btn btn-outline-secondary']
         ) ?>

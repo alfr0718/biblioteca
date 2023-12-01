@@ -77,7 +77,7 @@ class Libro extends \yii\db\ActiveRecord
             'Isbn' => 'ISBN',
             'N_clasificacion' => 'N° Clasificacion',
             'Descripcion' => 'Descripción',
-            'Status' => 'Status',
+            'Status' => 'Estado',
             'idcategoria' => 'Categoría',
             'idpais' => 'País',
             'idasignatura' => 'Asignatura',

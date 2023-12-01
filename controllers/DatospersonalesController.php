@@ -79,7 +79,7 @@ class DatospersonalesController extends Controller
                 
                 // Guardar la imagen
                 if ($model->photofile) {
-                    $nombreImg = $model->photofile->baseName . '.' . $model->photofile->extension;
+                    $nombreImg = $model->Ci . '.' . $model->photofile->extension;
                     $model->Foto = $nombreImg;
                     $model->photofile->saveAs(Yii::getAlias('@webroot/uploads/img/') . $nombreImg);
 
@@ -117,7 +117,7 @@ class DatospersonalesController extends Controller
 
                 // Guardar la imagen
                 if ($model->photofile) {
-                    $nombreImg = $model->photofile->baseName . '.' . $model->photofile->extension;
+                    $nombreImg = $model->Ci . '.' . $model->photofile->extension;
                     $model->Foto = $nombreImg;
                     $model->photofile->saveAs(Yii::getAlias('@webroot/uploads/img/') . $nombreImg);
                 }

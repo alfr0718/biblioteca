@@ -166,5 +166,36 @@ class UserController extends Controller
         ]);
     }
 
+    public function actionResetPassword()
+    {
+        $user = new User();
+
+        if ($this->request->isPost && $user->load($this->request->post())) {
+            $userFromDb = User::findOne(['username' => $user->username]);
+            if ($userFromDb) {
+                $security = Yii::$app->security;
+                $userFromDb->password = $security->generatePasswordHash($user->username);
+                $userFromDb->Auth_key = $security->generateRandomString();
+                if ($userFromDb->save()) {
+                    Yii::$app->session->setFlash('success', 'Se cambió la contraseña correctamente de usuario: ' . $userFromDb->username . '');
+                    return $this->redirect(['user/reset-password']);
+                } else {
+                    Yii::$app->session->setFlash('error', $this->geterrorsString($userFromDb->errors));
+                    return $this->redirect(['user/reset-password']);
+                }
+            } else {
+                Yii::$app->session->setFlash('error', 'El nombre de usuario ingresado no existe.');
+                return $this->redirect(['user/reset-password']);
+            }
+        }
+
+
+
+        return $this->render('reset-password', [
+            'model' => $user,
+            // Cambia el nombre de la variable aquí, debe ser $user, no $model
+        ]);
+    }
+
 
 }

@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Bienvenido!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">¡Bienvenido!</h1>
                                     </div>
 
                                     <?php $form = ActiveForm::begin([
@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     <?= $form->field($model, 'username')->textInput([
                                         'autofocus' => true,
-                                        'placeholder' => 'Enter Email Address...',
+                                        'placeholder' => 'Ingresa tu usuario...',
                                         'class' => 'form-control form-control-user'
                                     ])->label(false) ?>
 
@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'id' => 'customCheck'
                                     ])->label('Remember Me', ['class' => 'custom-control-label']) ?>
 
-                                    <?= Html::submitButton('Login', [
+                                    <?= Html::submitButton('Iniciar Sesión', [
                                         'class' => 'btn btn-primary btn-user btn-block',
                                         'name' => 'login-button'
                                     ]) ?>

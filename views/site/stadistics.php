@@ -1,96 +1,133 @@
 <?php
 
 use miloschuman\highcharts\Highcharts;
+use yii\helpers\Html;
 
-$this->title = 'Gráfica de Logins por Mes';
+$this->title = 'Gráficas';
 ?>
 
 <div class="grafica-container">
+    <div class="row">
 
-    <div class="grafica-container">
-        <form method="get" action="<?= Yii::$app->urlManager->createUrl(['site/stadistics']) ?>">
-            <div class="form-group">
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary"><?= Html::encode($this->title) ?></h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <form method="get" action="<?= Yii::$app->urlManager->createUrl(['site/stadistics']) ?>">
+                        <div class="form-group">
+                            <label for="month">Mes:</label>
+                            <select name="month" id="month" class="form-control">
+                                <?php
+                                $monthNames = [
+                                    1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril', 5 => 'Mayo', 6 => 'Junio',
+                                    7 => 'Julio', 8 => 'Agosto', 9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre',
+                                ];
 
-                <label for="month">Mes:</label>
-                <select name="month" id="month" class="form-control">
-                    <?php for ($i = 1; $i <= 12; $i++) : ?>
-                        <option value="<?= $i ?>" <?= ($selectedMonth == $i) ? 'selected' : '' ?>>
-                            <?= date('M', strtotime("2022-$i-01")) ?>
-                        </option>
-                    <?php endfor; ?>
-                </select>
+                                foreach ($monthNames as $monthNumber => $monthName) : ?>
+                                    <option value="<?= $monthNumber ?>" <?= ($selectedMonth == $monthNumber) ? 'selected' : '' ?>>
+                                        <?= $monthName ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="year">Año:</label>
+                            <select name="year" id="year" class="form-control">
+                                <?php foreach ($Years as $distinctYear) : ?>
+                                    <option value="<?= $distinctYear ?>" <?= ($selectedYear == $distinctYear) ? 'selected' : '' ?>>
+                                        <?= $distinctYear ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Generar reporte</button>
+                        <a href="<?= Yii::$app->urlManager->createUrl(['site/stadistics']) ?>" class="btn btn-secondary">Reiniciar</a>
+
+                    </form>
+                </div>
             </div>
+        </div>
 
-            <div class="form-group">
 
-                <label for="year">Año:</label>
-                <select name="year" id="year" class="form-control">
-                    <?php for ($i = date('Y'); $i >= 2020; $i--) : ?>
-                        <option value="<?= $i ?>" <?= ($selectedYear == $i) ? 'selected' : '' ?>><?= $i ?></option>
-                    <?php endfor; ?>
-                </select>
+
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <?php
+                        $selectedMonth = $selectedMonth ?? date('n');
+                        $monthName = date('M', mktime(0, 0, 0, $selectedMonth, 1));
+                        $selectedYear = $selectedYear ?? date('Y');
+                        ?>
+
+                        <?= $monthName ?>
+                        <?= $selectedYear ?>
+                    </h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <?php echo Highcharts::widget([
+                        'options' => [
+                            'title' => ['text' => 'Estadísticas Generales'],
+                            'xAxis' => [
+                                'categories' => array_column($login, 'dia'),
+                                'title' => ['text' => 'Día del Mes'],
+                            ],
+                            'yAxis' => [
+                                'title' => ['text' => 'Cantidad'],
+                            ],
+                            'plotOptions' => [
+                                'line' => [
+                                    'lineWidth' => 2, // Ajusta el grosor de la línea
+                                    'shadow' => false, // Desactiva las sombras
+                                ],
+                                'spline' => [
+                                    'lineWidth' => 2, // Ajusta el grosor de la línea
+                                    'shadow' => false, // Desactiva las sombras
+                                ],
+                            ],
+                            'series' => [
+                                [
+                                    'name' => 'Logins',
+                                    'data' => array_column($login, 'total_logins'),
+                                    'type' => 'area',
+                                    'color' => '#3498db',
+
+                                ],
+                                [
+                                    'name' => 'Búsqueda Bibliográfica',
+                                    'data' => array_column($search, 'total_search'),
+                                    'type' => 'area',
+                                    'color' => '#2ecc71',
+
+                                ],
+                                [
+                                    'name' => 'Acceso A Libros',
+                                    'data' => array_column($request, 'total_request'),
+                                    'type' => 'area',
+                                    'color' => '#e67e22', // Color morado
+
+                                ],
+                                [
+                                    'name' => 'Visualizaciones',
+                                    'data' => array_column($view, 'total_view'),
+                                    'type' => 'area',
+                                    'color' => '#9b59b6', // Color morado
+
+                                ],
+                            ],
+                        ],
+                    ]);
+                    ?>
+                </div>
             </div>
-
-            <button type="submit" class="btn btn-primary">Actualizar</button>
-            <a href="<?= Yii::$app->urlManager->createUrl(['site/stadistics']) ?>" class="btn btn-secondary">Reiniciar</a>
-
-        </form>
-
-        <?php
-        echo Highcharts::widget([
-            'options' => [
-                'title' => ['text' => 'Estadísticas Generales'],
-                'xAxis' => [
-                    'categories' => array_column($login, 'dia'),
-                    'title' => ['text' => 'Día del Mes'],
-                ],
-                'yAxis' => [
-                    'title' => ['text' => 'Cantidad'],
-                ],
-                'plotOptions' => [
-                    'line' => [
-                        'lineWidth' => 2, // Ajusta el grosor de la línea
-                        'shadow' => false, // Desactiva las sombras
-                    ],
-                    'spline' => [
-                        'lineWidth' => 2, // Ajusta el grosor de la línea
-                        'shadow' => false, // Desactiva las sombras
-                    ],
-                ],
-                'series' => [
-                    [
-                        'name' => 'Logins',
-                        'data' => array_column($login, 'total_logins'),
-                        'type' => 'area',
-                        'color' => '#3498db', 
-
-                    ],
-                    [
-                        'name' => 'Búsqueda Bibliográfica',
-                        'data' => array_column($search, 'total_search'),
-                        'type' => 'area',
-                        'color' => '#2ecc71', 
-
-                    ],
-                    [
-                        'name' => 'Acceso A Libros',
-                        'data' => array_column($request, 'total_request'),
-                        'type' => 'area',
-                        'color' => '#e67e22', // Color morado
-
-                    ],
-                    [
-                        'name' => 'Visualizaciones',
-                        'data' => array_column($view, 'total_view'),
-                        'type' => 'area',
-                        'color' => '#9b59b6', // Color morado
-
-                    ],
-                ],
-            ],
-        ]);
-        ?>
-
-
-
+        </div>
     </div>
+
+</div>

@@ -100,7 +100,6 @@ class LibroController extends Controller
                     $nombreImg = $model->portadaFile->baseName . '.' . $model->portadaFile->extension;
                     $model->portada = $nombreImg;
                     $model->portadaFile->saveAs(Yii::getAlias('@webroot/uploads/portada/') . $nombreImg);
-
                 }
 
                 // Guardar el documento
@@ -221,5 +220,20 @@ class LibroController extends Controller
         // Envía el documento al navegador
         return $this->asJson(['url' => Yii::getAlias('@web/uploads/doc/') . $model->doc]);
     }
+
+
+    public function actionSearch()
+    {
+        $searchModel = new LibroSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        // Puedes agregar algún código aquí para procesar la búsqueda si es necesario
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
 }
 
