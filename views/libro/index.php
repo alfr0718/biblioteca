@@ -25,8 +25,41 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php Pjax::begin(); ?>
+    <button id="show-search-button" class="btn btn-info "><i class="fa fa-filter"></i>Filtrar</button>
+
+    <div class="modal" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+            <div class="modal-body">
     <?php echo $this->render('_search', ['model' => $searchModel]);
     ?>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <?php
+    $js = <<<JS
+$('#show-search-button').click(function() {
+    $('#searchModal').modal('show');
+});
+
+// Cierra el modal y restaura la pantalla
+$('#searchModal').on('hidden.bs.modal', function (e) {
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
+});
+JS;
+
+
+    $this->registerJs($js);
+?>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
