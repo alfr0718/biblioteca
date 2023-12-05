@@ -12,6 +12,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+
+
+    <?php if (isset($mensaje)) : ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>¡Éxito!</strong> <?= $mensaje ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($error)) : ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> <?= $error ?>
+        </div>
+    <?php endif; ?>
+    
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => true]) ?>
@@ -26,20 +40,3 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php ActiveForm::end(); ?>
 </div>
-
-
-
-
-<?php if (isset($mensaje)) : ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>¡Éxito!</strong> <?= $mensaje ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<?php endif; ?>
-
-<?php if (isset($error)) : ?>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Error!</strong> <?= $error ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<?php endif; ?>

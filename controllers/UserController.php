@@ -177,7 +177,7 @@ class UserController extends Controller
                 $userFromDb->password = $security->generatePasswordHash($user->username);
                 $userFromDb->Auth_key = $security->generateRandomString();
                 if ($userFromDb->save()) {
-                    Yii::$app->session->setFlash('success', 'Se cambió la contraseña correctamente de usuario: ' . $userFromDb->username . '');
+                    Yii::$app->session->setFlash('success', 'Se cambió la contraseña correctamente del usuario: ' . $userFromDb->username . '');
                     return $this->redirect(['user/reset-password']);
                 } else {
                     Yii::$app->session->setFlash('error', $this->geterrorsString($userFromDb->errors));
