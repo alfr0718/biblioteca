@@ -17,7 +17,7 @@ class LoginForm extends Model
 {
     public $username;
     public $password;
-    public $rememberMe = true;
+    public $rememberMe = false;
 
     private $_user = false;
 
@@ -64,35 +64,7 @@ class LoginForm extends Model
         }
     }
 
-    /**
-     * Logs in a user using the provided username and password.
-     * @return bool whether the user is logged in successfully
-     */
-    public function login()
-    {
-        if ($this->validate()) {
-            $user = $this->getUser();
-            
-            // Registra la visita si el usuario se ha autenticado correctamente
-            if (Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0)) {
-                $this->registrarVisita($user);
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    protected function registrarVisita($user)
-    {
-        $visita = new Transaccion();
-        $visita->user_id = $user->id;
-        $visita->action = 'login';
-        $visita->nombre_tabla = 'user';
-        // Puedes añadir más información sobre la visita si es necesario
-        $visita->save();
-    }
-
+    
 
     /**
      * Finds user by [[username]]
@@ -101,36 +73,49 @@ class LoginForm extends Model
      */
     public function getUser()
     {
-        /*if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
-            //VERIFICAR SI THIS->USER TIENE ALGUN USUARIO, O ENCONTRO EL USUARIO
-            //EN TAL CASO DE NO TENER USUARIOS CONSULTAR A LA TABLA DE ESTUDIANTES INFPERSONAL. BUSCAR POR CEDULA EN LA TABLA
-            //CASO CONTRARIO QUE NO ENCUENTRE USUARIOS BUSCAR EN LA TABLA DOCENTE
-            //EN CASO DE ENCONTRAR EL USUARIO EN LA TABLA DE ESTUDIANTES O DOCENTES AUTOMATICAMENTE CREAR EL USUARIO CON LOS DATOS OBTENIDOS
-        }*/
-
-
         if ($this->_user === false) {
-            // Intenta encontrar al usuario por nombre de usuario en la tabla de Usuarios
             $this->_user = User::findByUsername($this->username);
 
-            // Si no se encuentra al usuario en la tabla de Usuarios, busca en otras tablas
             if ($this->_user === null) {
-                // Buscar en la tabla de Datospersonales por cédula
                 $personaldata = Datospersonales::findByCedula($this->username);
-                // Si se encuentra en la tabla, crea un nuevo usuario con los datos
-                $this->_user = new User();
-                $this->_user->username = $personaldata->Ci; // Utiliza la cédula como nombre de usuario
-                $now = \Yii::$app->formatter;
-                $this->_user->setPassword($personaldata->Ci);
-                $this->_user->Tipo = 11;
-                $this->_user->Created_at = $now->asDatetime(new \DateTime(), 'php:Y-m-d H:i:s');
-                $this->_user->Auth_key = \Yii::$app->security->generateRandomString();
-                // Guarda el usuario
-                $this->_user->save();
+
+                if ($personaldata !== null) {
+                    $this->_user = new User();
+                    $this->_user->username = $personaldata->Ci;
+                    $this->_user->setPassword($personaldata->Ci);
+                    $now = \Yii::$app->formatter;
+                    $this->_user->Created_at = $now->asDatetime(new \DateTime(), 'php:Y-m-d H:i:s');                    $this->_user->Tipo = 11;
+                    $this->_user->Auth_key = Yii::$app->security->generateRandomString();
+                    $this->_user->save(); // Save the user to the database
+                }
             }
         }
 
         return $this->_user;
     }
+
+    public function login()
+    {
+        if ($this->validate()) {
+            $user = $this->getUser();
+
+            if ($user !== null && Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0)) {
+                $user->refresh(); // Refresh user to get the latest data from the database
+                $this->registrarVisita($user);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected function registrarVisita($user)
+    {
+        $visita = new Transaccion();
+        $visita->user_id = $user->id; // Use $user instead of $this->getUser()
+        $visita->action = 'login';
+        $visita->nombre_tabla = 'user';
+        // Add more information about the visit if necessary
+        $visita->save();
+    }
+
 }

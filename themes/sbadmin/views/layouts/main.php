@@ -50,7 +50,7 @@ $this->registerJsFile('@web/sbadminassets/js/sb-admin-2.min.js');
     <?php $this->head() ?>
 
 
-<!--     <style>
+    <!--     <style>
         /* Estilos para la barra lateral fija */
         #accordionSidebar {
             position: fixed;
@@ -166,7 +166,7 @@ $this->registerJsFile('@web/sbadminassets/js/sb-admin-2.min.js');
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Servicios</span>
                 </a>
-                <div id="collapsePages" class="collapse <?= Yii::$app->controller->id === 'libro' && Yii::$app->controller->action->id === 'index' ? 'show' : '' ?>" aria-labelledby=" headingPages" data-parent="#accordionSidebar">
+                <div id="collapsePages" class="collapse" aria-labelledby=" headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Libros:</h6>
                         <a class="collapse-item" href="/libro/index">Catálogo</a>
@@ -240,7 +240,9 @@ $this->registerJsFile('@web/sbadminassets/js/sb-admin-2.min.js');
                         <div class="topbar-divider d-none d-sm-block"></div>
                         <?php if (Yii::$app->user->isGuest) : ?>
 
-
+                            <a class="nav-link" href="<?= Yii::$app->urlManager->createUrl(['site/login']) ?>">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Iniciar Sesión</span> <i class="fas fa-sign-in-alt"></i>
+                            </a>
                         <?php else : ?>
 
                             <?php
