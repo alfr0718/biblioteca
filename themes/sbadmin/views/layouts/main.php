@@ -82,107 +82,110 @@ $this->registerJsFile('@web/sbadminassets/js/sb-admin-2.min.js');
     <div id="wrapper">
 
         <!-- Sidebar -->
+        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) : ?>
 
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/site/index">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-book-reader"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">Biblioteca Digital</sup></div>
-            </a>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="/site/index">
-                    <i class="fas fa-home"></i>
-                    <span>Inicio</span></a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                ADMIN
-            </div>
-
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="/site/stadistics">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Gráficas</span></a>
-            </li>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-users"></i>
-                    <span>Usuarios</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header"><i class="fas fa-fw fa-cog"></i> Opciones:</h6>
-                        <a class="collapse-item" href="/user/index"><i class="fas fa-user-check"></i> Registro</a>
-                        <a class="collapse-item" href="/datospersonales/index"><i class="far fa-id-card"></i> Estudiantes</a>
-                        <a class="collapse-item" href="/user/reset-password"><i class="fas fa-user-cog"></i> Resetear contraseña</a>
+                <!-- Sidebar - Brand -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/site/index">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-book-reader"></i>
                     </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>RBAC Module</span>
+                    <div class="sidebar-brand-text mx-3">Biblioteca Digital</sup></div>
                 </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header"><i class="fas fa-fw fa-cog"></i> Configuraciones:</h6>
-                        <a class="collapse-item" href="/rbac/role"><i class="fas fa-wrench"></i> Roles</a>
-                        <a class="collapse-item" href="/rbac/route"><i class="fas fa-wrench"></i> Rutas</a>
-                        <a class="collapse-item" href="/rbac/assignment"><i class="fas fa-wrench"></i> Asignados</a>
-                        <a class="collapse-item" href="/rbac/permission"><i class="fas fa-wrench"></i> Permisos</a>
-                    </div>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider my-0">
+
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/site/index">
+                        <i class="fas fa-home"></i>
+                        <span>Inicio</span></a>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    ADMIN
                 </div>
-            </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Recursos dígitales
-            </div>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/site/stadistics">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Gráficas</span></a>
+                </li>
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Servicios</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby=" headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Libros:</h6>
-                        <a class="collapse-item" href="/libro/index">Catálogo</a>
-
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-users"></i>
+                        <span>Usuarios</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header"><i class="fas fa-fw fa-cog"></i> Opciones:</h6>
+                            <a class="collapse-item" href="/user/index"><i class="fas fa-user-check"></i> Registro</a>
+                            <a class="collapse-item" href="/datospersonales/index"><i class="far fa-id-card"></i> Estudiantes</a>
+                            <a class="collapse-item" href="/user/reset-password"><i class="fas fa-user-cog"></i> Resetear contraseña</a>
+                        </div>
                     </div>
+                </li>
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-fw fa-wrench"></i>
+                        <span>RBAC Module</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header"><i class="fas fa-fw fa-cog"></i> Configuraciones:</h6>
+                            <a class="collapse-item" href="/rbac/role"><i class="fas fa-wrench"></i> Roles</a>
+                            <a class="collapse-item" href="/rbac/route"><i class="fas fa-wrench"></i> Rutas</a>
+                            <a class="collapse-item" href="/rbac/assignment"><i class="fas fa-wrench"></i> Asignados</a>
+                            <a class="collapse-item" href="/rbac/permission"><i class="fas fa-wrench"></i> Permisos</a>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Recursos dígitales
                 </div>
-            </li>
 
-            <hr class="sidebar-divider d-none d-md-block">
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item active">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Servicios</span>
+                    </a>
+                    <div id="collapsePages" class="collapse" aria-labelledby=" headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Libros:</h6>
+                            <a class="collapse-item" href="/libro/index">Catálogo</a>
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+                        </div>
+                    </div>
+                </li>
 
-        </ul>
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+
+            </ul>
+        <?php endif; ?>
+
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -192,12 +195,15 @@ $this->registerJsFile('@web/sbadminassets/js/sb-admin-2.min.js');
             <div id="content">
 
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) : ?>
+
+                        <!-- Sidebar Toggle (Topbar) -->
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    <?php endif; ?>
 
                     <!-- Topbar Search -->
                     <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="<?= \yii\helpers\Url::to(['libro/search']) ?>" method="get">
@@ -217,6 +223,12 @@ $this->registerJsFile('@web/sbadminassets/js/sb-admin-2.min.js');
                     <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link" href="<?= Yii::$app->urlManager->createUrl(['libro/index']) ?>">
+                                <span class="mr-2 d-none d-lg-inline text-primary small"><strong>BIBLIOTECA</strong></span>
+                            </a>
+                        </li>
+
                         <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
@@ -237,12 +249,20 @@ $this->registerJsFile('@web/sbadminassets/js/sb-admin-2.min.js');
                         </li>
 
 
+
                         <div class="topbar-divider d-none d-sm-block"></div>
                         <?php if (Yii::$app->user->isGuest) : ?>
 
-                            <a class="nav-link" href="<?= Yii::$app->urlManager->createUrl(['site/login']) ?>">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Iniciar Sesión</span> <i class="fas fa-sign-in-alt"></i>
-                            </a>
+
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link" href="<?= Yii::$app->urlManager->createUrl(['site/login']) ?>">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Iniciar Sesión </span>
+                                    <i class=" fas fa-sign-in-alt fa-fw"></i>
+                                </a>
+
+                            </li>
+
+
                         <?php else : ?>
 
                             <?php
@@ -280,6 +300,7 @@ $this->registerJsFile('@web/sbadminassets/js/sb-admin-2.min.js');
                     </ul>
 
                 </nav>
+
                 <!-- End of Topbar -->
 
 
@@ -314,6 +335,8 @@ $this->registerJsFile('@web/sbadminassets/js/sb-admin-2.min.js');
             <!-- End of Footer -->
 
         </div>
+
+
         <!-- End of Content Wrapper -->
 
     </div>

@@ -11,14 +11,18 @@ use app\models\Libro;
  */
 class LibroSearch extends Libro
 {
+    public $searchTerm;
+    public $searchField;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'Status', 'idcategoria', 'idpais', 'idasignatura'], 'integer'],
+            [['id', 'Status', 'idcategoria', 'idpais'/*, 'idasignatura'*/], 'integer'],
             [['Titulo', 'Autor', 'Editorial', 'Anio', 'Isbn', 'N_clasificacion', 'Descripcion', 'portada', 'doc'], 'safe'],
+            [['idasignatura'], 'each', 'rule' => ['integer']],
+            [['idasignatura', 'searchTerm', 'searchField'], 'safe'], // Permitir múltiples valores        
         ];
     }
 
@@ -47,6 +51,7 @@ class LibroSearch extends Libro
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        
 
         $this->load($params);
 
@@ -56,6 +61,22 @@ class LibroSearch extends Libro
             return $dataProvider;
         }
 
+        switch ($this->searchField) {
+            case 'Titulo':
+                $query->andFilterWhere(['like', 'Titulo', $this->searchTerm]);
+                break;
+            case 'Autor':
+                $query->andFilterWhere(['like', 'Autor', $this->searchTerm]);
+                break;
+            case 'Editorial':
+                $query->andFilterWhere(['like', 'Editorial', $this->searchTerm]);
+                break;
+            case 'Isbn':
+                $query->andFilterWhere(['like', 'Isbn', $this->searchTerm]);
+                break;
+                // Agrega más casos para otros campos según sea necesario
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -63,8 +84,13 @@ class LibroSearch extends Libro
             'Status' => $this->Status,
             'idcategoria' => $this->idcategoria,
             'idpais' => $this->idpais,
-            'idasignatura' => $this->idasignatura,
+            //'idasignatura' => $this->idasignatura,
         ]);
+
+        if (!empty($this->idasignatura)) {
+            $query->andWhere(['or', ['in', 'idasignatura', $this->idasignatura]]);
+        }
+
 
         $query->andFilterWhere(['like', 'Titulo', $this->Titulo])
             ->andFilterWhere(['like', 'Autor', $this->Autor])
@@ -75,7 +101,10 @@ class LibroSearch extends Libro
             ->andFilterWhere(['like', 'portada', $this->portada])
             ->andFilterWhere(['like', 'doc', $this->doc]);
 
-        if (!empty(array_filter($this->attributes))) {
+
+            
+        if (!empty(array_filter(array_merge($this->attributes, [$this->searchTerm]))) )
+        {
             // Crea una instancia de Transaccion aquí
             $transaccion = new Transaccion();
 

@@ -19,47 +19,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88){
-        echo    Html::a('<span class="icon text-white-100"><i class="fas fa-plus-circle"></i></span><span class="text">Agregar libro</span>', ['create'], ['class' => 'btn btn-success btn-icon-split']);
+        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) {
+            echo    Html::a('<span class="icon text-white-100"><i class="fas fa-plus-circle"></i></span><span class="text">Agregar libro</span>', ['create'], ['class' => 'btn btn-success btn-icon-split']);
         } ?>
     </p>
 
+
+
     <?php Pjax::begin(); ?>
-    <button id="show-search-button" class="btn btn-info "><i class="fa fa-filter"></i>Filtrar</button>
 
-    <div class="modal" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
+  
+                    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+            
 
-            <div class="modal-body">
-    <?php echo $this->render('_search', ['model' => $searchModel]);
-    ?>
-            </div>
-        </div>
-    </div>
-    </div>
-
-    <?php
-    $js = <<<JS
-$('#show-search-button').click(function() {
-    $('#searchModal').modal('show');
-});
-
-// Cierra el modal y restaura la pantalla
-$('#searchModal').on('hidden.bs.modal', function (e) {
-    $('body').removeClass('modal-open');
-    $('.modal-backdrop').remove();
-});
-JS;
-
-
-    $this->registerJs($js);
-?>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -120,10 +92,10 @@ JS;
                             },
                             'update' => function ($url, $model) {
                                 if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) {
-                                return Html::a('<i class="fa fa-edit"></i>', $url, [
-                                    'title' => Yii::t('app', 'Actualizar'),
-                                    'class' => 'btn btn-info btn-circle',
-                                ]);
+                                    return Html::a('<i class="fa fa-edit"></i>', $url, [
+                                        'title' => Yii::t('app', 'Actualizar'),
+                                        'class' => 'btn btn-info btn-circle',
+                                    ]);
                                 }
                             },
                             'delete' => function ($url, $model) {
