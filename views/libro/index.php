@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="libro-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="text-success"><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) {
@@ -28,9 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php Pjax::begin(); ?>
 
-  
-                    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-            
+
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">

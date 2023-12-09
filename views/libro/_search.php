@@ -50,7 +50,7 @@ $asignaturasConLibros = \app\models\Libro::find()->select('idasignatura')->disti
                             'Isbn' => 'ISBN',
                         ],
                         [
-                            'class' => 'btn btn-primary text-left', // Añadido "text-left"
+                            'class' => 'btn btn-info text-left', // Añadido "text-left"
                         ]
                     ) ?>
 
