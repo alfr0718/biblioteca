@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Estanteriapersonal;
 use app\models\Libro;
 use app\models\LibroSearch;
 use app\models\Transaccion;
@@ -123,8 +124,6 @@ class LibroController extends Controller
     }
 
 
-
-
     /**
      * Updates an existing Libro model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -179,6 +178,8 @@ class LibroController extends Controller
      */
     public function actionDelete($id)
     {
+        //Estanteriapersona::find()->where(['libro_id'=>$id])->delete();
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

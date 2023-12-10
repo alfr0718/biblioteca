@@ -12,105 +12,115 @@ $this->title = $model->Titulo . ' - ' . $model->Autor;
 $this->params['breadcrumbs'][] = ['label' => 'Libros', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+$categoryColors = [
+    'Diccionario' => '#3498db', // Blue color
+    'Guía' => '#2ecc71',       // Green color
+    'Enciclopedia' => '#e74c3c', // Red color
+    'Libro' => '#f39c12',       // Yellow color
+    'Revista' => '#9b59b6',     // Purple color
+    'No Aplicable' => '#95a5a6', // Gray color
+    // Add more categories and their respective colors as needed
+];
+
+// Get the category name from the model or use a default if not available
+$categoryName = $model->idcategoria0->Nombre ?? 'N/A';
+
+// Get the color for the category from the mapping or use a default color
+$backgroundColor = $categoryColors[$categoryName] ?? 'gray';
 ?>
+
 <div class="libro-view">
-
-
-
-    <?php // Html::img(Yii::getAlias('@web') . '/uploads/portada/' . $model->portada, ['alt' => 'Imagen', 'class' => 'img-thumbnail', 'width' => '150', 'height' => '100']) 
-    ?>
-    <?php // Html::a('Ver documento', Yii::getAlias('@web') . '/uploads/doc/' . $model->doc, ['target' => '_blank']) 
-    ?>
-
     <div class="row justify-content-center">
-        <div class="col-md-4">
-            <div class="text-center">
-                <?= Html::img(Yii::getAlias('@web') . '/uploads/portada/' . $model->portada, ['alt' => 'Portada', 'class' => 'img-thumbnail mx-auto d-block', 'width' => '200', 'height' => '150']); ?>
+        <div class="col-md-3">
+            <div class="card shadow mb-4">
+                <div class="card-body text-center">
+                    <div class="categoria-label text-white" style="background-color: <?= $backgroundColor; ?>">
+                        <?= Html::encode($categoryName); ?>
+                    </div>
 
-                <div class="mt-2">
-                    <?= Html::a('<span class="icon text-white-100"><i class="fas fa-book-reader"></i></span><span class="text">Ver Recurso</span>', 'javascript:void(0);', [
-                        'class' => 'btn btn-info btn-icon-split',
-                        'id' => 'verDocumentoLink',
-                        'data' => [
-                            'url' => Url::to(['libro/request', 'id' => $model->id]),
-                        ],
-                    ]) ?>
+                    <?= Html::img(
+                        $model->portada !== null && $model->portada !== ''
+                            ? Yii::getAlias('@web') . '/uploads/portada/' . $model->portada
+                            : Yii::getAlias('@web') . '/uploads/default.webp',
+                        ['alt' => 'Portada', 'class' => 'img-thumbnail img-fluid']
+                    ); ?>
 
-                </div>
-                <div class="mt-2">
-                    <?= Html::a('<span class="icon text-white-100"><i class="fas fa-exclamation-circle"></i></span><span class="text">Reportar</span>', ['reporte/caido', 'id' => $model->id], [
-                        'class' => 'btn btn-warning btn-icon-split w-30',
-                    ]) ?>
-                </div>
-
-                <div class="mt-2">
-                    <?php
-                    if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo === 88) {
-                        echo Html::a('<i class="fa fa-edit"></i>', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-circle']);
-                    } ?>
-                    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo === 88) {
-                        echo Html::a('<i class="fa fa-trash"></i>', ['delete', 'id' => $model->id], [
-                            'class' => 'btn btn-danger btn-circle',
+                    <div class="mt-2">
+                        <?= Html::a('<i class="fa fa-book-reader"></i>  Ver Documento', 'javascript:void(0);', [
+                            'class' => 'btn btn-info btn-block',
+                            'id' => 'verDocumentoLink',
                             'data' => [
-                                'confirm' => '¿Estas seguro de Eliminar este elemento?',
-                                'method' => 'post',
+                                'url' => Url::to(['libro/request', 'id' => $model->id]),
                             ],
-                        ]);
-                    }
-                    ?>
+                        ]) ?>
+                    </div>
+                    <div class="mt-2">
+                        <?= Html::a(
+                            'Añadir a Favoritos <i class="fas fa-star"></i>',
+                            ['estanteriapersonal/agregar-favoritos', 'id' => Yii::$app->user->identity->id, 'libro_id' => $model->id],
+                            [
+                                'class' => 'btn btn-success btn-block',
+                            ]
+                        ) ?>
+                    </div>
+                    <div class="mt-2">
+                        <?php
+                        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo === 88) {
+                            echo Html::a('<i class="fa fa-edit"></i>', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-circle']);
+                        }
+                        ?>
+                        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo === 88) {
+                            echo Html::a('<i class="fa fa-trash"></i>', ['delete', 'id' => $model->id], [
+                                'class' => 'btn btn-danger btn-circle',
+                                'data' => [
+                                    'confirm' => '¿Estas seguro de Eliminar este elemento?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                        }
+                        ?>
+                    </div>
                 </div>
-
             </div>
         </div>
 
+        <div class="col-xl-6">
+            <div class="card border-left-info shadow mb-4">
+                <div class="card-body">
+                    <div class="h5 mb-0 font-weight-bold text-info"><?= $model->Titulo . '(' . $model->Anio . ')'; ?></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-600"><?= $model->Autor; ?></div>
 
-        <div class="card shadow mb-4">
-            <!-- Card Header - Accordion -->
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">
-                    <?= Html::encode($this->title) ?>
-                </h6>
-            </div>
-            <!-- Card Content - Collapse -->
-            <div class="card-body">
-                <?= DetailView::widget([
-                    'model' => $model,
-                    'attributes' => [
-                        //'Titulo',
-                        //'Autor',
-                        'Editorial',
-                        'Anio',
-                        'Isbn',
-                        'N_clasificacion',
-                        'Descripcion',
-                        [
-                            'attribute' => 'idpais',
-                            'value' => function ($model) {
-                                return $model->idpais0 ? Html::encode($model->idpais0->Nombre) : 'N/A';
-                            },
-                        ],
-                        [
-                            'attribute' => 'idcategoria',
-                            'value' => function ($model) {
-                                return $model->idcategoria0 ? Html::encode($model->idcategoria0->Nombre) : 'N/A';
-                            },
-                        ],
-                        [
-                            'attribute' => 'idasignatura',
-                            'value' => function ($model) {
-                                return $model->idasignatura0 ? Html::encode($model->idasignatura0->Nombre) : 'N/A';
-                            },
-                        ],
-                    ],
-                ]) ?>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Editorial</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $model->Editorial; ?></div>
+                        </div>
+
+                        <div class="col">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">N° Clasificación</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $model->N_clasificacion; ?></div>
+                        </div>
+
+                        <div class="col">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">ISBN</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $model->Isbn; ?></div>
+                        </div>
+
+                        <div class="col">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">País</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= Html::encode($model->idpais0->Codigo_pais ?? 'N/A'); ?></div>
+                        </div>
+                    </div>
+
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1 mt-3">Descripción</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $model->Descripcion; ?></div>
+                </div>
             </div>
         </div>
-
-
     </div>
-
-
 </div>
+
+
 <?php $this->registerJsFile('@web/js/jquery.min.js'); ?>
 
 <?php

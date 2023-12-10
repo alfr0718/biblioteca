@@ -118,4 +118,30 @@ class Libro extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Pais::class, ['id' => 'idpais']);
     }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $transaccion = new Transaccion();
+        $transaccion->action = $insert ? 'create' : 'update';
+        $transaccion->nombre_tabla = $this->tableName();
+        $transaccion->item_id = $this->id; // Ajusta aquí
+        $transaccion->user_id = Yii::$app->user->id;
+        //  $transaccion->time = date('Y-m-d H:i:s');
+        $transaccion->save();
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        $transaccion = new Transaccion();
+        $transaccion->action = 'delete';
+        $transaccion->nombre_tabla = $this->tableName();
+        $transaccion->item_id = $this->id; // Ajusta aquí
+        $transaccion->user_id = Yii::$app->user->id;
+        // $transaccion->time = date('Y-m-d H:i:s');
+        $transaccion->save();
+    }
 }

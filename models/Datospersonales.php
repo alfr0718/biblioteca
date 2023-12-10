@@ -12,8 +12,9 @@ use Yii;
  * @property string $ApellidoMaterno
  * @property string|null $ApellidoPaterno
  * @property string $Nombres
- * @property string $Email
+ * @property string|null $Email
  * @property int $Status
+ * @property string|null $Foto
  *
  * @property Carrera[] $carreraIdfacs
  * @property Personacarrera[] $personacarreras
@@ -42,8 +43,8 @@ class Datospersonales extends \yii\db\ActiveRecord
             [['Ci', 'ApellidoMaterno', 'Nombres', 'Email'], 'required'],
             [['Status'], 'integer'],
             [['Ci'], 'string', 'max' => 15],
-            [['ApellidoMaterno'], 'string', 'max' => 40],
-            [['ApellidoPaterno', 'Nombres', 'Email'], 'string', 'max' => 45],
+            [['ApellidoPaterno', 'ApellidoMaterno', 'Nombres', 'Email'], 'string', 'max' => 45],
+
         ];
     }
 

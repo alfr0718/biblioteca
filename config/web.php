@@ -95,7 +95,6 @@ $config = [
             'showScriptName' => false,
             'rules' => [             
                 'user/change-password' => 'user/change-password',
-                'uploads/<action:[\w\-]+>/<file:[\w\.-]+>' => 'site/uploads',
 
             ],
         ],
@@ -134,7 +133,7 @@ $config = [
     'as access' => [
         'class' => yii2mod\rbac\filters\AccessControl::class,
         'allowActions' => [
-            '*', // Permitir todas las acciones
+           // '*', // Permitir todas las acciones
             'site/login',
             'site/logout',
             'site/signup',

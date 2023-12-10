@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Libro;
 use app\models\Transaccion;
 use yii\db\Expression;
 
@@ -63,7 +64,30 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $librosRecientes = Transaccion::find()
+        ->select('item_id')
+        ->where(['action' => 'create', 'nombre_tabla' => 'libro'])
+        ->orderBy(['time' => SORT_DESC])
+        ->limit(10)
+        ->column();
+
+        $modelLibrosRecientes = Libro::find()
+        ->where(['id' => $librosRecientes])
+        ->all();
+
+        $librosMasVistos = Transaccion::find()
+        ->select('item_id, COUNT(item_id) as vistas')
+        ->where(['action' => 'view', 'nombre_tabla' => 'libro'])
+        ->groupBy('item_id')
+        ->orderBy(['vistas' => SORT_DESC])
+        ->limit(10)
+        ->column();
+
+        $modelLibrosMasVistos = Libro::find()
+        ->where(['id' => $librosMasVistos])
+        ->all();
+
+        return $this->render('index', ['modelLibrosRecientes' => $modelLibrosRecientes, 'modelLibrosMasVistos' => $modelLibrosMasVistos]);
     }
 
     /**

@@ -53,11 +53,40 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'html',
                         'label' => 'Portada',
                         'value' => function ($model) {
-                            return Html::img(Yii::getAlias('@web') . '/uploads/portada/' . $model->portada, ['alt' => 'Portada', 'class' => 'img-thumbnail', 'width' => '150', 'height' => '100']);
+                            $basePath = Yii::getAlias('@webroot');
+
+                            // Verificar si $model->portada es nulo o una cadena vacía
+                            if ($model->portada === null || $model->portada === '') {
+                                // Mostrar la imagen predeterminada si $model->portada es nulo o una cadena vacía
+                                return Html::img(Yii::getAlias('@web') . '/uploads/default.webp', [
+                                        'alt' => 'Portada',
+                                        'class' => 'img-fluid img-thumbnail',
+                                        'width' => '150',
+                                        'height' => '100',
+                                    ]);
+                            }
+
+                            $imagePath = $basePath . '/uploads/portada/' . $model->portada;
+
+                            if (file_exists($imagePath)) {
+                                return Html::img(Yii::getAlias('@web') . '/uploads/portada/' . $model->portada, [
+                                    'alt' => 'Portada',
+                                    'class' => 'img-fluid img-thumbnail',
+                                    'width' => '150',
+                                    'height' => '100',
+                                ]);
+                            } else {
+                                // Mostrar la imagen predeterminada si la imagen especificada no existe
+                                return Html::img(Yii::getAlias('@web') . '/uploads/default.webp', [
+                                    'alt' => 'Portada',
+                                    'class' => 'img-fluid img-thumbnail',
+                                    'width' => '150',
+                                    'height' => '100',
+                                ]);
+                            }
                         },
                         'contentOptions' => ['style' => 'vertical-align: middle; text-align: center;'],
                     ],
-
 
                     [
                         'label' => 'Información',
@@ -68,14 +97,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             $content = '<strong style="' . $titleStyle . '">' . Html::encode($model->Titulo) . '</strong> ' . Html::encode($model->Autor) . '<br>';
                             $content .= '<strong>Año:</strong> ' . Html::encode($model->Anio) . '<br>';
                             $content .= '<strong>Asignatura:</strong> ' . Html::encode($model->idpais0 ? $model->idasignatura0->Nombre : 'N/A') . '<br>';
-                            $content .= '<strong>Descripción:</strong> ' . Html::encode($model->Descripcion ? $model->Descripcion : 'N/A') . '<br>';
 
                             // Agrega más campos según tus necesidades
 
                             return $content;
                         },
                         'contentOptions' => ['style' => 'vertical-align: middle;'],
-
                     ],
 
                     [
