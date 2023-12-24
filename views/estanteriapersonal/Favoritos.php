@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Estanteriapersonal;
+use app\models\Libro;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -25,6 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
+        'showHeader' => false,  // Desactiva el encabezado de la tabla
+
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -88,7 +91,43 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['style' => 'vertical-align: middle;'],
 
             ],
-            
+            [
+                'class' => ActionColumn::className(),
+                'header' => 'Acciones',
+                'headerOptions' => ['style' => 'color: #0d75fd; width: 200px;'],
+                'template' => '{view} {eliminar-favorito}',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                        // Lógica para la acción "view"
+                        return Html::a('<i class="fa fa-eye"></i>', $url, [
+                            'title' => Yii::t('app', 'Ver'),
+                            'class' => 'btn btn-primary btn-circle',
+                        ]);
+                    },
+                    'eliminar-favorito' => function ($url, $model) {
+                        // Lógica para la acción "eliminar-favorito"
+                        if (!Yii::$app->user->isGuest) {
+                            return Html::a('<i class="fa fa-trash"></i>', $url, [
+                                'title' => Yii::t('app', 'Eliminar'),
+                                'class' => 'btn btn-danger btn-circle',
+                                'data-confirm' => Yii::t('app', '¿Estás seguro de que deseas eliminar este elemento de tu lista de Favoritos?'),
+                                'data-method' => 'post',
+                            ]);
+                        }
+                    },
+                ],
+                'urlCreator' => function ($action, $model, $key, $index, $column) {
+                    // Lógica para la creación de URL basada en la acción
+                    if ($action === 'view') {
+                        return Url::toRoute(['libro/view', 'id' => $model->libro_id]);
+                    } elseif ($action === 'eliminar-favorito') {
+                        return Url::toRoute(['eliminar-favorito', 'estanteria_id' => $model->estanteria_id, 'libro_id' => $model->libro_id]);
+                    }
+                    // Otras lógicas según sea necesario
+                },
+                'contentOptions' => ['style' => 'vertical-align: middle; text-align: center;'],
+
+            ],
         ],
     ]); ?>
 

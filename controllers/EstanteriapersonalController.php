@@ -57,7 +57,7 @@ class EstanteriapersonalController extends Controller
 
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('misFavoritos', [
+        return $this->render('favoritos', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -97,6 +97,13 @@ class EstanteriapersonalController extends Controller
         return $this->redirect(\Yii::$app->request->referrer ?: \Yii::$app->homeUrl);
     }
 
+    public function actionEliminarFavorito($estanteria_id, $libro_id)
+    {
+        $this->findModel($estanteria_id, $libro_id)->delete();
+        $user_id = Estanteria::findOne($estanteria_id)->user_id;
+
+        return $this->redirect(['favoritos', 'id' => $user_id]);
+    }
 
     public function actionIndex()
     {
