@@ -169,44 +169,41 @@ class SiteController extends Controller
         if ($year === null) {
             $year = date('Y');
         }
-        // Recupera los datos para la gráfica
-        $login = Yii::$app->db->createCommand('
-        SELECT DAY(time) AS dia, COUNT(*) AS total_logins
-        FROM transaccion
-        WHERE nombre_tabla = "user" AND action = "login"
-          AND MONTH(time) = :month
-          AND YEAR(time) = :year
-        GROUP BY DAY(time)
-    ')->bindValues([':month' => $month, ':year' => $year])->queryAll();
+        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
-        $search = Yii::$app->db->createCommand('
-        SELECT DAY(time) AS dia, COUNT(*) AS total_search
-        FROM transaccion
-        WHERE nombre_tabla = "libro" AND action = "search"
-          AND MONTH(time) = :month
-          AND YEAR(time) = :year
-        GROUP BY DAY(time)
-    ')->bindValues([':month' => $month, ':year' => $year])->queryAll();
-
-        $request = Yii::$app->db->createCommand('
-        SELECT DAY(time) AS dia, COUNT(*) AS total_request
-        FROM transaccion
-        WHERE nombre_tabla = "libro" AND action = "request"
-          AND MONTH(time) = :month
-          AND YEAR(time) = :year
-        GROUP BY DAY(time)
-    ')->bindValues([':month' => $month, ':year' => $year])->queryAll();
+        // Generate an array representing all days of the selected month
+        $allDays = range(1, $daysInMonth);
 
 
-        $view = Yii::$app->db->createCommand('
-        SELECT DAY(time) AS dia, COUNT(*) AS total_view
-        FROM transaccion
-        WHERE nombre_tabla = "libro" AND action = "view"
-          AND MONTH(time) = :month
-          AND YEAR(time) = :year
-        GROUP BY DAY(time)
-    ')->bindValues([':month' => $month, ':year' => $year])->queryAll();
+        $actions = ['login', 'search', 'request', 'view'];
+        $data = [];
 
+        foreach ($actions as $action) {
+            $query = Yii::$app->db->createCommand('
+            SELECT DAY(time) AS dia, COUNT(*) AS total
+            FROM transaccion
+            WHERE nombre_tabla = "libro" AND action = :action
+              AND MONTH(time) = :month
+              AND YEAR(time) = :year
+            GROUP BY DAY(time)
+        ')->bindValues([':action' => $action, ':month' => $month, ':year' => $year])->queryAll();
+
+            // Convert the query result into an associative array for easy merging
+            $data[$action] = array_column($query, 'total', 'dia');
+        }
+
+        // Merge data with all days to ensure all days are present
+        $mergedData = [];
+
+        foreach ($allDays as $day) {
+            $mergedData[] = [
+                'dia' => $day,
+                'total_logins' => $data['login'][$day] ?? 0,
+                'total_search' => $data['search'][$day] ?? 0,
+                'total_request' => $data['request'][$day] ?? 0,
+                'total_view' => $data['view'][$day] ?? 0,
+            ];
+        }
 
         $Years = Yii::$app->db->createCommand('
         SELECT DISTINCT YEAR(time) AS year
@@ -214,10 +211,7 @@ class SiteController extends Controller
     ')->queryColumn();
 
         return $this->render('stadistics', [
-            'login' => $login,
-            'search' => $search,
-            'request' => $request,
-            'view' => $view,
+            'data' => $mergedData,
             'selectedMonth' => $month,
             'selectedYear' => $year,
             'Years' => $Years,

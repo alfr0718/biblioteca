@@ -5,9 +5,11 @@ namespace app\controllers;
 use app\models\Estanteria;
 use app\models\Estanteriapersonal;
 use app\models\EstanteriapersonalSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\ForbiddenHttpException;
 
 /**
  * EstanteriapersonalController implements the CRUD actions for Estanteriapersonal model.
@@ -39,6 +41,7 @@ class EstanteriapersonalController extends Controller
      */
     public function actionFavoritos($id)
     {
+        $user = Yii::$app->user->identity;
 
         $misFavoritos = Estanteria::find()->where(['user_id' => $id])->one();
 
@@ -56,11 +59,14 @@ class EstanteriapersonalController extends Controller
         $searchModel->estanteria_id =  $idEstanteria;
 
         $dataProvider = $searchModel->search($this->request->queryParams);
-
-        return $this->render('favoritos', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        if ($user->id == $id) {
+            return $this->render('favoritos', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            throw new ForbiddenHttpException('No tienes permiso para acceder a esta página.');
+        }
     }
 
 

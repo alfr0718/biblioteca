@@ -9,6 +9,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use Yii;
+use yii\web\ForbiddenHttpException;
 
 /**
  * DatospersonalesController implements the CRUD actions for Datospersonales model.
@@ -57,9 +58,17 @@ class DatospersonalesController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findModel($id);
+
+        $user = Yii::$app->user->identity;
+
+        if ($user->Tipo === 88 || $user->username == $model->Ci) {
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
+        } else {
+            throw new ForbiddenHttpException('No tienes permiso para acceder a esta página.');
+        }
     }
 
     /**
@@ -76,13 +85,12 @@ class DatospersonalesController extends Controller
 
             // Validar los archivos antes de intentar guardarlos
             if ($model->validate()) {
-                
+
                 // Guardar la imagen
                 if ($model->photofile) {
                     $nombreImg = $model->Ci . '.' . $model->photofile->extension;
                     $model->Foto = $nombreImg;
                     $model->photofile->saveAs(Yii::getAlias('@webroot/uploads/img/') . $nombreImg);
-
                 }
                 // Guardar el resto de los atributos en la base de datos
                 if ($model->save(false)) {

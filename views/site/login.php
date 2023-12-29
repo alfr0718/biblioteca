@@ -38,10 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]); ?>
 
                                 <?= $form->field($model, 'username', ['options' => ['class' => 'form-group']])->label(false)
-                                    ->textInput(['class' => 'form-control form-control-user', 'placeholder' => 'Ingresa tu usuario...']) ?>
+                                    ->textInput(['class' => 'form-control form-control-user', 'placeholder' => 'Usuario']) ?>
 
                                 <?= $form->field($model, 'password', ['options' => ['class' => 'form-group']])->label(false)
-                                    ->passwordInput(['class' => 'form-control form-control-user', 'placeholder' => 'Password']) ?>
+                                    ->passwordInput(['class' => 'form-control form-control-user', 'placeholder' => 'Contraseña']) ?>
 
                                 <?= $form->field($model, 'rememberMe')->checkbox([
                                     'class' => 'custom-control-input', // Aplica estilo al input del checkbox

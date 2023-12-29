@@ -76,7 +76,7 @@ $this->title = 'Gráficas';
                         'options' => [
                             'title' => ['text' => 'Estadísticas Generales'],
                             'xAxis' => [
-                                'categories' => array_column($login, 'dia'),
+                                'categories' => array_column($data, 'dia'),
                                 'title' => ['text' => 'Día del Mes'],
                             ],
                             'yAxis' => [
@@ -84,42 +84,38 @@ $this->title = 'Gráficas';
                             ],
                             'plotOptions' => [
                                 'line' => [
-                                    'lineWidth' => 2, // Ajusta el grosor de la línea
-                                    'shadow' => false, // Desactiva las sombras
+                                    'lineWidth' => 2,
+                                    'shadow' => false,
                                 ],
                                 'spline' => [
-                                    'lineWidth' => 2, // Ajusta el grosor de la línea
-                                    'shadow' => false, // Desactiva las sombras
+                                    'lineWidth' => 2,
+                                    'shadow' => false,
                                 ],
                             ],
                             'series' => [
                                 [
                                     'name' => 'Logins',
-                                    'data' => array_column($login, 'total_logins'),
+                                    'data' => array_column($data, 'total_logins'),
                                     'type' => 'area',
                                     'color' => '#3498db',
-
                                 ],
                                 [
                                     'name' => 'Búsqueda Bibliográfica',
-                                    'data' => array_column($search, 'total_search'),
+                                    'data' => array_column($data, 'total_search'),
                                     'type' => 'area',
                                     'color' => '#2ecc71',
-
                                 ],
                                 [
                                     'name' => 'Acceso A Libros',
-                                    'data' => array_column($request, 'total_request'),
+                                    'data' => array_column($data, 'total_request'),
                                     'type' => 'area',
-                                    'color' => '#e67e22', // Color morado
-
+                                    'color' => '#e67e22',
                                 ],
                                 [
                                     'name' => 'Visualizaciones',
-                                    'data' => array_column($view, 'total_view'),
+                                    'data' => array_column($data, 'total_view'),
                                     'type' => 'area',
-                                    'color' => '#9b59b6', // Color morado
-
+                                    'color' => '#9b59b6',
                                 ],
                             ],
                         ],
