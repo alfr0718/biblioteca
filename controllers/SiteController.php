@@ -64,10 +64,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $librosRecientes = Transaccion::find()
-        ->select('item_id')
-        ->where(['action' => 'create', 'nombre_tabla' => 'libro'])
-        ->orderBy(['time' => SORT_DESC])
+        $librosRecientes = Libro::find()
+        ->select('id')
+        ->orderBy(['id' => SORT_DESC])
         ->limit(10)
         ->column();
 
