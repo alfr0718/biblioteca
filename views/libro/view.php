@@ -41,7 +41,7 @@ $backgroundColor = $categoryColors[$categoryName] ?? 'gray';
                     <?= Html::img(
                         $model->portada !== null && $model->portada !== ''
                             ? Yii::getAlias('@web') . '/uploads/portada/' . $model->portada
-                            : Yii::getAlias('@web') . '/uploads/default.webp',
+                            : Yii::getAlias('@web') . '/img/book-default.webp',
                         ['alt' => 'Portada', 'class' => 'img-thumbnail img-fluid']
                     ); ?>
 

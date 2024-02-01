@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             // Verificar si $model->portada es nulo o una cadena vacía
                             if ($model->portada === null || $model->portada === '') {
                                 // Mostrar la imagen predeterminada si $model->portada es nulo o una cadena vacía
-                                return Html::img(Yii::getAlias('@web') . '/uploads/default.webp', [
+                                return Html::img(Yii::getAlias('@web') . '/img/book-default.webp', [
                                         'alt' => 'Portada',
                                         'class' => 'img-fluid img-thumbnail',
                                         'width' => '150',

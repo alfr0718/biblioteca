@@ -12,6 +12,7 @@ use app\models\ContactForm;
 use app\models\Libro;
 use app\models\Transaccion;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 class SiteController extends Controller
 {
@@ -72,6 +73,7 @@ class SiteController extends Controller
 
         $modelLibrosRecientes = Libro::find()
         ->where(['id' => $librosRecientes])
+        ->orderBy(['id' => SORT_DESC]) // Añade este orderBy si deseas mantener el orden descendente
         ->all();
 
         $librosMasVistos = Transaccion::find()

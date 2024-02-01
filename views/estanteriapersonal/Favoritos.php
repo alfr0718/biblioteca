@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     } else {
                         // Mostrar la imagen predeterminada si la imagen especificada no existe
-                        return Html::img(Yii::getAlias('@web') . '/uploads/default.webp', [
+                        return Html::img(Yii::getAlias('@web') . '/img/book-default.webp', [
                             'alt' => 'Portada',
                             'class' => 'img-fluid img-thumbnail',
                             'width' => '150',

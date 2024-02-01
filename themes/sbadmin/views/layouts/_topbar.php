@@ -7,6 +7,10 @@
         </button>
     <?php endif; ?>
 
+    <a class="navbar-brand" href="<?= Yii::$app->homeUrl ?>">
+        <img src="<?= Yii::getAlias('@web') ?>/img/InstLuisTello.png" alt="Logo" height="45">
+    </a>
+
     <!-- Topbar Search -->
     <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="<?= \yii\helpers\Url::to(['libro/search']) ?>" method="get">
         <div class="input-group">
@@ -76,10 +80,19 @@
             <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $nombres ?></span>
-
                     <?php
-                    $imagenUrl = Yii::getAlias('@web') . '/uploads/img/' . $datos->Foto; ?>
-                    <img class="img-profile rounded-circle" src="<?= $imagenUrl ?>" alt="Fotos de usuario">
+                    $imagenUrl = Yii::getAlias('@web') . '/uploads/img/' . $datos->Foto;
+
+                    // Verificar si la imagen existe
+                    if (file_exists($imagenUrl)) {
+                        // Si la imagen existe, mostrarla
+                        echo '<img class="img-profile rounded-circle" src="' . $imagenUrl . '" alt="Fotos de usuario">';
+                    } else {
+                        // Si la imagen no existe, mostrar la imagen predeterminada
+                        $imagenPredeterminadaUrl = Yii::getAlias('@web') . '/img/user-default.webp';
+                        echo '<img class="img-profile rounded-circle" src="' . $imagenPredeterminadaUrl . '" alt="User">';
+                    }
+                    ?>
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
