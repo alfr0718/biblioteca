@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'photofile')->label('Foto de Perfil')->fileInput(['class' => 'form-control', 'id' => 'photoFileInput']) ?>
                 <img id="photoPreview" src="#" alt="Vista previa" style="display: none; max-width: 100%; margin-top: 10px;">
             </div>
-            <?= $form->field($model, 'Ci')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'Ci')->textInput(['maxlength' => true, 'readonly' => $isUpdated]) ?>
 
             <?= $form->field($model, 'ApellidoPaterno')->textInput(['maxlength' => true]) ?>
 
@@ -60,4 +60,4 @@ use yii\widgets\ActiveForm;
     $('#photoFileInput').change(function () {
         readURL(this, '#photoPreview');
 });
-");?>
+"); ?>

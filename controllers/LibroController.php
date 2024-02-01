@@ -47,6 +47,14 @@ class LibroController extends Controller
         $searchModel = new LibroSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        $dataProvider->setSort([
+            'defaultOrder' => ['Titulo' => SORT_ASC],
+            'attributes' => [
+                'Titulo',
+                // other attributes for sorting if needed
+            ],
+        ]);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

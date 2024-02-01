@@ -79,7 +79,7 @@ class DatospersonalesController extends Controller
     public function actionCreate()
     {
         $model = new Datospersonales();
-
+        $isUpdated = false;
         if ($model->load(Yii::$app->request->post())) {
             $model->photofile = UploadedFile::getInstance($model, 'photofile');
 
@@ -102,6 +102,7 @@ class DatospersonalesController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'isUpdated'=>$isUpdated,
         ]);
     }
 
@@ -116,6 +117,7 @@ class DatospersonalesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $isUpdated = true;
 
         if ($model->load(Yii::$app->request->post())) {
             $model->photofile = UploadedFile::getInstance($model, 'photofile');
@@ -139,6 +141,7 @@ class DatospersonalesController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'isUpdated' => $isUpdated,
         ]);
     }
 
