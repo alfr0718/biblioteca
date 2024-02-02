@@ -44,6 +44,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'dataProvider' => $dataProvider,
                 'showHeader' => false,  // Desactiva el encabezado de la tabla
                 //'filterModel' => $searchModel,
+                'options' => ['class' => 'table-responsive'], // Add Bootstrap class for responsiveness
+
                 'pager' => [
                     'options' => ['class' => 'pagination justify-content-center'], // Agrega una clase CSS personalizada al contenedor de paginación
                     'maxButtonCount' => 5, // Controla el número de botones de página que se muestran
