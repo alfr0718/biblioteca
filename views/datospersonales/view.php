@@ -52,8 +52,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attributes' => [
                     //'id',
                     'Ci',
-                    'ApellidoMaterno',
                     'ApellidoPaterno',
+                    'ApellidoMaterno',
                     'Nombres',
                     'Email:email',
                     // 'Status',

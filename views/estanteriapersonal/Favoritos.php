@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         ],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+           // ['class' => 'yii\grid\SerialColumn'],
 
             //'estanteria_id',
             //'libro_id',
@@ -51,39 +51,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $basePath = Yii::getAlias('@webroot');
 
-                    // Verificar si $model->portada es nulo o una cadena vacía
-                    if ($model->libro->portada === null || $model->libro->portada === '') {
-                        // Mostrar la imagen predeterminada si $model->portada es nulo o una cadena vacía
-                        return Html::img(Yii::getAlias('@web') . '/img/book-default.webp', [
-                            'alt' => 'Portada',
-                            'class' => 'img-fluid img-thumbnail',
-                            'width' => '150',
-                            'height' => '100',
-                        ]);
-                    }
-
                     $imagePath = $basePath . '/uploads/portada/' . $model->libro->portada;
 
-                    if (file_exists($imagePath)) {
-                        return Html::img(Yii::getAlias('@web') . '/uploads/portada/' . $model->libro->portada, [
-                            'alt' => 'Portada',
-                            'class' => 'img-fluid img-thumbnail',
-                            'width' => '150',
-                            'height' => '100',
-                        ]);
+                    if (!empty($model->Foto) && file_exists($imagePath)) {
+                        $imageUrl = Yii::getAlias('@web') . '/uploads/portada/' . $model->libro->portada;
                     } else {
-                        // Mostrar la imagen predeterminada si la imagen especificada no existe
-                        return Html::img(Yii::getAlias('@web') . '/img/book-default.webp', [
-                            'alt' => 'Portada',
-                            'class' => 'img-fluid img-thumbnail',
-                            'width' => '150',
-                            'height' => '100',
-                        ]);
+                        $imageUrl = Yii::getAlias('@web') . '/img/book-default.webp';
                     }
+                    // Wrap the image with an anchor tag
+                    return Html::a(Html::img($imageUrl, [
+                        'alt' => 'Portada',
+                        'class' => 'img-fluid img-thumbnail',
+                        'style' => 'max-width: 100px;', // Adjust the maximum width as needed
+                        'height' => '100',
+                    ]), ['libro/view', 'id' => $model->libro->id]);
                 },
-                'contentOptions' => ['style' => 'vertical-align: middle; text-align: center;'],
+                'contentOptions' => [
+                    'style' => 'vertical-align: middle; text-align: center;',
+                ],
             ],
-
             [
                 'label' => 'Información',
                 'format' => 'raw', // Para que se interpreten las etiquetas HTML en el valor
@@ -93,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $content = '<strong style="' . $titleStyle . '">' . Html::encode($model->libro->Titulo) . '</strong> ' . Html::encode($model->libro->Autor) . '<br>';
                     $content .= '<strong>Año:</strong> ' . Html::encode($model->libro->Anio) . '<br>';
                     $content .= '<strong>Asignatura:</strong> ' . Html::encode($model->libro->idpais0 ? $model->libro->idasignatura0->Nombre : 'N/A') . '<br>';
-                    $content .= '<strong>Descripción:</strong> ' . Html::encode($model->libro->Descripcion ? $model->libro->Descripcion : 'N/A') . '<br>';
+                   // $content .= '<strong>Descripción:</strong> ' . Html::encode($model->libro->Descripcion ? $model->libro->Descripcion : 'N/A') . '<br>';
 
                     // Agrega más campos según tus necesidades
 
@@ -106,15 +92,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => ActionColumn::className(),
                 'header' => 'Acciones',
                 'headerOptions' => ['style' => 'color: #0d75fd; width: 200px;'],
-                'template' => '{view} {eliminar-favorito}',
+                'template' => '{eliminar-favorito}',
                 'buttons' => [
-                    'view' => function ($url, $model) {
-                        // Lógica para la acción "view"
-                        return Html::a('<i class="fa fa-eye"></i>', $url, [
-                            'title' => Yii::t('app', 'Ver'),
-                            'class' => 'btn btn-primary btn-circle',
-                        ]);
-                    },
                     'eliminar-favorito' => function ($url, $model) {
                         // Lógica para la acción "eliminar-favorito"
                         if (!Yii::$app->user->isGuest) {
@@ -129,12 +108,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'urlCreator' => function ($action, $model, $key, $index, $column) {
                     // Lógica para la creación de URL basada en la acción
-                    if ($action === 'view') {
-                        return Url::toRoute(['libro/view', 'id' => $model->libro_id]);
-                    } elseif ($action === 'eliminar-favorito') {
-                        return Url::toRoute(['eliminar-favorito', 'estanteria_id' => $model->estanteria_id, 'libro_id' => $model->libro_id]);
-                    }
-                    // Otras lógicas según sea necesario
+                    return Url::toRoute(['eliminar-favorito', 'estanteria_id' => $model->estanteria_id, 'libro_id' => $model->libro_id]);
                 },
                 'contentOptions' => ['style' => 'vertical-align: middle; text-align: center;'],
 

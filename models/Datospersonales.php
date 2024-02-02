@@ -40,7 +40,7 @@ class Datospersonales extends \yii\db\ActiveRecord
         return [
             [['photofile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [['Foto'], 'string', 'max' => 200],
-            [['Ci', 'ApellidoMaterno', 'Nombres', 'Email'], 'required'],
+            [['Ci', 'ApellidoPaterno', 'ApellidoMaterno', 'Nombres'], 'required'],
             [['Status'], 'integer'],
             [['Ci'], 'string', 'max' => 15],
             [['ApellidoPaterno', 'ApellidoMaterno', 'Nombres', 'Email'], 'string', 'max' => 45],

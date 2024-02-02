@@ -43,11 +43,11 @@ $config = [
 
                 if ($Rol == 88) {
                     $role = $auth->getRole('admin'); // Nombre del rol de administrador
-                } elseif ($Rol == 66) {
+                } /* elseif ($Rol == 66) {
                     $role = $auth->getRole('docente'); // Nombre del rol de docente
                 } elseif ($Rol == 11) {
                     $role = $auth->getRole('estudiante'); // Nombre del rol de estudiante
-                } else{
+                } */ else{
                     $role = $auth->getRole('usuario');
                 }
                 // Verificar si el usuario ya tiene el rol asignado

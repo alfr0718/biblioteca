@@ -64,7 +64,7 @@ $this->registerJsFile('@web/sbadminassets/js/sb-admin-2.min.js');
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="min-vh-100 d-flex flex-column">
 
             <!-- Main Content -->
             <div id="content">

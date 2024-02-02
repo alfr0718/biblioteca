@@ -186,9 +186,9 @@ class LibroController extends Controller
      */
     public function actionDelete($id)
     {
-        //Estanteriapersona::find()->where(['libro_id'=>$id])->delete();
+        Estanteriapersonal::deleteAll(['libro_id' => $id]);
 
-        $this->findModel($id)->delete();
+        $this->findModel($id)->delete();  
 
         return $this->redirect(['index']);
     }

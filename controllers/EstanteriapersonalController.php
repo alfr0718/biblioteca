@@ -102,13 +102,17 @@ class EstanteriapersonalController extends Controller
         // Redirige a la misma página
         return $this->redirect(\Yii::$app->request->referrer ?: \Yii::$app->homeUrl);
     }
-
     public function actionEliminarFavorito($estanteria_id, $libro_id)
     {
-        $this->findModel($estanteria_id, $libro_id)->delete();
-        $user_id = Estanteria::findOne($estanteria_id)->user_id;
-
-        return $this->redirect(['favoritos', 'id' => $user_id]);
+        try {
+            $model = $this->findModel($estanteria_id, $libro_id);
+            $model->delete();
+            $user_id = Estanteria::findOne($estanteria_id)->user_id;
+            return $this->redirect(['favoritos', 'id' => $user_id]);
+        } catch (\Exception $e) {
+            Yii::error($e->getMessage());
+            // Handle the error, e.g., show an error page or redirect to a specific page
+        }
     }
 
     public function actionIndex()

@@ -84,15 +84,16 @@
                     $imagenUrl = Yii::getAlias('@web') . '/uploads/img/' . $datos->Foto;
 
                     // Verificar si la imagen existe
-                    if (file_exists($imagenUrl)) {
+                    if (!empty($datos->Foto) && file_exists(Yii::getAlias('@webroot') . '/uploads/img/' . $datos->Foto)) {
                         // Si la imagen existe, mostrarla
                         echo '<img class="img-profile rounded-circle" src="' . $imagenUrl . '" alt="Fotos de usuario">';
                     } else {
                         // Si la imagen no existe, mostrar la imagen predeterminada
                         $imagenPredeterminadaUrl = Yii::getAlias('@web') . '/img/user-default.webp';
-                        echo '<img class="img-profile rounded-circle" src="' . $imagenPredeterminadaUrl . '" alt="User">';
+                        echo '<img class="img-profile rounded-circle" src="' . $imagenPredeterminadaUrl . '" alt="Fotos de usuario predeterminada">';
                     }
                     ?>
+
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

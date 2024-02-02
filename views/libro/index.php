@@ -67,37 +67,25 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => function ($model) {
                             $basePath = Yii::getAlias('@webroot');
 
-                            // Verificar si $model->portada es nulo o una cadena vacía
-                            if ($model->portada === null || $model->portada === '') {
-                                // Mostrar la imagen predeterminada si $model->portada es nulo o una cadena vacía
-                                return Html::img(Yii::getAlias('@web') . '/img/book-default.webp', [
-                                        'alt' => 'Portada',
-                                        'class' => 'img-fluid img-thumbnail',
-                                        'width' => '150',
-                                        'height' => '100',
-                                    ]);
-                            }
-
                             $imagePath = $basePath . '/uploads/portada/' . $model->portada;
 
-                            if (file_exists($imagePath)) {
-                                return Html::img(Yii::getAlias('@web') . '/uploads/portada/' . $model->portada, [
-                                    'alt' => 'Portada',
-                                    'class' => 'img-fluid img-thumbnail',
-                                    'width' => '150',
-                                    'height' => '100',
-                                ]);
+                            if (!empty($model->Foto) && file_exists($imagePath)) {
+                                $imageUrl = Yii::getAlias('@web') . '/uploads/portada/' . $model->portada;
                             } else {
-                                // Mostrar la imagen predeterminada si la imagen especificada no existe
-                                return Html::img(Yii::getAlias('@web') . '/img/book-default.webp', [
-                                    'alt' => 'Portada',
-                                    'class' => 'img-fluid img-thumbnail',
-                                    'width' => '150',
-                                    'height' => '100',
-                                ]);
+                                $imageUrl = Yii::getAlias('@web') . '/img/book-default.webp';
                             }
+                            // Wrap the image with an anchor tag
+                            return Html::a(Html::img($imageUrl, [
+                                'alt' => 'Portada',
+                                'class' => 'img-fluid img-thumbnail',
+                                'style' => 'max-width: 100px;', // Adjust the maximum width as needed
+                                'height' => '100',
+                            ]), ['view', 'id' => $model->id]);
+                            
                         },
-                        'contentOptions' => ['style' => 'vertical-align: middle; text-align: center;'],
+                        'contentOptions' => [
+                            'style' => 'vertical-align: middle; text-align: center;',
+                        ],
                     ],
 
                     [
@@ -121,6 +109,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => ActionColumn::className(),
                         'header' => 'Acciones',
                         'headerOptions' => ['style' => 'color: #0d75fd; width: 200px;'],
+                        'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88,
+
                         'template' => '{view} {update} {delete}',
                         'buttons' => [
                             'view' => function ($url, $model) {
@@ -130,23 +120,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]);
                             },
                             'update' => function ($url, $model) {
-                                if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) {
-                                    return Html::a('<i class="fa fa-edit"></i>', $url, [
-                                        'title' => Yii::t('app', 'Actualizar'),
-                                        'class' => 'btn btn-info btn-circle',
-                                    ]);
-                                }
+                                return Html::a('<i class="fa fa-edit"></i>', $url, [
+                                    'title' => Yii::t('app', 'Actualizar'),
+                                    'class' => 'btn btn-info btn-circle',
+                                ]);
                             },
                             'delete' => function ($url, $model) {
-
-                                if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) {
-                                    return Html::a('<i class="fa fa-trash"></i>', $url, [
-                                        'title' => Yii::t('app', 'Eliminar'),
-                                        'class' => 'btn btn-danger btn-circle',
-                                        'data-confirm' => Yii::t('app', '¿Estás seguro de que deseas eliminar este elemento?'),
-                                        'data-method' => 'post',
-                                    ]);
-                                }
+                                return Html::a('<i class="fa fa-trash"></i>', $url, [
+                                    'title' => Yii::t('app', 'Eliminar'),
+                                    'class' => 'btn btn-danger btn-circle',
+                                    'data-confirm' => Yii::t('app', '¿Estás seguro de que deseas eliminar este elemento?'),
+                                    'data-method' => 'post',
+                                ]);
                             },
                         ],
                         'urlCreator' => function ($action, Libro $model, $key, $index, $column) {
@@ -154,9 +139,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'contentOptions' => ['style' => 'vertical-align: middle; text-align: center;'],
                     ],
-
-
-
 
 
                     /*'Titulo',

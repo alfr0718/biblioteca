@@ -31,7 +31,7 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'Email')->textInput(['maxlength' => true]) ?>
 
-            <?php echo $form->field($model, 'Status')->textInput() ?>
+            <?php // echo $form->field($model, 'Status')->textInput() ?>
 
             <div class="form-group">
                 <?= Html::submitButton('<span class="icon text-white-100"><i class="fas fa-check"></i></span><span class="text">Guardar</span>', ['class' => 'btn btn-success btn-icon-split']) ?>
