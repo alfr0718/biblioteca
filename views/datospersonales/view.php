@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ]) ?>
             <div class="mt-2">
                 <?php
-                if (!Yii::$app->user->isGuest && Yii::$app->user->identity->username === $model->Ci) {
+                if (!Yii::$app->user->isGuest && (Yii::$app->user->identity->username === $model-> Ci || Yii::$app->user->identity->Tipo === 88)) {
                     echo Html::a('<span class="icon text-white-100"><i class="fas fa-user-edit"></i></span><span class="text">Actualizar Datos</span>', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-icon-split']);
                 } ?>
                 <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo === 88) {

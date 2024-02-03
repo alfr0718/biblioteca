@@ -34,6 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'options' => ['class' => 'table-responsive'], // Add Bootstrap class for responsiveness
+
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             //'id',
@@ -61,8 +63,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 },
             ],
-            'Created_at',
-            'Updated_at',
+            [
+                'attribute' => 'Created_at',
+                'contentOptions' => ['class' => 'd-none d-sm-table-cell'], // Ocultar en pantallas pequeñas y mostrar como celda de tabla en medianas y grandes
+                'headerOptions' => ['class' => 'd-none d-sm-table-cell'], // Ocultar encabezado en pantallas pequeñas y medianas
+                'filterOptions' => ['class' => 'd-none d-sm-table-cell'], // Ocultar filtro en pantallas pequeñas y medianas
+            ],
+            [
+                'attribute' => 'Updated_at',
+                'contentOptions' => ['class' => 'd-none d-sm-table-cell'], // Ocultar en pantallas pequeñas y mostrar como celda de tabla en medianas y grandes
+                'headerOptions' => ['class' => 'd-none d-sm-table-cell'], // Ocultar encabezado en pantallas pequeñas y medianas
+                'filterOptions' => ['class' => 'd-none d-sm-table-cell'], // Ocultar filtro en pantallas pequeñas y medianas
+            ],
+
             [
                 'class' => ActionColumn::className(),
                 'header' => 'Acciones',

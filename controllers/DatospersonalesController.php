@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Datospersonales;
 use app\models\DatospersonalesSearch;
+use app\models\Personacarrera;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -78,8 +79,11 @@ class DatospersonalesController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Datospersonales();
+        $model = new Datospersonales();   
+             $selectedCarrera = [];
+
         $isUpdated = false;
+
         if ($model->load(Yii::$app->request->post())) {
             $model->photofile = UploadedFile::getInstance($model, 'photofile');
 
@@ -95,6 +99,16 @@ class DatospersonalesController extends Controller
                 // Guardar el resto de los atributos en la base de datos
                 if ($model->save(false)) {
                     // Redirigir a la página de detalles o a donde desees
+
+                    if (!empty(\Yii::$app->request->post('Datospersonales')['personacarreras'])) {
+                        foreach (\Yii::$app->request->post('Datospersonales')['personacarreras'] as $carreraId) {
+                            $CarreraCursada = new Personacarrera();
+                            $CarreraCursada->datospersonales_id = $model->id;
+                            $CarreraCursada->carrera_idfac = $carreraId;
+                            $CarreraCursada->save();
+                        }
+                    }
+
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
@@ -102,7 +116,8 @@ class DatospersonalesController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'isUpdated'=>$isUpdated,
+            'isUpdated' => $isUpdated,
+            'selectedCarrera' =>  $selectedCarrera,
         ]);
     }
 
@@ -117,8 +132,17 @@ class DatospersonalesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $isUpdated = true;
 
+        $user = Yii::$app->user->identity;
+
+        if ($user->Tipo === 88 && $user->username !== $model->Ci) {
+            $isUpdated = false;
+        } else {
+            $isUpdated = true;
+        }
+
+        $selectedCarrera = $model->getPersonacarreras()->select('carrera_idfac')->column();
+        
         if ($model->load(Yii::$app->request->post())) {
             $model->photofile = UploadedFile::getInstance($model, 'photofile');
 
@@ -131,8 +155,31 @@ class DatospersonalesController extends Controller
                     $model->Foto = $nombreImg;
                     $model->photofile->saveAs(Yii::getAlias('@webroot/uploads/img/') . $nombreImg);
                 }
-                // Guardar el resto de los atributos en la base de datos
+                // Guardar el resto de los carreras en la base de datos
                 if ($model->save(false)) {
+
+                    $existingCarrera = $model->getPersonacarreras()->select('carrera_idfac')->column();
+                    $newCarrera = \Yii::$app->request->post('Datospersonales')['personacarreras'];
+
+                    // Eliminar las carreras que no están en el formulario
+                    $deletedCarrera = array_diff($existingCarrera, $newCarrera);
+                    if (!empty($deletedCarrera)) {
+                        foreach ($deletedCarrera as $carreraId) {
+                            Personacarrera::deleteAll(['datospersonales_id' => $model->id, 'carrera_idfac' => $carreraId]);
+                        }
+                    }
+
+                    // Crear nuevas relaciones con las carreras seleccionadas
+                    $addedCarrera = array_diff($newCarrera, $existingCarrera);
+                    if (!empty($addedCarrera)) {
+                        foreach ($addedCarrera as $carreraId) {
+                            $CarreraCursada = new Personacarrera();
+                            $CarreraCursada->datospersonales_id = $model->id;
+                            $CarreraCursada->carrera_idfac = $carreraId;
+                            $CarreraCursada->save();
+                        }
+                    }
+                    
                     // Redirigir a la página de detalles o a donde desees
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
@@ -142,6 +189,7 @@ class DatospersonalesController extends Controller
         return $this->render('update', [
             'model' => $model,
             'isUpdated' => $isUpdated,
+            'selectedCarrera' => $selectedCarrera, // Pasar las carreras seleccionadas a la vista
         ]);
     }
 
