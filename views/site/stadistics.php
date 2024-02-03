@@ -46,7 +46,7 @@ $this->title = 'Gráficas';
                         </div>
 
                         <button type="submit" class="btn btn-primary">Generar reporte</button>
-                        <a href="<?= Yii::$app->urlManager->createUrl(['site/stadistics']) ?>" class="btn btn-secondary">Reiniciar</a>
+                        <a href="<?= Yii::$app->urlManager->createUrl(['site/stadistics']) ?>" class="btn btn-secondary">Actual</a>
 
                     </form>
                 </div>

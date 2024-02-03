@@ -87,33 +87,33 @@ $backgroundColor = $categoryColors[$categoryName] ?? 'gray';
         <div class="col-xl-6">
             <div class="card border-left-info shadow mb-4">
                 <div class="card-body">
-                    <div class="h5 mb-0 font-weight-bold text-info"><?= $model->Titulo . '(' . $model->Anio . ')'; ?></div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-600"><?= $model->Autor; ?></div>
+                    <div class="h5 mb-0 font-weight-bold text-info"><?= $model->Titulo . ' (' . ($model->Anio ?? 'N/A') . ')'; ?></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-600"><?= $model->Autor ?? 'N/A'; ?></div>
 
                     <div class="row mt-3">
                         <div class="col">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Editorial</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $model->Editorial; ?></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $model->Editorial ?? 'N/A'; ?></div>
                         </div>
 
                         <div class="col">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">N° Clasificación</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $model->N_clasificacion; ?></div>
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Asignatura</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $model->idasignatura0->Nombre ?? 'N/A'; ?></div>
                         </div>
 
                         <div class="col">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">ISBN</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $model->Isbn; ?></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $model->Isbn ?? 'S/ISBN'; ?></div>
                         </div>
 
                         <div class="col">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">País</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= Html::encode($model->idpais0->Codigo_pais ?? 'N/A'); ?></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= Html::encode($model->idpais0->Nombre ?? 'N/A'); ?></div>
                         </div>
                     </div>
 
                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1 mt-3">Descripción</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $model->Descripcion; ?></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $model->Descripcion ?? 'N/A'; ?></div>
                 </div>
             </div>
         </div>

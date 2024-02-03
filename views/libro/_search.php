@@ -8,6 +8,8 @@ use yii\widgets\ActiveForm;
 /** @var yii\widgets\ActiveForm $form */
 
 $paisesConLibros = \app\models\Libro::find()->select('idpais')->distinct()->column();
+    $categoriaConLibros = \app\models\Libro::find()->select('idcategoria')->distinct()->column();
+
 
 $userId = Yii::$app->user->identity->datospersonales->id;
 
@@ -116,7 +118,7 @@ if (empty($carreraIds) || in_array(1, $carreraIds)) {
                 <?= $form->field($model, 'Anio') ?>
 
                 <?php echo $form->field($model, 'idcategoria')->dropDownList(
-                    yii\helpers\ArrayHelper::map(\app\models\Categoria::find()->all(), 'id', 'Nombre'),
+                    yii\helpers\ArrayHelper::map(\app\models\Categoria::find()->where(['id' => $categoriaConLibros])->all(), 'id', 'Nombre'),
                     ['prompt' => 'Ver Todo']
                 ) ?>
 
