@@ -10,6 +10,7 @@ $this->title = $model->Nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Carreras', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
 ?>
 <div class="carrera-view">
 
@@ -39,5 +40,41 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]) ?>
+    
+    <?= Html::a('Agregar Asignatura', ['agregar-asignatura-carrera', 'idcar' => $model->idcar], ['class' => 'btn btn-primary']) ?>
+
+    <?php $contador = 1;
+    foreach ($AllAsignaturas as $Asignatura) : ?>
+        <div class="row">
+            <div class="col-md-6">
+                <?= DetailView::widget([
+                    'model' => $Asignatura,
+                    'attributes' => [
+                        [
+                            'label' => $contador,
+                            'value' => $Asignatura->Nombre,
+                        ],
+                        // Agrega más atributos según sea necesario
+                    ],
+                ]); ?>
+            </div>
+            <div class="col-md-6">
+                <?= Html::a('Editar', ['asignatura/update', 'id' => $Asignatura->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('Eliminar', ['asignatura/delete', 'id' => $Asignatura->id], [
+                    'class' => 'btn btn-danger',
+                    'data' => [
+                        'confirm' => '¿Estás seguro de que quieres eliminar esta asignatura?',
+                        'method' => 'post',
+                    ],
+                ]) ?>
+            </div>
+        </div>
+    <?php
+        $contador++;
+    endforeach; ?>
+
+
+
+
 
 </div>

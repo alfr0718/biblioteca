@@ -37,14 +37,15 @@
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                <i class="fas fa-users"></i>
-                <span>Usuarios</span>
+                <i class="fas fa-user-cog"></i>
+                <span>ADMIN</span>
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header"><i class="fas fa-fw fa-cog"></i> Opciones:</h6>
-                    <a class="collapse-item" href="/user/index"><i class="fas fa-user-check"></i> Registro</a>
-                    <a class="collapse-item" href="/datospersonales/index"><i class="far fa-id-card"></i> Estudiantes</a>
+                    <a class="collapse-item" href="/user/index"><i class="fas fa-user-check"></i> Usuarios</a>
+                    <a class="collapse-item" href="/datospersonales/index"><i class="far fa-id-card"></i> Datos Personales</a>
+                    <a class="collapse-item" href="/carrera/index"><i class="fas fa-graduation-cap"></i> Carreras</a>
                     <a class="collapse-item" href="/user/reset-password"><i class="fas fa-user-cog"></i> Resetear contraseña</a>
                 </div>
             </div>

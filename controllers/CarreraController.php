@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Asignatura;
 use app\models\Carrera;
 use app\models\CarreraSearch;
 use yii\web\Controller;
@@ -55,8 +56,11 @@ class CarreraController extends Controller
      */
     public function actionView($idcar)
     {
+        $AllAsignaturas = Asignatura::find()->where(['idcar' => $idcar])->all();
+
         return $this->render('view', [
             'model' => $this->findModel($idcar),
+            'AllAsignaturas' => $AllAsignaturas,
         ]);
     }
 
@@ -130,5 +134,24 @@ class CarreraController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+
+    public function actionAgregarAsignaturaCarrera($idcar)
+    {
+        $model = new Asignatura();
+        $model->idcar = $idcar;
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'idcar' => $idcar]);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('/asignatura/create', [
+            'model' => $model,
+        ]);
     }
 }

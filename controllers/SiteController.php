@@ -66,27 +66,27 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $librosRecientes = Libro::find()
-        ->select('id')
-        ->orderBy(['id' => SORT_DESC])
-        ->limit(10)
-        ->column();
+            ->select('id')
+            ->orderBy(['id' => SORT_DESC])
+            ->limit(10)
+            ->column();
 
         $modelLibrosRecientes = Libro::find()
-        ->where(['id' => $librosRecientes])
-        ->orderBy(['id' => SORT_DESC]) // Añade este orderBy si deseas mantener el orden descendente
-        ->all();
+            ->where(['id' => $librosRecientes])
+            ->orderBy(['id' => SORT_DESC]) // Añade este orderBy si deseas mantener el orden descendente
+            ->all();
 
         $librosMasVistos = Transaccion::find()
-        ->select('item_id, COUNT(item_id) as vistas')
-        ->where(['action' => 'view', 'nombre_tabla' => 'libro'])
-        ->groupBy('item_id')
-        ->orderBy(['vistas' => SORT_DESC])
-        ->limit(10)
-        ->column();
+            ->select('item_id, COUNT(item_id) as vistas')
+            ->where(['action' => 'view', 'nombre_tabla' => 'libro'])
+            ->groupBy('item_id')
+            ->orderBy(['vistas' => SORT_DESC])
+            ->limit(10)
+            ->column();
 
         $modelLibrosMasVistos = Libro::find()
-        ->where(['id' => $librosMasVistos])
-        ->all();
+            ->where(['id' => $librosMasVistos])
+            ->all();
 
         return $this->render('index', ['modelLibrosRecientes' => $modelLibrosRecientes, 'modelLibrosMasVistos' => $modelLibrosMasVistos]);
     }
@@ -180,14 +180,20 @@ class SiteController extends Controller
         $data = [];
 
         foreach ($actions as $action) {
+            $tableName = ($action === 'login') ? 'user' : 'libro';
+
             $query = Yii::$app->db->createCommand('
             SELECT DAY(time) AS dia, COUNT(*) AS total
             FROM transaccion
-            WHERE nombre_tabla = "libro" AND action = :action
+            WHERE nombre_tabla = :tableName AND action = :action
               AND MONTH(time) = :month
               AND YEAR(time) = :year
             GROUP BY DAY(time)
-        ')->bindValues([':action' => $action, ':month' => $month, ':year' => $year])->queryAll();
+        ')->bindValues([
+                ':tableName' => $tableName,
+                ':action' => $action,
+                ':month' => $month, 
+                ':year' => $year])->queryAll();
 
             // Convert the query result into an associative array for easy merging
             $data[$action] = array_column($query, 'total', 'dia');

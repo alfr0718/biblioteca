@@ -14,7 +14,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Nombre')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'idcar')->textInput() ?>
+    <?= $form->field($model, 'idcar')->dropDownList(
+        yii\helpers\ArrayHelper::map(\app\models\Carrera::find()->all(), 'idcar', 'Nombre'),
+        ['prompt' => 'Selecciona asignatura']
+    ) ?>
+
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

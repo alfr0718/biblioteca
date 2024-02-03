@@ -14,8 +14,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Nombre')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Status')->textInput() ?>
-
+    <?= $form->field($model, 'Status')->dropDownList([
+        '1' => 'Activo',
+        '0' => 'No Activo',
+    ]) ?>
+    
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

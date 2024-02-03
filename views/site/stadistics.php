@@ -93,17 +93,23 @@ $this->title = 'Gráficas';
                                 ],
                             ],
                             'series' => [
+                                
+                                
                                 [
-                                    'name' => 'Logins',
-                                    'data' => array_column($data, 'total_logins'),
+                                    'name' => 'Visualizaciones',
+                                    'data' => array_column($data, 'total_view'),
                                     'type' => 'area',
-                                    'color' => '#3498db',
-                                ],
-                                [
+                                    'color' => '#9b59b6',
+                                ], [
                                     'name' => 'Búsqueda Bibliográfica',
                                     'data' => array_column($data, 'total_search'),
                                     'type' => 'area',
                                     'color' => '#2ecc71',
+                                ], [
+                                    'name' => 'Logins',
+                                    'data' => array_column($data, 'total_logins'),
+                                    'type' => 'area',
+                                    'color' => '#3498db',
                                 ],
                                 [
                                     'name' => 'Acceso A Libros',
@@ -111,12 +117,7 @@ $this->title = 'Gráficas';
                                     'type' => 'area',
                                     'color' => '#e67e22',
                                 ],
-                                [
-                                    'name' => 'Visualizaciones',
-                                    'data' => array_column($data, 'total_view'),
-                                    'type' => 'area',
-                                    'color' => '#9b59b6',
-                                ],
+                                
                             ],
                         ],
                     ]);
