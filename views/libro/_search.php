@@ -8,8 +8,27 @@ use yii\widgets\ActiveForm;
 /** @var yii\widgets\ActiveForm $form */
 
 $paisesConLibros = \app\models\Libro::find()->select('idpais')->distinct()->column();
-$asignaturasConLibros = \app\models\Libro::find()->select('idasignatura')->distinct()->column();
 
+$userId = Yii::$app->user->identity->datospersonales->id;
+
+$carreraIds = \app\models\Personacarrera::find()
+    ->select('carrera_idfac')
+    ->where(['datospersonales_id' => $userId])
+    ->column();
+
+if (empty($carreraIds) || in_array(1, $carreraIds)) {
+    $asignaturasConLibros = \app\models\Libro::find()
+        ->select('idasignatura')
+        ->distinct()
+        ->column();
+} else {
+    $asignaturasConLibros = \app\models\Libro::find()
+        ->joinWith('idasignatura0')
+        ->where(['asignatura.idcar' => $carreraIds])
+        ->select('idasignatura')
+        ->distinct()
+        ->column();
+}
 
 ?>
 
