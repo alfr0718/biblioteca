@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         // Agrega más atributos según sea necesario
                                         [
                                             'format' => 'raw',
-                                            'label' => '',
+                                            'label' => 'Acciones',
                                             'value' => Html::a('<i class="fa fa-edit"></i>', ['asignatura/update', 'id' => $Asignatura->id], ['class' => 'btn btn-primary btn-circle']) .
                                             Html::a('<i class="fa fa-trash"></i>', ['asignatura/delete', 'id' => $Asignatura->id], [
                                                 'class' => 'btn btn-danger btn-circle',

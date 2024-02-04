@@ -97,8 +97,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             $titleStyle = 'color: #0d75fd;'; // Puedes cambiar el color aquí
 
                             $content = '<strong style="' . $titleStyle . '">' . Html::encode($model->Titulo) . '</strong> ' . Html::encode($model->Autor) . '<br>';
-                            $content .= '<strong>Año:</strong> ' . Html::encode($model->Anio) . '<br>';
-                            $content .= '<strong>Asignatura:</strong> ' . Html::encode($model->idpais0 ? $model->idasignatura0->Nombre : 'N/A') . '<br>';
+                            $content .= '<strong>Año:</strong> ' . Html::encode($model->Anio ?? 'N/A') . '<br>';
+                            $content .= '<strong>Asignatura:</strong> ' . Html::encode($model->idasignatura0 ? $model->idasignatura0->Nombre : 'N/A') . '<br>';
 
                             // Agrega más campos según tus necesidades
 
