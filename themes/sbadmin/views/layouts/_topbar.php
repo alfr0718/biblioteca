@@ -31,7 +31,7 @@
         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link" href="<?= Yii::$app->urlManager->createUrl(['libro/index']) ?>">
-                <span class="mr-2 d-none d-lg-inline text-primary small"><strong>BIBLIOTECA</strong></span>
+                <span class="mr-2 text-primary small"><strong>BIBLIOTECA</strong></span>
             </a>
         </li>
 
