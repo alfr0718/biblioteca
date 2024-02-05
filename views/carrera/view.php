@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="d-flex align-items-center justify-content-center">
                         <div>
                             <h3 class="text-primary">
-                                <?php echo 'Asignaturas'; ?>
+                                <?php echo 'Malla Curricular'; ?>
                             </h3>
                         </div>
                     </div>

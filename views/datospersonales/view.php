@@ -57,6 +57,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     'Nombres',
                     'Email:email',
                     // 'Status',
+                    [
+                        'label' => 'Carrera',
+                        'value' => function ($model) {
+                            $carreras = $model->carreraIdfacs;
+                            $carreraNames = [];
+                            foreach ($carreras as $carrera) {
+                                $carreraNames[] = $carrera->Nombre; // Assuming 'nombre' is the attribute you want to display
+                            }
+                            return implode(', ', $carreraNames);
+                        },
+                    ],
                 ],
             ]) ?>
             <div class="mt-2">

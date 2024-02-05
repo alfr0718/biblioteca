@@ -31,12 +31,14 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'Email')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'personacarreras[]')
-                ->label('Carrera')
-                ->dropDownList(
-                    yii\helpers\ArrayHelper::map(\app\models\Carrera::find()->where(['Status' => 1])->all(), 'idcar', 'Nombre'),
-                    ['prompt' => 'Seleccionar Carrera', 'disabled' => $isUpdated,'options' => isset($selectedCarrera) ? array_fill_keys($selectedCarrera, ['selected' => true]) : [],]
-                ) ?>
+            <?php if (Yii::$app->user->can('admin')) : ?>
+                <?= $form->field($model, 'personacarreras[]')
+                    ->label('Carrera')
+                    ->dropDownList(
+                        yii\helpers\ArrayHelper::map(\app\models\Carrera::find()->where(['Status' => 1])->all(), 'idcar', 'Nombre'),
+                        ['prompt' => 'Seleccionar Carrera', 'options' => isset($selectedCarrera) ? array_fill_keys($selectedCarrera, ['selected' => true]) : []]
+                    ) ?>
+            <?php endif; ?>
 
 
             <?php // echo $form->field($model, 'Status')->textInput() 

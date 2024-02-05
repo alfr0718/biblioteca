@@ -157,29 +157,30 @@ class DatospersonalesController extends Controller
                 }
                 // Guardar el resto de los carreras en la base de datos
                 if ($model->save(false)) {
+                    
+                    if (Yii::$app->user->can('admin')) {
+                        $existingCarrera = $model->getPersonacarreras()->select('carrera_idfac')->column();
+                        $newCarrera = \Yii::$app->request->post('Datospersonales')['personacarreras'];
 
-                    $existingCarrera = $model->getPersonacarreras()->select('carrera_idfac')->column();
-                    $newCarrera = \Yii::$app->request->post('Datospersonales')['personacarreras'];
+                        // Eliminar las carreras que no están en el formulario
+                        $deletedCarrera = array_diff($existingCarrera, $newCarrera);
+                        if (!empty($deletedCarrera)) {
+                            foreach ($deletedCarrera as $carreraId) {
+                                Personacarrera::deleteAll(['datospersonales_id' => $model->id, 'carrera_idfac' => $carreraId]);
+                            }
+                        }
 
-                    // Eliminar las carreras que no están en el formulario
-                    $deletedCarrera = array_diff($existingCarrera, $newCarrera);
-                    if (!empty($deletedCarrera)) {
-                        foreach ($deletedCarrera as $carreraId) {
-                            Personacarrera::deleteAll(['datospersonales_id' => $model->id, 'carrera_idfac' => $carreraId]);
+                        // Crear nuevas relaciones con las carreras seleccionadas
+                        $addedCarrera = array_diff($newCarrera, $existingCarrera);
+                        if (!empty($addedCarrera)) {
+                            foreach ($addedCarrera as $carreraId) {
+                                $CarreraCursada = new Personacarrera();
+                                $CarreraCursada->datospersonales_id = $model->id;
+                                $CarreraCursada->carrera_idfac = $carreraId;
+                                $CarreraCursada->save();
+                            }
                         }
                     }
-
-                    // Crear nuevas relaciones con las carreras seleccionadas
-                    $addedCarrera = array_diff($newCarrera, $existingCarrera);
-                    if (!empty($addedCarrera)) {
-                        foreach ($addedCarrera as $carreraId) {
-                            $CarreraCursada = new Personacarrera();
-                            $CarreraCursada->datospersonales_id = $model->id;
-                            $CarreraCursada->carrera_idfac = $carreraId;
-                            $CarreraCursada->save();
-                        }
-                    }
-
                     // Redirigir a la página de detalles o a donde desees
                     return $this->redirect(['view', 'id' => $model->id]);
                 }

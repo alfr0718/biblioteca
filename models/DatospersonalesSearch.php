@@ -11,6 +11,8 @@ use app\models\Datospersonales;
  */
 class DatospersonalesSearch extends Datospersonales
 {
+    public $carreraIdfacs;
+
     /**
      * {@inheritdoc}
      */
@@ -19,6 +21,8 @@ class DatospersonalesSearch extends Datospersonales
         return [
             [['id', 'Status'], 'integer'],
             [['Ci', 'ApellidoMaterno', 'ApellidoPaterno', 'Nombres', 'Email'], 'safe'],
+            [['carreraIdfacs'], 'safe'],
+
         ];
     }
 
