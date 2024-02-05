@@ -63,7 +63,7 @@ class DatospersonalesController extends Controller
 
         $user = Yii::$app->user->identity;
 
-        if ($user->Tipo === 88 || $user->username == $model->Ci) {
+        if (Yii::$app->user->can('admin') || $user->username == $model->Ci) {
             return $this->render('view', [
                 'model' => $this->findModel($id),
             ]);
@@ -79,8 +79,8 @@ class DatospersonalesController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Datospersonales();   
-             $selectedCarrera = [];
+        $model = new Datospersonales();
+        $selectedCarrera = [];
 
         $isUpdated = false;
 
@@ -135,14 +135,14 @@ class DatospersonalesController extends Controller
 
         $user = Yii::$app->user->identity;
 
-        if ($user->Tipo === 88 && $user->username !== $model->Ci) {
+        if (Yii::$app->user->can('admin') && $user->username !== $model->Ci) {
             $isUpdated = false;
         } else {
             $isUpdated = true;
         }
 
         $selectedCarrera = $model->getPersonacarreras()->select('carrera_idfac')->column();
-        
+
         if ($model->load(Yii::$app->request->post())) {
             $model->photofile = UploadedFile::getInstance($model, 'photofile');
 
@@ -179,7 +179,7 @@ class DatospersonalesController extends Controller
                             $CarreraCursada->save();
                         }
                     }
-                    
+
                     // Redirigir a la página de detalles o a donde desees
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
@@ -221,6 +221,6 @@ class DatospersonalesController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('No se encontró esta página.');
     }
 }

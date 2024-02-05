@@ -104,7 +104,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            if (Yii::$app->user->identity->Tipo === 88) {
+            if (Yii::$app->user->can('admin')) {
                 return $this->redirect(['site/stadistics']);
             } else {
                 return $this->goBack();

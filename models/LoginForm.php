@@ -99,10 +99,13 @@ class LoginForm extends Model
         if ($this->validate()) {
             $user = $this->getUser();
 
-            if ($user !== null && Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0)) {
+            if ($user !== null && $user->Status === User::STATUS_ACTIVE && Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0)) {
                 $user->refresh(); // Refresh user to get the latest data from the database
                 $this->registrarVisita($user);
                 return true;
+            } else {
+                // Usuario inactivo
+                $this->addError('username', 'Tu cuenta está desactivada. Por favor, contacta al administrador.');
             }
         }
         return false;

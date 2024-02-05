@@ -38,18 +38,17 @@ $config = [
             'enableAutoLogin' => true,
             'on afterLogin' => function ($event) {
                 $user = $event->identity;
-                $Rol = $user->Tipo;
+                $rol = $user->Tipo;
                 $auth = Yii::$app->authManager;
 
-                if ($Rol == 88) {
-                    $role = $auth->getRole('admin'); // Nombre del rol de administrador
-                } /* elseif ($Rol == 66) {
-                    $role = $auth->getRole('docente'); // Nombre del rol de docente
-                } elseif ($Rol == 11) {
-                    $role = $auth->getRole('estudiante'); // Nombre del rol de estudiante
-                } */ else{
+                // Obtener o crear el rol basado en el campo Tipo
+                $role = $auth->getRole($rol);
+
+                if (!$role) {
+                    // Si el rol no existe, asignar el rol 'usuario' por defecto
                     $role = $auth->getRole('usuario');
                 }
+
                 // Verificar si el usuario ya tiene el rol asignado
                 if (!$auth->checkAccess($user->getId(), $role->name)) {
                     // Quitar cualquier rol anterior y asignar el nuevo rol
@@ -57,8 +56,21 @@ $config = [
                     $auth->assign($role, $user->getId());
                 }
             },
-
+            'on beforeRegister' => function ($event) {
+                $user = $event->identity;
+                // Verificar si el registro fue exitoso
+                if ($user !== null && !$user->hasErrors()) {
+                    // Realizar acciones adicionales después del registro exitoso, si es necesario
+                    // ...
+                } else {
+                    // Registro fallido, puedes manejar errores o acciones adicionales aquí
+                    Yii::$app->session->setFlash('error', 'El registro ha fallado.');
+                    Yii::$app->response->redirect(['site/index'])->send();
+                    Yii::$app->end();
+                }
+            },
         ],
+
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -93,7 +105,7 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [             
+            'rules' => [
                 'user/change-password' => 'user/change-password',
 
             ],
@@ -133,7 +145,7 @@ $config = [
     'as access' => [
         'class' => yii2mod\rbac\filters\AccessControl::class,
         'allowActions' => [
-           // '*', // Permitir todas las acciones
+            // '*', // Permitir todas las acciones
             'site/login',
             'site/logout',
             'site/signup',

@@ -17,8 +17,8 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'Status', 'Tipo'], 'integer'],
-            [['username', 'password', 'Auth_key', 'Created_at', 'Updated_at'], 'safe'],
+            [['id', 'Status'], 'integer'],
+            [['username', 'password', 'Tipo', 'Auth_key', 'Created_at', 'Updated_at'], 'safe'],
         ];
     }
 
@@ -60,12 +60,12 @@ class UserSearch extends User
         $query->andFilterWhere([
             'id' => $this->id,
             'Status' => $this->Status,
-            'Tipo' => $this->Tipo,
             'Created_at' => $this->Created_at,
             'Updated_at' => $this->Updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
+            ->andFilterWhere(['like', 'Tipo', $this->Tipo])
             ->andFilterWhere(['like', 'password', $this->password])
             ->andFilterWhere(['like', 'Auth_key', $this->Auth_key]);
 

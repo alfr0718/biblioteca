@@ -19,7 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1 class="text-success"><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) {
+
+        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->can('admin')) {
             echo    Html::a('<span class="icon text-white-100"><i class="fas fa-plus-circle"></i></span><span class="text">Agregar libro</span>', ['create'], ['class' => 'btn btn-success btn-icon-split']);
         } ?>
     </p>
@@ -83,7 +84,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'style' => 'max-width: 100px;', // Adjust the maximum width as needed
                                 'height' => '100',
                             ]), ['view', 'id' => $model->id]);
-                            
                         },
                         'contentOptions' => [
                             'style' => 'vertical-align: middle; text-align: center;',
@@ -111,7 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => ActionColumn::className(),
                         'header' => 'Acciones',
                         'headerOptions' => ['style' => 'color: #0d75fd; width: 200px;'],
-                        'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88,
+                        'visible' => !Yii::$app->user->isGuest && Yii::$app->user->can('admin'),
 
                         'template' => '{view} {update} {delete}',
                         'buttons' => [

@@ -43,21 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             return $model->Status == 1 ? 'Activo' : 'Inactivo';
                         },
                     ],
-                    [
-                        'attribute' => 'Tipo',
-                        'value' => function ($model) {
-                            switch ($model->Tipo) {
-                                case 88:
-                                    return 'Admin';
-                                case 66:
-                                    return 'Docente';
-                                case 11:
-                                    return 'Estudiante';
-                                default:
-                                    return 'Desconocido';
-                            }
-                        },
-                    ],
+                    'Tipo',
                     'Created_at',
                     'Updated_at',
                 ],

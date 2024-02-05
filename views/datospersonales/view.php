@@ -61,26 +61,84 @@ $this->params['breadcrumbs'][] = $this->title;
             ]) ?>
             <div class="mt-2">
                 <?php
-                if (!Yii::$app->user->isGuest && (Yii::$app->user->identity->username === $model-> Ci || Yii::$app->user->identity->Tipo === 88)) {
-                    echo Html::a('<span class="icon text-white-100"><i class="fas fa-user-edit"></i></span><span class="text">Actualizar Datos</span>', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-icon-split']);
-                } ?>
-                <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo === 88) {
-                    echo Html::a('<span class="icon text-white-100"><i class="fas fa-trash"></i></span><span class="text">Eliminar</span>', ['delete', 'id' => $model->id], [
-                        'class' => 'btn btn-danger btn-icon-split',
-                        'data' => [
-                            'confirm' => '¿Estas seguro de Eliminar este elemento?',
-                            'method' => 'post',
-                        ],
-                    ]);
-                }
-                ?>
-                <?php
-                $user = Yii::$app->user->isGuest ? null : Yii::$app->user->identity;
 
-                // Verificar si el usuario está autenticado y si el nombre de usuario coincide
-                if ($user !== null && $user->username === $model->Ci) {
-                    echo Html::a('<span class="icon text-white-100"><i class="fas fa-lock"></i></span><span class="text">Cambiar Contraseña</span>', ['user/change-password'], ['class' => 'btn btn-warning btn-icon-split', 'confirm' => '¿Estás seguro de cambiar tu contraseña?']);
+                $userSesion = Yii::$app->user->isGuest ? null : Yii::$app->user->identity;
+
+                $commonOptions = ['style' => 'margin-right: 10px; margin-bottom: 10px;'];
+
+
+                if ($userSesion !== null) {
+
+                    if ($userSesion->username === $model->Ci || Yii::$app->user->can('admin')) {
+                        echo Html::a(
+                            '<span class="icon text-white-100"><i class="fas fa-user-edit"></i></span><span class="text">Actualizar Datos</span>',
+                            ['update', 'id' => $model->id],
+                            ['class' => 'btn btn-primary arning btn-icon-split']        +        $commonOptions
+                        );
+                    }
+
+                    if ($userSesion->username === $model->Ci) {
+                        echo Html::a(
+                            '<span class="icon text-white-100"><i class="fas fa-lock"></i></span><span class="text">Cambiar Contraseña</span>',
+                            ['user/change-password'],
+                            [
+                                'class' => 'btn btn-warning btn-icon-split',
+                                'confirm' => '¿Estás seguro de cambiar tu contraseña?',
+                            ]
+                                +                $commonOptions
+                        );
+                    }
+
+                    if(Yii::$app->user->can('admin')) {
+
+                        $usuarioVista = $model->user;
+                      
+                        if ($usuarioVista !==null) {
+                            $icon = $usuarioVista->Status == 1 ? 'off' : 'on';
+                            $usuarioVista->Status == 1 ? 'off' : 'on';
+                            $action = $usuarioVista->Status == 1 ? 'Desactivar' : 'Activar';
+
+                            echo Html::a(
+                                '<span class="icon text-white-100"><i class="fas fa-user-circle"></i></span><span class="text">Ver Cuenta</span>',
+                                ['user/view', 'id' => $usuarioVista->id],
+                                [
+                                    'class' => 'btn btn-info btn-icon-split',
+                                ]
+                                    +                $commonOptions
+                            );
+
+                            echo Html::a(
+                                '<span class="icon text-white-100"><i class="fas fa-toggle-' . $icon . '"></i></span><span class="text">' . $action . ' Cuenta</span>',
+
+                                ['user/activar-desactivar-cuenta', 'Ci' => $model->Ci],
+                                [
+                                    'class' => 'btn btn-success btn-icon-split',
+                                    'data' => [
+                                        'confirm' => '¿Estas seguro de ' . $action . ' esta cuenta?',
+                                        'method' => 'post',
+                                    ],
+                                ]
+                                    +                $commonOptions
+                            );
+                        }
+                    }
+
+
+                    if (Yii::$app->user->can('admin')) {
+                        echo Html::a(
+                            '<span class="icon text-white-100"><i class="fas fa-trash"></i></span><span class="text">Eliminar</span>',
+                            ['delete', 'id' => $model->id],
+                            [
+                                'class' => 'btn btn-danger btn-icon-split',
+                                'data' => [
+                                    'confirm' => '¿Estas seguro de Eliminar este elemento?',
+                                    'method' => 'post',
+                                ],
+                            ] +                $commonOptions
+                        );
+                    }
                 }
+
                 ?>
             </div>
         </div>

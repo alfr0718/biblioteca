@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
  * @property string $password
  * @property string $auth_key
  * @property int $status
- * @property int $tipo_usuario
+ * @property string $tipo
  * @property string $created_at
  * @property string $updated_at
  * @property Datospersonales $Datospersonales
@@ -40,7 +40,8 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['username', 'password', 'Auth_key', 'Created_at'], 'required'],
-            [['Status', 'Tipo'], 'integer'],
+            [['Status'], 'integer'],
+            [['Tipo'], 'string', 'max' => 64],
             [['Created_at', 'Updated_at'], 'safe'],
             [['username'], 'string', 'max' => 15],
             [['password'], 'string', 'max' => 255],

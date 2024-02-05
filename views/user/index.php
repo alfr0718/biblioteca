@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) {
+        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->can('admin')) {
             echo    Html::a('<span class="icon text-white-100"><i class="fas fa-plus-circle"></i></span><span class="text">Agregar Usuario</span>', ['create'], ['class' => 'btn btn-success btn-icon-split']);
         } ?>
     </p>
@@ -49,21 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             return $model->Status == 1 ? 'Activo' : 'Inactivo';
                         },
                     ],
-                    [
-                        'attribute' => 'Tipo',
-                        'value' => function ($model) {
-                            switch ($model->Tipo) {
-                                case 88:
-                                    return 'Admin';
-                                case 66:
-                                    return 'Docente';
-                                case 11:
-                                    return 'Estudiante';
-                                default:
-                                    return 'Desconocido';
-                            }
-                        },
-                    ],
+                    'Tipo',
                     [
                         'attribute' => 'Created_at',
                         'contentOptions' => ['class' => 'd-none d-sm-table-cell'], // Ocultar en pantallas pequeñas y mostrar como celda de tabla en medianas y grandes
@@ -82,6 +68,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         'header' => 'Acciones',
                         'headerOptions' => ['style' => 'color: #0d75fd; width: 200px;'],
                         'template' => '{view} {update} {delete}',
+                        'visible' => !Yii::$app->user->isGuest && Yii::$app->user->can('admin'),
+
                         'buttons' => [
                             'view' => function ($url, $model) {
                                 return Html::a('<i class="fa fa-eye"></i>', $url, [
@@ -90,23 +78,21 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]);
                             },
                             'update' => function ($url, $model) {
-                                if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) {
                                     return Html::a('<i class="fa fa-edit"></i>', $url, [
                                         'title' => Yii::t('app', 'Actualizar'),
                                         'class' => 'btn btn-info btn-circle',
                                     ]);
-                                }
+                                
                             },
                             'delete' => function ($url, $model) {
 
-                                if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) {
                                     return Html::a('<i class="fa fa-trash"></i>', $url, [
                                         'title' => Yii::t('app', 'Eliminar'),
                                         'class' => 'btn btn-danger btn-circle',
                                         'data-confirm' => Yii::t('app', '¿Estás seguro de que deseas eliminar este elemento?'),
                                         'data-method' => 'post',
                                     ]);
-                                }
+                                
                             },
                         ],
                         'urlCreator' => function ($action, User $model, $key, $index, $column) {

@@ -65,11 +65,11 @@ $backgroundColor = $categoryColors[$categoryName] ?? 'gray';
                     </div>
                     <div class="mt-2">
                         <?php
-                        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo === 88) {
+                        if (!Yii::$app->user->isGuest && Yii::$app->user->can('admin')) {
                             echo Html::a('<i class="fa fa-edit"></i>', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-circle']);
                         }
                         ?>
-                        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo === 88) {
+                        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->can('admin')) {
                             echo Html::a('<i class="fa fa-trash"></i>', ['delete', 'id' => $model->id], [
                                 'class' => 'btn btn-danger btn-circle',
                                 'data' => [

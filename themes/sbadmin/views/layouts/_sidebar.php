@@ -43,8 +43,7 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header"><i class="fas fa-fw fa-cog"></i> Opciones:</h6>
-                    <a class="collapse-item" href="/user/index"><i class="fas fa-user-check"></i> Usuarios</a>
-                    <a class="collapse-item" href="/datospersonales/index"><i class="far fa-id-card"></i> Datos Personales</a>
+                    <a class="collapse-item" href="/datospersonales/index"><i class="far fa-id-card"></i> Registro</a>
                     <a class="collapse-item" href="/carrera/index"><i class="fas fa-graduation-cap"></i> Carreras</a>
                     <a class="collapse-item" href="/user/reset-password"><i class="fas fa-user-cog"></i> Resetear contraseña</a>
                 </div>

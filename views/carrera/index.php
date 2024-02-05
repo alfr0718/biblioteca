@@ -51,6 +51,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         'header' => 'Acciones',
                         'headerOptions' => ['style' => 'color: #0d75fd; width: 200px;'],
                         'template' => '{view} {update} {delete}',
+                        'visible' => !Yii::$app->user->isGuest && Yii::$app->user->can('admin'),
+
                         'buttons' => [
                             'view' => function ($url, $model) {
                                 return Html::a('<i class="fa fa-eye"></i>', $url, [
@@ -59,23 +61,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]);
                             },
                             'update' => function ($url, $model) {
-                                if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) {
+                            
                                     return Html::a('<i class="fa fa-edit"></i>', $url, [
                                         'title' => Yii::t('app', 'Actualizar'),
                                         'class' => 'btn btn-info btn-circle',
                                     ]);
-                                }
+                                
                             },
                             'delete' => function ($url, $model) {
 
-                                if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) {
                                     return Html::a('<i class="fa fa-trash"></i>', $url, [
                                         'title' => Yii::t('app', 'Eliminar'),
                                         'class' => 'btn btn-danger btn-circle',
                                         'data-confirm' => Yii::t('app', '¿Estás seguro de que deseas eliminar este elemento?'),
                                         'data-method' => 'post',
                                     ]);
-                                }
+                                
                             },
                         ],
                         'urlCreator' => function ($action, Carrera $model, $key, $index, $column) {

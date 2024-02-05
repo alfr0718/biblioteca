@@ -58,7 +58,7 @@ $this->registerJsFile('@web/sbadminassets/js/sb-admin-2.min.js');
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->Tipo == 88) : ?>
+        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->can('admin')) : ?>
             <?= $this->render('_sidebar') ?>
         <?php endif; ?>
         <!-- End of Sidebar -->

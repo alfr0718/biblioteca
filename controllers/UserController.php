@@ -71,6 +71,8 @@ class UserController extends Controller
     {
         $model = new User();
 
+        $isUpdated = false;
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -81,6 +83,8 @@ class UserController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'isUpdated' => $isUpdated,
+
         ]);
     }
 
@@ -95,12 +99,19 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
 
+        $user = Yii::$app->user->identity;
+
+        $isUpdated = true;
+
+
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'isUpdated' => $isUpdated,
+
         ]);
     }
 
@@ -131,7 +142,7 @@ class UserController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('No se encontró usuario.');
     }
 
     public function actionChangePassword()
@@ -198,4 +209,25 @@ class UserController extends Controller
     }
 
 
+    public function actionActivarDesactivarCuenta($Ci)
+    {
+
+        $userSesion = Yii::$app->user->identity;
+
+        if (Yii::$app->user->can('admin') || $userSesion->username == $Ci) {
+
+            $userChange = User::findOne(['username' => $Ci]);
+
+            if ($userChange) {
+
+                $userChange->Status = $userChange->Status == 1 ? 0 : 1;
+                $userChange->save();
+                Yii::$app->controller->redirect(Yii::$app->request->referrer)->send();
+            } else {
+                throw new NotFoundHttpException('No se encontró usuario.');
+            }
+        } else {
+            throw new NotFoundHttpException('No tiene permitida esta acción.');
+        }
+    }
 }
