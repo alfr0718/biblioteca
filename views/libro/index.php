@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             $imagePath = $basePath . '/uploads/portada/' . $model->portada;
 
-                            if (!empty($model->Foto) && file_exists($imagePath)) {
+                            if (!empty($model->portada) && file_exists($imagePath)) {
                                 $imageUrl = Yii::getAlias('@web') . '/uploads/portada/' . $model->portada;
                             } else {
                                 $imageUrl = Yii::getAlias('@web') . '/img/book-default.webp';

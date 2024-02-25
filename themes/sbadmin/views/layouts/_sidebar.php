@@ -13,7 +13,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
-            <a class="nav-link" href="/site/index">
+            <a class="nav-link" href="<?= \yii\helpers\Url::home() ?>">
                 <i class="fas fa-home"></i>
                 <span>Inicio</span></a>
         </li>
