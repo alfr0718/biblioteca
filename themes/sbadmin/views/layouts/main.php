@@ -53,91 +53,58 @@ $this->registerJsFile('@web/sbadminassets/js/sb-admin-2.min.js');
 
     <?php $this->beginBody() ?>
 
+    <?php if (Yii::$app->user->isGuest) : ?>
+        <?= $this->render('_content', ['content' => $content]) ?>
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->can('admin')) : ?>
-            <?= $this->render('_sidebar') ?>
-        <?php endif; ?>
-        <!-- End of Sidebar -->
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="min-vh-100 d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Topbar -->
-                <?php if (!Yii::$app->user->isGuest) : ?>
-                    <?= $this->render('_topbar') ?>
-                <?php endif; ?>
-                <!-- End of Topbar -->
+    <?php else : ?>
+        <!-- Page Wrapper -->
+        <div id="wrapper">
 
 
-
-                <!-- JavaScript core de Bootstrap -->
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-                    <!-- Page Heading -->
-                    <?= $content ?>
-                </div>
-                <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <?php if (!Yii::$app->user->isGuest) : ?>
-                <?= $this->render('_footer') ?>
+            <?php if (Yii::$app->user->can('admin')) : ?>
+                <!-- Sidebar -->
+                <?= $this->render('_sidebar') ?>
+                <!-- End of Sidebar -->
             <?php endif; ?>
 
-            <!-- End of Footer -->
+            <!-- Content -->
+            <?= $this->render('_content', ['content' => $content]) ?>
+            <!-- End of Content -->
 
         </div>
 
 
-        <!-- End of Content Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-    </div>
-    <!-- End of Page Wrapper -->
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Estás Seguro?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">¡Esperamos volver a verte pronto!</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <?php
+                        // Utiliza Html::beginForm para generar el formulario de cierre de sesión
+                        echo Html::beginForm(['/site/logout'], 'post', ['id' => 'logout-form']);
+                        echo Html::submitButton('Cerrar Sesión', ['class' => 'btn btn-primary']);
+                        echo Html::endForm();
+                        ?>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">¿Estás Seguro?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Selecciona "Cerrar Sesión" si estas seguro de terminar tu sesión.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <?php
-                    // Utiliza Html::beginForm para generar el formulario de cierre de sesión
-                    echo Html::beginForm(['/site/logout'], 'post', ['id' => 'logout-form']);
-                    echo Html::submitButton('Cerrar Sesión', ['class' => 'btn btn-primary']);
-                    echo Html::endForm();
-                    ?>
-
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-
-
-
-
+    <?php endif; ?>
 
     <?php $this->endBody() ?>
 </body>

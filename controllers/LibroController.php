@@ -97,33 +97,36 @@ class LibroController extends Controller
     {
         $model = new Libro();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->portadaFile = UploadedFile::getInstance($model, 'portadaFile');
-            $model->docFile = UploadedFile::getInstance($model, 'docFile');
-
-            // Validar los archivos antes de intentar guardarlos
-            if ($model->validate()) {
-                
-                // Guardar la imagen
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                $model->portadaFile = UploadedFile::getInstance($model, 'portadaFile');
+                $model->docFile = UploadedFile::getInstance($model, 'docFile');
+                // Guardar nombre de imagen en la bbd
                 if ($model->portadaFile) {
                     $nombreImg = $model->portadaFile->baseName . '.' . $model->portadaFile->extension;
                     $model->portada = $nombreImg;
-                    $model->portadaFile->saveAs(Yii::getAlias('@webroot/uploads/portada/') . $nombreImg);
                 }
-
-                // Guardar el documento
+                // Guardar nombre de documento en la bbd
                 if ($model->docFile) {
                     $nombreDoc = $model->docFile->baseName . '.' . $model->docFile->extension;
                     $model->doc = $nombreDoc;
-                    $model->docFile->saveAs(Yii::getAlias('@webroot/uploads/doc/') . $nombreDoc);
                 }
-
                 // Guardar el resto de los atributos en la base de datos
-                if ($model->save(false)) {
+                if ($model->save()) {
+                    // Guardar la portada en la pagina
+                    if ($model->portadaFile) {
+                        $model->portadaFile->saveAs(Yii::getAlias('@webroot/uploads/portada/') . $nombreImg);
+                    }
+                    // Guardar el documento en la pagina
+                    if ($model->docFile) {
+                        $model->docFile->saveAs(Yii::getAlias('@webroot/uploads/doc/') . $nombreDoc);
+                    }
                     // Redirigir a la página de detalles o a donde desees
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
+        } else {
+            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
@@ -143,29 +146,33 @@ class LibroController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->portadaFile = UploadedFile::getInstance($model, 'portadaFile');
-            $model->docFile = UploadedFile::getInstance($model, 'docFile');
-
-            // Validar los archivos antes de intentar guardarlos
-            if ($model->validate()) {
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                $model->portadaFile = UploadedFile::getInstance($model, 'portadaFile');
+                $model->docFile = UploadedFile::getInstance($model, 'docFile');
 
                 // Guardar la imagen
                 if ($model->portadaFile) {
                     $nombreImg = $model->portadaFile->baseName . '.' . $model->portadaFile->extension;
                     $model->portada = $nombreImg;
-                    $model->portadaFile->saveAs(Yii::getAlias('@webroot/uploads/portada/') . $nombreImg);
                 }
 
                 // Guardar el documento
                 if ($model->docFile) {
                     $nombreDoc = $model->docFile->baseName . '.' . $model->docFile->extension;
                     $model->doc = $nombreDoc;
-                    $model->docFile->saveAs(Yii::getAlias('@webroot/uploads/doc/') . $nombreDoc);
                 }
 
                 // Guardar el resto de los atributos en la base de datos
-                if ($model->save(false)) {
+                if ($model->save()) {
+                    // Guardar la portada en la pagina
+                    if ($model->portadaFile) {
+                        $model->portadaFile->saveAs(Yii::getAlias('@webroot/uploads/portada/') . $nombreImg);
+                    }
+                    // Guardar el documento en la pagina
+                    if ($model->docFile) {
+                        $model->docFile->saveAs(Yii::getAlias('@webroot/uploads/doc/') . $nombreDoc);
+                    }
                     // Redirigir a la página de detalles o a donde desees
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
@@ -187,8 +194,12 @@ class LibroController extends Controller
     public function actionDelete($id)
     {
         Estanteriapersonal::deleteAll(['libro_id' => $id]);
+        $nombreDoc = $this->findModel($id)->doc;
+        $nombreImg = $this->findModel($id)->portada;
 
-        $this->findModel($id)->delete();  
+        $this->findModel($id)->delete();
+        unlink(Yii::getAlias('@webroot/uploads/doc/') . $nombreDoc);
+        unlink(Yii::getAlias('@webroot/uploads/portada/') . $nombreImg);
 
         return $this->redirect(['index']);
     }
@@ -243,6 +254,4 @@ class LibroController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
 }
-

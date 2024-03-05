@@ -110,10 +110,7 @@
                             Cerrar Sesión
                         </a>
                 </div>
-            <?php endif; ?>
-
             </li>
-
+        <?php endif; ?>
     </ul>
-
 </nav>
