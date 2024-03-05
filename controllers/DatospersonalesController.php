@@ -63,13 +63,13 @@ class DatospersonalesController extends Controller
 
         $user = Yii::$app->user->identity;
 
-        if (Yii::$app->user->can('admin') || $user->username == $model->Ci) {
-            return $this->render('view', [
-                'model' => $this->findModel($id),
-            ]);
-        } else {
+        if (!Yii::$app->user->can('admin') && $user->username !== $model->Ci) {
             throw new ForbiddenHttpException('No tienes permiso para acceder a esta página.');
         }
+
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
     }
 
     /**
@@ -84,34 +84,42 @@ class DatospersonalesController extends Controller
 
         $isUpdated = false;
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->photofile = UploadedFile::getInstance($model, 'photofile');
+        if ($this->request->isPost) {
+            if ($model->load(Yii::$app->request->post())) {
+                $model->photofile = UploadedFile::getInstance($model, 'photofile');
 
-            // Validar los archivos antes de intentar guardarlos
-            if ($model->validate()) {
+                // Validar los archivos antes de intentar guardarlos
+                if ($model->validate()) {
 
-                // Guardar la imagen
-                if ($model->photofile) {
-                    $nombreImg = $model->Ci . '.' . $model->photofile->extension;
-                    $model->Foto = $nombreImg;
-                    $model->photofile->saveAs(Yii::getAlias('@webroot/uploads/img/') . $nombreImg);
-                }
-                // Guardar el resto de los atributos en la base de datos
-                if ($model->save(false)) {
-                    // Redirigir a la página de detalles o a donde desees
-
-                    if (!empty(\Yii::$app->request->post('Datospersonales')['personacarreras'])) {
-                        foreach (\Yii::$app->request->post('Datospersonales')['personacarreras'] as $carreraId) {
-                            $CarreraCursada = new Personacarrera();
-                            $CarreraCursada->datospersonales_id = $model->id;
-                            $CarreraCursada->carrera_idfac = $carreraId;
-                            $CarreraCursada->save();
-                        }
+                    // Guardar la imagen
+                    if ($model->photofile) {
+                        $nombreImg = $model->Ci . '.' . $model->photofile->extension;
+                        $model->Foto = $nombreImg;
                     }
+                    // Guardar el resto de los atributos en la base de datos
+                    if ($model->save()) {
 
-                    return $this->redirect(['view', 'id' => $model->id]);
+                        // Guardar la imagen
+                        if ($model->photofile) {
+                            $model->photofile->saveAs(Yii::getAlias('@webroot/uploads/img/') . $nombreImg);
+                        }
+                        // Redirigir a la página de detalles o a donde desees
+
+                        if (!empty(\Yii::$app->request->post('Datospersonales')['personacarreras'])) {
+                            foreach (\Yii::$app->request->post('Datospersonales')['personacarreras'] as $carreraId) {
+                                $CarreraCursada = new Personacarrera();
+                                $CarreraCursada->datospersonales_id = $model->id;
+                                $CarreraCursada->carrera_idfac = $carreraId;
+                                $CarreraCursada->save();
+                            }
+                        }
+
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
                 }
             }
+        } else {
+            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
@@ -135,6 +143,10 @@ class DatospersonalesController extends Controller
 
         $user = Yii::$app->user->identity;
 
+        if (!Yii::$app->user->can('admin') && $user->username !== $model->Ci) {
+            throw new ForbiddenHttpException('No tienes permiso para acceder a esta página.');
+        }
+
         if (Yii::$app->user->can('admin') && $user->username !== $model->Ci) {
             $isUpdated = false;
         } else {
@@ -142,47 +154,52 @@ class DatospersonalesController extends Controller
         }
 
         $selectedCarrera = $model->getPersonacarreras()->select('carrera_idfac')->column();
+        
+        if ($this->request->isPost) {
+            if ($model->load(Yii::$app->request->post())) {
+                $model->photofile = UploadedFile::getInstance($model, 'photofile');
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->photofile = UploadedFile::getInstance($model, 'photofile');
+                // Validar los archivos antes de intentar guardarlos
+                if ($model->validate()) {
 
-            // Validar los archivos antes de intentar guardarlos
-            if ($model->validate()) {
-
-                // Guardar la imagen
-                if ($model->photofile) {
-                    $nombreImg = $model->Ci . '.' . $model->photofile->extension;
-                    $model->Foto = $nombreImg;
-                    $model->photofile->saveAs(Yii::getAlias('@webroot/uploads/img/') . $nombreImg);
-                }
-                // Guardar el resto de los carreras en la base de datos
-                if ($model->save(false)) {
-                    
-                    if (Yii::$app->user->can('admin')) {
-                        $existingCarrera = $model->getPersonacarreras()->select('carrera_idfac')->column();
-                        $newCarrera = \Yii::$app->request->post('Datospersonales')['personacarreras'];
-
-                        // Eliminar las carreras que no están en el formulario
-                        $deletedCarrera = array_diff($existingCarrera, $newCarrera);
-                        if (!empty($deletedCarrera)) {
-                            foreach ($deletedCarrera as $carreraId) {
-                                Personacarrera::deleteAll(['datospersonales_id' => $model->id, 'carrera_idfac' => $carreraId]);
-                            }
-                        }
-
-                        // Crear nuevas relaciones con las carreras seleccionadas
-                        $addedCarrera = array_diff($newCarrera, $existingCarrera);
-                        if (!empty($addedCarrera)) {
-                            foreach ($addedCarrera as $carreraId) {
-                                $CarreraCursada = new Personacarrera();
-                                $CarreraCursada->datospersonales_id = $model->id;
-                                $CarreraCursada->carrera_idfac = $carreraId;
-                                $CarreraCursada->save();
-                            }
-                        }
+                    // Guardar la imagen
+                    if ($model->photofile) {
+                        $nombreImg = $model->Ci . '.' . $model->photofile->extension;
+                        $model->Foto = $nombreImg;
                     }
-                    // Redirigir a la página de detalles o a donde desees
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    // Guardar el resto de los carreras en la base de datos
+                    if ($model->save()) {
+
+                        if ($model->photofile) {
+                            $model->photofile->saveAs(Yii::getAlias('@webroot/uploads/img/') . $nombreImg);
+                        }
+
+                        if (Yii::$app->user->can('admin')) {
+                            $existingCarrera = $model->getPersonacarreras()->select('carrera_idfac')->column();
+                            $newCarrera = \Yii::$app->request->post('Datospersonales')['personacarreras'];
+
+                            // Eliminar las carreras que no están en el formulario
+                            $deletedCarrera = array_diff($existingCarrera, $newCarrera);
+                            if (!empty($deletedCarrera)) {
+                                foreach ($deletedCarrera as $carreraId) {
+                                    Personacarrera::deleteAll(['datospersonales_id' => $model->id, 'carrera_idfac' => $carreraId]);
+                                }
+                            }
+
+                            // Crear nuevas relaciones con las carreras seleccionadas
+                            $addedCarrera = array_diff($newCarrera, $existingCarrera);
+                            if (!empty($addedCarrera)) {
+                                foreach ($addedCarrera as $carreraId) {
+                                    $CarreraCursada = new Personacarrera();
+                                    $CarreraCursada->datospersonales_id = $model->id;
+                                    $CarreraCursada->carrera_idfac = $carreraId;
+                                    $CarreraCursada->save();
+                                }
+                            }
+                        }
+                        // Redirigir a la página de detalles o a donde desees
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
                 }
             }
         }

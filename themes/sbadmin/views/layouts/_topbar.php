@@ -8,7 +8,7 @@
     <?php endif; ?>
 
     <a class="navbar-brand" href="<?= Yii::$app->homeUrl ?>">
-        <img src="<?= Yii::getAlias('@web') ?>/img/InstLuisTello.png" alt="Logo" height="45">
+        <img src="<?= Yii::getAlias('@web') ?>/img/InstLuisTello.png" alt="Logo" style="height: auto; max-height: 45px; width: auto;">
     </a>
 
     <!-- Topbar Search -->

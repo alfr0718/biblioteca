@@ -55,7 +55,7 @@ class Datospersonales extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'Ci' => 'Ci',
+            'Ci' => 'Cédula de Identidad',
             'ApellidoPaterno' => 'Apellido Paterno',
             'ApellidoMaterno' => 'Apellido Materno',
             'Nombres' => 'Nombres',

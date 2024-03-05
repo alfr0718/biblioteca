@@ -12,21 +12,13 @@ $this->title = $model->Titulo . ' - ' . $model->Autor;
 $this->params['breadcrumbs'][] = ['label' => 'Libros', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
-$categoryColors = [
-    'Diccionario' => '#3498db', // Blue color
-    'Guía' => '#2ecc71',       // Green color
-    'Enciclopedia' => '#e74c3c', // Red color
-    'Libro' => '#f39c12',       // Yellow color
-    'Revista' => '#9b59b6',     // Purple color
-    'No Aplicable' => '#95a5a6', // Gray color
-    // Add more categories and their respective colors as needed
-];
+
 
 // Get the category name from the model or use a default if not available
 $categoryName = $model->idcategoria0->Nombre ?? 'N/A';
 
 // Get the color for the category from the mapping or use a default color
-$backgroundColor = $categoryColors[$categoryName] ?? 'gray';
+$backgroundColor = $model->idcategoria0->color ?? 'gray';
 ?>
 
 <div class="libro-view">

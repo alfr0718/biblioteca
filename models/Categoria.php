@@ -31,7 +31,7 @@ class Categoria extends \yii\db\ActiveRecord
         return [
             [['code', 'Nombre'], 'required'],
             [['code'], 'string', 'max' => 4],
-            [['Nombre'], 'string', 'max' => 45],
+            [['Nombre', 'color'], 'string', 'max' => 45],
         ];
     }
 
@@ -44,6 +44,7 @@ class Categoria extends \yii\db\ActiveRecord
             'id' => 'ID',
             'code' => 'Code',
             'Nombre' => 'Nombre',
+            'color' => 'Color',
         ];
     }
 
